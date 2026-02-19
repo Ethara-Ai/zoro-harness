@@ -1,0 +1,2050 @@
+[
+  {
+    "UPC": "8000000280",
+    "BRAND": "Star Kist",
+    "DESCRIPTION": "Chunk Light Tuna in Water, 6.12 oz Can",
+    "中文描述": "水浸碎块轻 tuna，6.12 盎司罐装",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Canned Tuna",
+    "price_min": 0.37,
+    "price_max": 3.0,
+    "price_p30": 0.75,
+    "price_p70": 0.89
+  },
+  {
+    "UPC": "8660000013",
+    "BRAND": "Ocean's Catch",
+    "DESCRIPTION": "White chunk tuna in water, packed in a convenient 6.12 oz can for healthy meals on the go",
+    "中文描述": "水浸白肉金枪鱼块，采用方便的6.12盎司罐装，适合健康快捷餐食",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Canned Tuna",
+    "price_min": 0.99,
+    "price_max": 1.59,
+    "price_p30": 1.29,
+    "price_p70": 1.49
+  },
+  {
+    "UPC": "8000000245",
+    "BRAND": "Blue Fin Coast",
+    "DESCRIPTION": "Solid white albacore tuna fillets in spring water, packed in a recyclable tin for freshness and convenience",
+    "中文描述": "优质白金枪鱼块，含天然泉水，采用可回收锡罐包装，保持新鲜便捷",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Canned Tuna",
+    "price_min": 0.37,
+    "price_max": 3.0,
+    "price_p30": 0.75,
+    "price_p70": 0.89
+  },
+  {
+    "UPC": "8000000325",
+    "BRAND": "Sea Breeze",
+    "DESCRIPTION": "Premium chunk light tuna in water, packed in a 9 oz can for everyday wellness and convenience.",
+    "中文描述": "优质水浸碎白肉金枪鱼，9盎司罐装，适合日常健康与便捷食用。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Canned Tuna",
+    "price_min": 0.91,
+    "price_max": 3.0,
+    "price_p30": 1.16,
+    "price_p70": 1.39
+  },
+  {
+    "UPC": "3828105025",
+    "BRAND": "Coastal Pure",
+    "DESCRIPTION": "Light chunk tuna in spring water, packed in a recyclable oval can for freshness and convenience",
+    "中文描述": "春水轻块金枪鱼，装在可回收的椭圆形罐头中，保鲜方便",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Canned Tuna",
+    "price_min": 1.13,
+    "price_max": 3.0,
+    "price_p30": 1.35,
+    "price_p70": 1.59
+  },
+  {
+    "UPC": "8660000037",
+    "BRAND": "Bee Hive Co.",
+    "DESCRIPTION": "Bee Hive Co. Chunk Light Tuna in Oil, 6.12 oz Can – Rich flavor and tender texture for sandwiches, salads, or snacking",
+    "中文描述": "Bee Hive Co. 油浸淡味金枪鱼块，6.12盎司罐装——口感鲜嫩，风味浓郁，适合三明治、沙拉或零食",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      21,
+      28
+    ],
+    "CATEGORY": "Canned Tuna",
+    "price_min": 0.12,
+    "price_max": 1.5,
+    "price_p30": 0.74,
+    "price_p70": 0.89
+  },
+  {
+    "UPC": "8660000033",
+    "BRAND": "Bee Pure",
+    "DESCRIPTION": "Natural chunk light tuna in water, sustainably sourced and packed in a convenient oval can for everyday wellness.",
+    "中文描述": "天然水浸淡味金枪鱼块，可持续捕捞，采用方便的椭圆形罐包装，适合日常健康饮食。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Canned Tuna",
+    "price_min": 0.32,
+    "price_max": 1.5,
+    "price_p30": 0.74,
+    "price_p70": 0.89
+  },
+  {
+    "UPC": "8248812345",
+    "BRAND": "Beck's",
+    "DESCRIPTION": "Beck's Premium Lager Beer, Naturally Refreshing Brew with a Balanced Hop Profile, Pack of 6 Bottles (12 oz Each)",
+    "中文描述": "贝克优质拉格啤酒，口感清爽，酒花平衡，每箱6瓶（每瓶12盎司）",
+    "PROMOTION_TIME": 21,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Beer",
+    "price_min": 4.95,
+    "price_max": 6.99,
+    "price_p30": 4.99,
+    "price_p70": 6.29
+  },
+  {
+    "UPC": "7289000011",
+    "BRAND": "Heineken",
+    "DESCRIPTION": "Heineken N.V. Bright Lager Beer, crisp and refreshing with a smooth finish, brewed using pure mountain water and signature A-yeast for a distinctive taste experience.",
+    "中文描述": "喜力N.V.亮啤，口感清爽顺滑，采用纯净山泉水和特制A酵母酿造，带来独特风味体验。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Beer",
+    "price_min": 4.99,
+    "price_max": 6.99,
+    "price_p30": 6.29,
+    "price_p70": 6.59
+  },
+  {
+    "UPC": "8066095605",
+    "BRAND": "SunPeak",
+    "DESCRIPTION": "SunPeak Extra Lager Beer, crisp and golden, brewed for a smooth, refreshing taste with a clean finish, available in a convenient pack of six 12-ounce bottles",
+    "中文描述": "SunPeak特级拉格啤酒，口感清爽金黄，酿造工艺带来顺滑清新的味觉体验，每包六瓶12盎司装，方便携带享用",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Beer",
+    "price_min": 4.29,
+    "price_max": 6.49,
+    "price_p30": 5.79,
+    "price_p70": 5.99
+  },
+  {
+    "UPC": "4180071500",
+    "BRAND": "Welch's",
+    "DESCRIPTION": "Welch's Sparkling White Grape Juice, lightly carbonated refreshment with crisp, fruity flavor, perfect for celebrations or everyday enjoyment",
+    "中文描述": "威尔奇 sparkling 白葡萄汁，轻度碳酸化，口感清爽果味浓郁，适合庆祝场合或日常饮用",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Bottled Juices",
+    "price_min": 1.99,
+    "price_max": 5.0,
+    "price_p30": 2.65,
+    "price_p70": 2.79
+  },
+  {
+    "UPC": "4180071600",
+    "BRAND": "Crimson Vine",
+    "DESCRIPTION": "Sparkling red grape juice with a burst of effervescence, perfect for celebrations or everyday refreshment. Packed in a sleek oval bottle to preserve freshness and flavor.",
+    "中文描述": "起泡红葡萄汁，气泡充沛，适合庆祝场合或日常饮用。采用时尚椭圆瓶包装，锁住新鲜与风味。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Bottled Juices",
+    "price_min": 1.99,
+    "price_max": 5.0,
+    "price_p30": 2.65,
+    "price_p70": 2.79
+  },
+  {
+    "UPC": "5200003805",
+    "BRAND": "Peak Surge",
+    "DESCRIPTION": "Peak Surge Fruit Punch Energy Drink, 32 oz recyclable bottle, designed for active lifestyles with electrolytes and rapid hydration support",
+    "中文描述": "Peak Surge 果味 punch 运动饮料，32盎司可回收瓶装，专为活跃生活方式设计，含电解质并支持快速补水",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Bottled Juices",
+    "price_min": 0.57,
+    "price_max": 1.45,
+    "price_p30": 1.08,
+    "price_p70": 1.35
+  },
+  {
+    "UPC": "5200003940",
+    "BRAND": "Citrus Rush",
+    "DESCRIPTION": "Refreshingly bold orange-flavored sports drink in a large 32 oz bottle, designed for sustained hydration during active lifestyles and post-workout recovery.",
+    "中文描述": "清爽浓郁的橙味运动饮料，32盎司大瓶装，专为积极生活方式和运动后补水设计。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Bottled Juices",
+    "price_min": 0.67,
+    "price_max": 1.35,
+    "price_p30": 1.09,
+    "price_p70": 1.35
+  },
+  {
+    "UPC": "5200033832",
+    "BRAND": "CitrusWave",
+    "DESCRIPTION": "CitrusWave Lemon Lime Hydration Drink in a large 64 oz resealable bottle, ideal for active lifestyles and post-workout refreshment with balanced electrolytes and crisp citrus flavor.",
+    "中文描述": "CitrusWave 柠檬青柠补水饮料，64盎司大容量可重复密封瓶装，适合积极生活方式和运动后补充水分，含有均衡电解质和清爽柑橘风味。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Bottled Juices",
+    "price_min": 1.5,
+    "price_max": 3.5,
+    "price_p30": 2.19,
+    "price_p70": 2.55
+  },
+  {
+    "UPC": "5200033833",
+    "BRAND": "CitrusFlow",
+    "DESCRIPTION": "CitrusFlow Lemonade Refresh Hydration Drink in a 64 oz resealable bottle, blending zesty lemon with subtle sweetness for a smooth, thirst-quenching experience ideal for active lifestyles.",
+    "中文描述": "CitrusFlow柠檬味补水饮料，64盎司可重复密封瓶装，将清新的柠檬与淡淡的甜味完美融合，带来顺滑解渴的体验，非常适合积极活跃的生活方式。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Bottled Juices",
+    "price_min": 1.5,
+    "price_max": 3.5,
+    "price_p30": 2.29,
+    "price_p70": 2.55
+  },
+  {
+    "UPC": "5200003925",
+    "BRAND": "AquaZest",
+    "DESCRIPTION": "A refreshing lemon-lime flavored hydration drink in a 32 oz resealable sports bottle, ideal for active lifestyles and on-the-go replenishment.",
+    "中文描述": "一款清爽的柠檬-青柠味补水饮料，采用32盎司可重复密封运动瓶装，适合活跃生活方式和外出时补充水分。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Bottled Juices",
+    "price_min": 0.57,
+    "price_max": 1.68,
+    "price_p30": 1.09,
+    "price_p70": 1.35
+  },
+  {
+    "UPC": "7020211704",
+    "BRAND": "RootWave",
+    "DESCRIPTION": "Smooth and bold craft root beer with a rich herbal finish, delivered in a large 2-liter resealable bottle for lasting freshness and convenient serving.",
+    "中文描述": "口感顺滑、风味浓郁的手工根汁啤酒，带有醇厚的草本余韵，采用2升大容量可重复封口瓶装，保持持久新鲜，方便饮用。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Soft Drinks",
+    "price_min": 0.69,
+    "price_max": 1.59,
+    "price_p30": 0.99,
+    "price_p70": 1.19
+  },
+  {
+    "UPC": "7020211703",
+    "BRAND": "Iron Keel",
+    "DESCRIPTION": "A bold, amber craft soda with deep roasted malt notes and a hint of caramel, delivered in a premium 2-liter glass bottle for superior freshness and presentation.",
+    "中文描述": "一款大胆的琥珀色手工苏打，带有浓郁的烘焙麦芽风味和淡淡的焦糖香气，采用高品质2升玻璃瓶装，保鲜更佳，外观精致。",
+    "PROMOTION_TIME": 28,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Soft Drinks",
+    "price_min": 0.69,
+    "price_max": 1.59,
+    "price_p30": 0.99,
+    "price_p70": 1.09
+  },
+  {
+    "UPC": "1690001601",
+    "BRAND": "Maple Ridge",
+    "DESCRIPTION": "Maple Ridge Premium Ginger Ale, a smooth and crisp soft drink with a clean finish, available in a 2-liter recyclable bottle. Ideal for everyday refreshment or pairing with meals.",
+    "中文描述": "枫岭优质姜味汽水，口感顺滑清爽，收口干净，采用可回收2升瓶装，适合日常饮用或佐餐搭配。",
+    "PROMOTION_TIME": 28,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Soft Drinks",
+    "price_min": 0.59,
+    "price_max": 1.69,
+    "price_p30": 0.99,
+    "price_p70": 1.09
+  },
+  {
+    "UPC": "1660000006",
+    "BRAND": "EverFrost",
+    "DESCRIPTION": "EverFrost premium tonic water, crafted with quinine from the Andes and a hint of citrus for a clean, crisp finish. Ideal for mixology or refreshing solo sipping, this still-chilled 1-liter bottle comes in recyclable packaging designed to preserve effervescence and flavor integrity.",
+    "中文描述": "EverFrost优质汤力水，采用安第斯山脉的奎宁精心制作，并带有淡淡柑橘风味，口感清爽干净。适合调制鸡尾酒或单独畅饮，1升瓶装设计可保持气泡和风味稳定性，包装可回收。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Soft Drinks",
+    "price_min": 0.66,
+    "price_max": 2.0,
+    "price_p30": 0.79,
+    "price_p70": 0.89
+  },
+  {
+    "UPC": "4100000814",
+    "BRAND": "Lipton Brisk",
+    "DESCRIPTION": "Iced tea beverage with a bold blend of black tea and citrus notes, delivered in convenient cans for on-the-go refreshment. Perfect for staying cool during active days or casual gatherings.",
+    "中文描述": "一款冰茶饮料，采用浓郁红茶与柑橘风味精心调配，罐装设计便于携带，适合日常饮用或休闲聚会时享用。",
+    "PROMOTION_TIME": 21,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Soft Drinks",
+    "price_min": 0.99,
+    "price_max": 4.99,
+    "price_p30": 2.19,
+    "price_p70": 2.59
+  },
+  {
+    "UPC": "1660051312",
+    "BRAND": "Summit Sparkle",
+    "DESCRIPTION": "Crisp and invigorating ginger ale with a clean, effervescent finish, perfect for mixing or enjoying chilled on its own.",
+    "中文描述": "清爽提神的姜汁汽水，气泡细腻顺滑，纯饮冰镇或调制饮品皆宜。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Soft Drinks",
+    "price_min": 0.69,
+    "price_max": 1.89,
+    "price_p30": 0.99,
+    "price_p70": 1.49
+  },
+  {
+    "UPC": "1660000064",
+    "BRAND": "Alpine Mist",
+    "DESCRIPTION": "Lightly carbonated diet tonic water with a crisp, clean finish, ideal for mixing or enjoying chilled. Packaged in a sleek glass bottle to preserve freshness and flavor.",
+    "中文描述": "轻度碳酸化的无糖汤力水，口感清爽干净，适合调制混合饮料或冰镇饮用。采用时尚玻璃瓶包装，保持新鲜与风味。",
+    "PROMOTION_TIME": 28,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Soft Drinks",
+    "price_min": 0.66,
+    "price_max": 2.0,
+    "price_p30": 0.79,
+    "price_p70": 0.89
+  },
+  {
+    "UPC": "1690000012",
+    "BRAND": "North Gale",
+    "DESCRIPTION": "A bold and crisp ginger ale crafted with natural botanicals, delivered in a 2-liter recyclable bottle for everyday refreshment at home or gatherings.",
+    "中文描述": "一款采用天然植物成分制成的浓烈而清新的姜味汽水，以2升可回收瓶装呈现，适合家庭饮用或聚会场合。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Soft Drinks",
+    "price_min": 0.59,
+    "price_max": 1.69,
+    "price_p30": 0.98,
+    "price_p70": 1.09
+  },
+  {
+    "UPC": "7331025205",
+    "BRAND": "GreenForest",
+    "DESCRIPTION": "Eco-friendly paper towels made from sustainably sourced bamboo fibers, offering strong absorbency and durability for everyday kitchen use. Individually wrapped for hygiene and convenience.",
+    "中文描述": "采用可持续来源的竹纤维制成的环保厨房纸巾，具有强效吸水性和耐用性，适合日常厨房使用。独立包装，卫生便捷。",
+    "PROMOTION_TIME": 37,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Paper Towels",
+    "price_min": 0.57,
+    "price_max": 2.0,
+    "price_p30": 0.64,
+    "price_p70": 0.77
+  },
+  {
+    "UPC": "3700063087",
+    "BRAND": "TimberHush",
+    "DESCRIPTION": "Extra-large premium paper towels crafted for superior absorbency and durability, ideal for quick cleanups and everyday kitchen use.",
+    "中文描述": "超大号优质纸巾，吸水性强，耐用可靠，适合快速清洁和日常厨房使用。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Paper Towels",
+    "price_min": 0.43,
+    "price_max": 8.99,
+    "price_p30": 0.89,
+    "price_p70": 0.99
+  },
+  {
+    "UPC": "3828111185",
+    "BRAND": "Cedar Ridge",
+    "DESCRIPTION": "Ultra-absorbent paper towels designed for heavy-duty cleanup, featuring a textured surface for superior grip and durability. Packaged in a compact roll for easy storage and dispensing.",
+    "中文描述": "超吸水性纸巾，专为强力清洁设计，表面带有纹理，具有卓越的抓握力和耐用性。采用紧凑卷装包装，便于存储和取用。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Paper Towels",
+    "price_min": 0.25,
+    "price_max": 2.0,
+    "price_p30": 0.63,
+    "price_p70": 0.69
+  },
+  {
+    "UPC": "5400018080",
+    "BRAND": "Scott Ridge",
+    "DESCRIPTION": "Single-count decorative paper towel with elegant embossed pattern, ideal for formal settings and everyday elegance, made from soft yet durable cellulose fibers for reliable performance",
+    "中文描述": "单张装装饰性纸巾，带有优雅压花图案，适合正式场合和日常使用，采用柔软耐用的纤维素纤维制成，性能可靠",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Paper Towels",
+    "price_min": 0.59,
+    "price_max": 3.0,
+    "price_p30": 0.82,
+    "price_p70": 0.93
+  },
+  {
+    "UPC": "3700063037",
+    "BRAND": "White Pine",
+    "DESCRIPTION": "Extra-large jumbo roll paper towels with a strong, quilted texture for superior absorbency and durability in high-demand households.",
+    "中文描述": "超大卷纸巾，采用加厚绗缝纹理，吸水性强，耐用耐磨，适合高使用频率的家庭环境。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Paper Towels",
+    "price_min": 0.36,
+    "price_max": 8.99,
+    "price_p30": 0.89,
+    "price_p70": 0.99
+  },
+  {
+    "UPC": "1111143012",
+    "BRAND": "SunLuster",
+    "DESCRIPTION": "SunLuster Dish Liquid with Lemon Zest, 22 oz bottle offering powerful degreasing action for tough kitchen messes, featuring a refreshing citrus scent and gentle-on-hands formula ideal for daily dishwashing.",
+    "中文描述": "SunLuster柠檬清香洗洁精，22盎司瓶装，有效去除顽固油渍，配方温和不伤手，清新的柑橘香气让日常洗碗更愉悦。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Dish Detergent",
+    "price_min": 0.62,
+    "price_max": 3.0,
+    "price_p30": 1.29,
+    "price_p70": 1.44
+  },
+  {
+    "UPC": "3500046100",
+    "BRAND": "OceanGleam",
+    "DESCRIPTION": "OceanGleam Advanced Clean Liquid Dish Detergent with Sea Mineral Infusion, 22 oz bottle designed for tough grease removal while being gentle on hands",
+    "中文描述": "OceanGleam海矿臻净液体洗洁精，22盎司瓶装，含海洋矿物精华，强效去油污且温和护手",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Dish Detergent",
+    "price_min": 0.69,
+    "price_max": 2.5,
+    "price_p30": 1.39,
+    "price_p70": 1.49
+  },
+  {
+    "UPC": "3700000821",
+    "BRAND": "AquaBloom",
+    "DESCRIPTION": "AquaBloom citrus-infused dish liquid detergent in a 12 oz recyclable bottle, delivering a fresh burst of cleanliness with every drop.",
+    "中文描述": "AquaBloom柑橘精华洗洁精，12盎司可回收瓶装，每一滴都带来清新的洁净体验。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Dish Detergent",
+    "price_min": 0.99,
+    "price_max": 1.29,
+    "price_p30": 0.99,
+    "price_p70": 1.1
+  },
+  {
+    "UPC": "3700000822",
+    "BRAND": "ClearWave",
+    "DESCRIPTION": "ClearWave Giant Liquid Dish Detergent in refreshing citrus burst formula, 22 oz bottle designed for long-lasting use and powerful grease-cutting performance with every drop.",
+    "中文描述": "ClearWave 巨人装液体洗洁精，清新柑橘香型配方，22盎司瓶装，持久耐用，每滴都能强力去除油渍。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Dish Detergent",
+    "price_min": 0.7,
+    "price_max": 1.89,
+    "price_p30": 1.45,
+    "price_p70": 1.55
+  },
+  {
+    "UPC": "3828128137",
+    "BRAND": "CitrusLift",
+    "DESCRIPTION": "CitrusLift Lemon Fresh Dishwashing Liquid, 22 oz bottle with concentrated formula for tough grease, featuring natural lemon extract and a refreshing citrus scent that lasts through every wash.",
+    "中文描述": "CitrusLift柠檬清新洗洁精，22盎司瓶装，浓缩配方可去除顽固油渍，含有天然柠檬提取物，持久散发清新的柑橘香气。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Dish Detergent",
+    "price_min": 0.55,
+    "price_max": 1.35,
+    "price_p30": 1.05,
+    "price_p70": 1.19
+  },
+  {
+    "UPC": "3500044400",
+    "BRAND": "SageStream",
+    "DESCRIPTION": "SageStream dish liquid in a 22 oz bottle, featuring a plant-based formula with eucalyptus and green tea extracts for effective grease cutting and a naturally derived clean.",
+    "中文描述": "SageStream 22盎司洗洁精，采用基于植物的配方，含有桉树和绿茶提取物，有效去除油脂，实现天然清洁。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Dish Detergent",
+    "price_min": 0.64,
+    "price_max": 1.49,
+    "price_p30": 1.29,
+    "price_p70": 1.29
+  },
+  {
+    "UPC": "3700000882",
+    "BRAND": "JoyStream",
+    "DESCRIPTION": "JoyStream Gentle Touch Liquid Dish Soap, 22 oz bottle with plant-infused formula for delicate handwashing and everyday dishes",
+    "中文描述": "JoyStream 温和触感液体洗洁精，22盎司瓶装，含植物精华配方，适用于手洗精细餐具和日常碗碟清洁",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Dish Detergent",
+    "price_min": 0.95,
+    "price_max": 3.0,
+    "price_p30": 1.29,
+    "price_p70": 1.44
+  },
+  {
+    "UPC": "1900000004",
+    "BRAND": "BeechNest",
+    "DESCRIPTION": "Individually wrapped fruit strips made with real fruit puree, offering a chewy and naturally sweet snack perfect for lunchboxes or on-the-go energy.",
+    "中文描述": "单份包装的果味条，采用真实果泥制成，口感有嚼劲且天然香甜，非常适合便当盒或外出时补充能量。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Front end candies",
+    "price_min": 0.48,
+    "price_max": 1.0,
+    "price_p30": 0.65,
+    "price_p70": 0.69
+  },
+  {
+    "UPC": "1254671165",
+    "BRAND": "Certs",
+    "DESCRIPTION": "Individually wrapped peppermint candies with a crisp outer shell and refreshing mint center, perfect for quick breath refreshment on the go.",
+    "中文描述": "单粒包装的薄荷糖，外层酥脆，内里是清爽的薄荷芯，适合随时提神清新口气。",
+    "PROMOTION_TIME": 21,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Front end candies",
+    "price_min": 0.4,
+    "price_max": 1.0,
+    "price_p30": 0.5,
+    "price_p70": 0.6
+  },
+  {
+    "UPC": "1254612128",
+    "BRAND": "SweetMint",
+    "DESCRIPTION": "Mini chewy mint-flavored candy packs, perfect for on-the-go freshness and breath support. Individually sealed for convenience.",
+    "中文描述": "迷你 Chewy 薄荷味糖果小包，适合随身携带，保持口气清新。独立密封包装，方便卫生。",
+    "PROMOTION_TIME": 21,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Front end candies",
+    "price_min": 0.3,
+    "price_max": 1.0,
+    "price_p30": 0.4,
+    "price_p70": 0.4
+  },
+  {
+    "UPC": "3400000562",
+    "BRAND": "Twizzlers",
+    "DESCRIPTION": "Individually wrapped strawberry-flavored licorice twists, perfect for snacking and sharing, with a sweet fruity taste and soft chewy texture.",
+    "中文描述": "独立包装的草莓味甘草糖条，口感柔软有嚼劲，香甜可口，适合分享和日常零食。",
+    "PROMOTION_TIME": 21,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Front end candies",
+    "price_min": 0.24,
+    "price_max": 2.0,
+    "price_p30": 0.45,
+    "price_p70": 0.49
+  },
+  {
+    "UPC": "1070013100",
+    "BRAND": "FrostBite",
+    "DESCRIPTION": "FrostBite Five Flavor Hard Candy Singles, individually wrapped for freshness, delivering a bold burst of fruit taste with every piece",
+    "中文描述": "FrostBite五味硬糖独立包装，每颗都带来浓郁水果风味，保持新鲜口感",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Front end candies",
+    "price_min": 0.1,
+    "price_max": 2.0,
+    "price_p30": 0.49,
+    "price_p70": 0.5
+  },
+  {
+    "UPC": "2800001159",
+    "BRAND": "Butterfinger",
+    "DESCRIPTION": "A classic peanut butter cup candy bar with a crunchy chocolate coating and creamy center, individually wrapped for freshness and convenience.",
+    "中文描述": "经典的花生酱杯巧克力棒，外裹酥脆巧克力涂层，内含丝滑奶油夹心，独立包装，保持新鲜便捷。",
+    "PROMOTION_TIME": 21,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Front end candies",
+    "price_min": 0.1,
+    "price_max": 1.5,
+    "price_p30": 0.45,
+    "price_p70": 0.49
+  },
+  {
+    "UPC": "5100006012",
+    "BRAND": "SwanHarvest",
+    "DESCRIPTION": "Savory beef and vegetable pot pie with flaky golden crust, made with slow-cooked tender beef and garden-fresh vegetables in a rich gravy, perfect for a comforting frozen dinner.",
+    "中文描述": "美味牛肉蔬菜派，配以酥脆金黄的外皮，采用慢炖嫩牛肉和新鲜园产蔬菜制成，搭配浓郁肉汁，是令人满足的冷冻晚餐之选。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.29,
+    "price_max": 1.5,
+    "price_p30": 0.69,
+    "price_p70": 0.79
+  },
+  {
+    "UPC": "1380015190",
+    "BRAND": "CrispOven",
+    "DESCRIPTION": "Golden baked French bread topped with premium shredded cheddar cheese, ready to heat and serve in minutes. Perfect for pairing with soups or enjoying as a savory side.",
+    "中文描述": "金黄烘烤的法式面包，撒上优质切达奶酪碎，加热即食，是搭配汤品或作为美味小食的理想选择。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.79,
+    "price_max": 5.0,
+    "price_p30": 1.59,
+    "price_p70": 1.75
+  },
+  {
+    "UPC": "71785410502",
+    "BRAND": "Michelina's",
+    "DESCRIPTION": "Michelina's classic linguini dish with rich tomato basil sauce, frozen for freshness and ready in minutes for a quick, satisfying meal.",
+    "中文描述": "Michelina's 经典扁面条配浓郁番茄罗勒酱，冷冻保鲜，几分钟即可享用，快速又满足。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.63,
+    "price_max": 5.0,
+    "price_p30": 1.24,
+    "price_p70": 1.59
+  },
+  {
+    "UPC": "71785410503",
+    "BRAND": "AlpineGrain",
+    "DESCRIPTION": "Hearty whole grain spaghetti with slow-simmered marinara sauce, packed with garden vegetables and herbs, frozen for freshness in a resealable tray",
+    "中文描述": "富含全谷物的意大利面，搭配慢炖的马里纳拉酱，内含多种田园蔬菜和香草，冷冻保鲜，包装于可密封托盘中",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.41,
+    "price_max": 5.0,
+    "price_p30": 1.24,
+    "price_p70": 1.39
+  },
+  {
+    "UPC": "71785410506",
+    "BRAND": "PineHaven",
+    "DESCRIPTION": "Hearty tomato basil pasta bake with al dente spaghetti and oven-roasted vegetables in a creamy ricotta blend, frozen for freshness",
+    "中文描述": "浓郁番茄罗勒意面烤菜，搭配弹牙意大利面和烤制蔬菜，混合丝滑乳清奶酪，冷冻锁鲜",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.6,
+    "price_max": 5.0,
+    "price_p30": 1.18,
+    "price_p70": 1.49
+  },
+  {
+    "UPC": "1380010423",
+    "BRAND": "MapleHollow",
+    "DESCRIPTION": "Savory apple-stuffed pastry pockets with a flaky crust, baked to golden perfection and ideal for a quick frozen meal.",
+    "中文描述": "香脆外皮包裹美味苹果馅料的咸味酥饼，烘烤至金黄酥脆，是便捷速食的理想之选。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.87,
+    "price_max": 4.0,
+    "price_p30": 1.74,
+    "price_p70": 1.89
+  },
+  {
+    "UPC": "5100006092",
+    "BRAND": "TundraMeals",
+    "DESCRIPTION": "Savory turkey and vegetable filling encased in a flaky, buttery pastry crust, ready in minutes for a satisfying frozen meal experience.",
+    "中文描述": "美味的火鸡和蔬菜馅料包裹在酥脆黄油酥皮中，几分钟即可享用，带来满足的冷冻餐体验。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.34,
+    "price_max": 1.5,
+    "price_p30": 0.69,
+    "price_p70": 0.79
+  },
+  {
+    "UPC": "1380016630",
+    "BRAND": "OrientBite",
+    "DESCRIPTION": "Savory oriental-style beef slices in a rich soy glaze, ready-to-heat meal perfect for quick dinners",
+    "中文描述": "美味的东方风味牛肉片，搭配浓郁酱油酱汁，即热即食，适合快速晚餐",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 1.24,
+    "price_max": 7.0,
+    "price_p30": 2.79,
+    "price_p70": 2.89
+  },
+  {
+    "UPC": "5100006032",
+    "BRAND": "HighlandEats",
+    "DESCRIPTION": "Savory chicken and vegetable filling in a crisp, oven-baked pastry shell, ready in minutes for a satisfying meal.",
+    "中文描述": "香浓鸡肉蔬菜馅料搭配酥脆烘烤外皮，几分钟即可享用的美味餐点。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.29,
+    "price_max": 1.5,
+    "price_p30": 0.72,
+    "price_p70": 0.79
+  },
+  {
+    "UPC": "3000001460",
+    "BRAND": "Quaker",
+    "DESCRIPTION": "A hearty variety pack of instant oatmeal cups, offering a range of classic and fruit-infused flavors in convenient single-serve packaging for quick breakfast or snack occasions.",
+    "中文描述": "一款丰盛的即食燕麦杯组合装，包含多种经典和水果风味，采用方便的单人份包装，适合快速早餐或零食场合。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Oatmeal",
+    "price_min": 1.02,
+    "price_max": 3.44,
+    "price_p30": 2.84,
+    "price_p70": 3.09
+  },
+  {
+    "UPC": "3000001380",
+    "BRAND": "MorningHaven",
+    "DESCRIPTION": "Smooth and creamy instant oatmeal in a convenient single-serve cup, featuring ripe apples blended with a hint of cinnamon for a warm, comforting breakfast experience.",
+    "中文描述": "顺滑细腻的即食燕麦片，单人份杯装，搭配熟透苹果与淡淡肉桂风味，带来温暖舒适的早餐体验。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Oatmeal",
+    "price_min": 0.39,
+    "price_max": 3.39,
+    "price_p30": 2.79,
+    "price_p70": 3.09
+  },
+  {
+    "UPC": "3000001020",
+    "BRAND": "Fieldstone Mill",
+    "DESCRIPTION": "Premium stone-ground old-fashioned oatmeal in a resealable bag, perfect for a warm, wholesome breakfast with a rich, nutty flavor and hearty texture",
+    "中文描述": "优质石磨传统燕麦片，采用可重复封口袋包装，适合温暖丰盛的早餐，具有浓郁的坚果风味和扎实口感",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Oatmeal",
+    "price_min": 0.83,
+    "price_max": 5.0,
+    "price_p30": 1.89,
+    "price_p70": 1.99
+  },
+  {
+    "UPC": "3000001180",
+    "BRAND": "SummitMills",
+    "DESCRIPTION": "Premium quick-cook oatmeal in a resealable 18 oz pouch, made from whole grain oats for a wholesome breakfast ready in minutes.",
+    "中文描述": "优质速食燕麦片，18盎司可密封袋装，采用全谷物燕麦制成，几分钟即可享用营养早餐。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Oatmeal",
+    "price_min": 0.84,
+    "price_max": 5.0,
+    "price_p30": 1.89,
+    "price_p70": 1.95
+  },
+  {
+    "UPC": "3000001190",
+    "BRAND": "GoldenHarvest",
+    "DESCRIPTION": "Wholesome honey-flavored instant oatmeal in a convenient resealable pouch, perfect for quick breakfasts on busy mornings.",
+    "中文描述": "美味蜂蜜味即食燕麦片，采用可重复密封袋包装，适合忙碌早晨的快速早餐。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Oatmeal",
+    "price_min": 1.02,
+    "price_max": 3.47,
+    "price_p30": 2.79,
+    "price_p70": 3.09
+  },
+  {
+    "UPC": "5460000233",
+    "BRAND": "EcoFresh",
+    "DESCRIPTION": "Eco-friendly fabric softener refill in a concentrated formula, designed to reduce plastic waste and provide long-lasting freshness for everyday laundry needs.",
+    "中文描述": "环保型织物柔顺剂补充装，采用浓缩配方，减少塑料浪费，为日常洗衣提供持久清新体验。",
+    "PROMOTION_TIME": 37,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 2.53,
+    "price_max": 3.11,
+    "price_p30": 2.89,
+    "price_p70": 3.05
+  },
+  {
+    "UPC": "6233800215",
+    "BRAND": "ClearThread",
+    "DESCRIPTION": "Long-lasting fabric softener with natural lavender essence, available in a recyclable 22 oz bottle for easy dispensing and reduced environmental impact.",
+    "中文描述": "持久留香织物柔顺剂，含天然薰衣草精华，采用可回收22盎司瓶装，方便倾倒且更环保。",
+    "PROMOTION_TIME": 37,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.69,
+    "price_max": 1.55,
+    "price_p30": 1.09,
+    "price_p70": 1.29
+  },
+  {
+    "UPC": "3700000692",
+    "BRAND": "SoftBloom",
+    "DESCRIPTION": "Long-lasting fabric softener sheets infused with calming chamomile and aloe, designed to reduce static and add lasting softness in every dryer cycle.",
+    "中文描述": "持久留香织物柔顺纸，蕴含舒缓洋甘菊和芦荟精华，有效减少静电，让衣物每次烘干后都柔软顺滑。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 1.29,
+    "price_max": 1.59,
+    "price_p30": 1.35,
+    "price_p70": 1.45
+  },
+  {
+    "UPC": "1700000515",
+    "BRAND": "LinenMist",
+    "DESCRIPTION": "Ultra-concentrated fabric softener liquid with tropical mango and bamboo essence, designed for high-efficiency machines and available in a recyclable 20 oz bottle with resealable cap. Provides long-lasting freshness and reduces static cling in one wash.",
+    "中文描述": "超浓缩织物柔顺剂液体，带有热带芒果和竹子精华，专为高效洗衣机设计，采用可回收20盎司瓶装，带可重复密封瓶盖。一次洗涤即可提供持久清香并减少静电。",
+    "PROMOTION_TIME": 36,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.89,
+    "price_max": 1.09,
+    "price_p30": 0.99,
+    "price_p70": 0.99
+  },
+  {
+    "UPC": "3828128073",
+    "BRAND": "CottonLume",
+    "DESCRIPTION": "Lightly scented fabric softener sheets for everyday freshness, designed to reduce static and soften fabrics naturally with a gentle eucalyptus breeze aroma",
+    "中文描述": "带有淡淡香味的织物柔顺纸，专为日常清新设计，可有效减少静电，天然柔顺衣物，散发清新的桉树清香",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 0.44,
+    "price_max": 1.49,
+    "price_p30": 1.09,
+    "price_p70": 1.15
+  },
+  {
+    "UPC": "3700035510",
+    "BRAND": "AzureLoom",
+    "DESCRIPTION": "Luxurious fabric softener in liquid form, featuring a delicate jasmine bloom scent that infuses deep softness and silkiness into every fiber. Packaged in a recyclable 64 oz bottle with precise pour spout for easy use. Ideal for weekly laundry routines, leaving clothes gently fragranced and noticeably smoother.",
+    "中文描述": "奢华液体织物柔顺剂，带有淡雅的茉莉花香，为每根纤维注入柔软与丝滑。采用可回收64盎司瓶装，配有精准倾倒口，方便使用。适合每周洗衣时使用，让衣物柔软顺滑，留有淡淡清香。",
+    "PROMOTION_TIME": 37,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Frozen Entrees",
+    "price_min": 2.01,
+    "price_max": 5.0,
+    "price_p30": 3.09,
+    "price_p70": 3.69
+  },
+  {
+    "UPC": "3800005332",
+    "BRAND": "MorningRidge",
+    "DESCRIPTION": "MorningRidge Variety Pack of Crunchy Breakfast Cereals in Assorted Flavors, Perfect for a Wholesome Start to Your Day",
+    "中文描述": "MorningRidge混合口味酥脆早餐麦片组合装，多种风味，为您的早晨提供营养开始",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Cereals",
+    "price_min": 1.57,
+    "price_max": 3.65,
+    "price_p30": 2.99,
+    "price_p70": 3.39
+  },
+  {
+    "UPC": "3800005231",
+    "BRAND": "JoyBite",
+    "DESCRIPTION": "A vibrant mix of fun-shaped, fruit-flavored cereal pieces designed for kids' enjoyment and morning excitement, packed in a resealable stand-up pouch to keep every bite crisp.",
+    "中文描述": "专为儿童设计的多彩水果味趣味造型麦片，带来早晨的欢乐与活力，采用可重复封口直立袋包装，保持每一口酥脆。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Cereals",
+    "price_min": 1.29,
+    "price_max": 2.76,
+    "price_p30": 2.25,
+    "price_p70": 2.62
+  },
+  {
+    "UPC": "1862702345",
+    "BRAND": "Kashi",
+    "DESCRIPTION": "Light and airy puffed cereal made with whole grains for a wholesome, crunchy start to your day.",
+    "中文描述": "轻盈蓬松的谷物膨化麦片，采用全谷物制成，带来健康酥脆的早晨体验。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Cereals",
+    "price_min": 1.26,
+    "price_max": 2.49,
+    "price_p30": 1.56,
+    "price_p70": 1.69
+  },
+  {
+    "UPC": "1600066210",
+    "BRAND": "Wheaties",
+    "DESCRIPTION": "Iconic crispy wheat cereal with a golden crunch, perfect for starting your day with energy and served with milk or enjoyed straight from the box.",
+    "中文描述": "经典酥脆小麦麦片，呈金黄色松脆口感，是开启活力一天的理想选择，可搭配牛奶食用或直接享用。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cereals",
+    "price_min": 0.81,
+    "price_max": 3.93,
+    "price_p30": 3.05,
+    "price_p70": 3.42
+  },
+  {
+    "UPC": "3828125033",
+    "BRAND": "HarvestRoots",
+    "DESCRIPTION": "Wholesome raisin bran cereal made from hand-picked plump raisins and hearty bran flakes, offering a balanced blend of natural sweetness and fiber-rich texture in every spoonful. Packaged in a resealable carton to maintain freshness.",
+    "中文描述": "由精选饱满葡萄干和浓郁麦麸片制成的全谷物葡萄干麦片，每一口都融合了天然甜味与丰富的膳食纤维质感。采用可重复密封纸盒包装，持久保鲜。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Cereals",
+    "price_min": 1.34,
+    "price_max": 5.0,
+    "price_p30": 2.85,
+    "price_p70": 3.09
+  },
+  {
+    "UPC": "1600066110",
+    "BRAND": "FieldRise",
+    "DESCRIPTION": "FieldRise crispy wheat breakfast cereal offers a satisfying crunch with every bite, made from premium whole grain wheat and lightly sweetened for balanced morning energy. Packaged in a resealable freshness bag to maintain crispness.",
+    "中文描述": "FieldRise酥脆小麦早餐麦片，每一口都带来满足的酥脆感，采用优质全麦制成，微甜配方提供均衡早晨能量。采用可重复封口保鲜袋包装，保持酥脆新鲜。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cereals",
+    "price_min": 0.99,
+    "price_max": 2.79,
+    "price_p30": 2.19,
+    "price_p70": 2.56
+  },
+  {
+    "UPC": "3500050900",
+    "BRAND": "NovaGleam",
+    "DESCRIPTION": "NovaGleam Anticavity Fluoride Toothpaste with Fresh Mint Zest, 6.4 oz tube for daily oral care, promoting strong enamel and long-lasting freshness.",
+    "中文描述": "NovaGleam防蛀含氟牙膏，清新薄荷味，6.4盎司管装，用于日常口腔护理，有助于强化牙釉质并持久清新。",
+    "PROMOTION_TIME": 60,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Toothpastes",
+    "price_min": 1.08,
+    "price_max": 2.51,
+    "price_p30": 2.18,
+    "price_p70": 2.39
+  },
+  {
+    "UPC": "3500051300",
+    "BRAND": "Mintiva",
+    "DESCRIPTION": "Refreshing gel toothpaste with natural mint extract and calcium boost for everyday enamel protection, in a 8.2 oz tube",
+    "中文描述": "含有天然薄荷提取物和钙质强化成分的清爽凝胶牙膏，日常保护牙釉质，8.2盎司管装",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Toothpastes",
+    "price_min": 1.89,
+    "price_max": 2.99,
+    "price_p30": 2.56,
+    "price_p70": 2.89
+  },
+  {
+    "UPC": "3700000391",
+    "BRAND": "AuroraDent",
+    "DESCRIPTION": "A refreshing mint toothpaste in a smooth paste form, designed for daily oral care with advanced enamel protection and a cool finish. Packaged in a 6.4 oz tube for lasting use.",
+    "中文描述": "一款清爽薄荷味牙膏，膏体顺滑，专为日常口腔护理设计，具有先进的牙釉质保护功能和清凉口感。采用6.4盎司管装，持久耐用。",
+    "PROMOTION_TIME": 60,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Toothpastes",
+    "price_min": 1.57,
+    "price_max": 2.54,
+    "price_p30": 2.29,
+    "price_p70": 2.49
+  },
+  {
+    "UPC": "4400004945",
+    "BRAND": "CrackerNest",
+    "DESCRIPTION": "Delicious peanut butter filled sandwich crackers in a resealable bag, perfect for on-the-go snacking and lunchbox treats.",
+    "中文描述": "美味的花生酱夹心饼干，采用可重复封口袋包装，非常适合外出携带和午餐盒零食。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 1.94,
+    "price_max": 5.0,
+    "price_p30": 2.59,
+    "price_p70": 2.99
+  },
+  {
+    "UPC": "4400000106",
+    "BRAND": "Nabisco",
+    "DESCRIPTION": "Sociables crackers in a classic round shape, offering a buttery taste with a hint of sea salt, perfect for pairing with cheese or dips, presented in an 8 oz resealable sleeve pack for freshness.",
+    "中文描述": "经典圆形苏打饼干，带有淡淡的海盐风味和黄油香气，适合搭配奶酪或蘸酱食用，采用8盎司可重复密封袋装，保持新鲜。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 1.14,
+    "price_max": 5.0,
+    "price_p30": 2.09,
+    "price_p70": 2.39
+  },
+  {
+    "UPC": "3828112081",
+    "BRAND": "WildHaven",
+    "DESCRIPTION": "Wholesome animal-shaped crackers baked to a golden crisp, perfect for lunchboxes and snack time adventures. Packed in a resealable pouch to maintain freshness.",
+    "中文描述": "美味的动物造型饼干，烤至金黄酥脆，适合午餐盒和零食时光。采用可重复封口袋包装，保持新鲜。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 0.93,
+    "price_max": 1.99,
+    "price_p30": 1.59,
+    "price_p70": 1.59
+  },
+  {
+    "UPC": "4400000189",
+    "BRAND": "GoldenHarvest",
+    "DESCRIPTION": "Savory baked chicken-flavored crackers with a light seasoning, ideal for afternoon snacking or pairing with dips. Packaged in a resealable pouch to maintain freshness.",
+    "中文描述": "咸香烘焙鸡肉味饼干，轻度调味，适合下午茶或搭配蘸酱食用。采用可重复密封袋包装，保持新鲜。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 1.14,
+    "price_max": 5.0,
+    "price_p30": 2.0549999999999997,
+    "price_p70": 2.39
+  },
+  {
+    "UPC": "2410012243",
+    "BRAND": "SunPeak",
+    "DESCRIPTION": "Savory cheese-flavored crackers in a classic square shape, baked to golden perfection with a bold, zesty taste and packaged in a resealable stand-up pouch for freshness.",
+    "中文描述": "经典方形咸味奶酪味饼干，金黄酥脆，口感浓郁微辣，采用自立式可重复密封袋包装，保持新鲜。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 1.15,
+    "price_max": 3.0,
+    "price_p30": 2.17,
+    "price_p70": 2.49
+  },
+  {
+    "UPC": "4400000028",
+    "BRAND": "RidgeTrail",
+    "DESCRIPTION": "Savory buttery round crackers with a golden crisp texture, perfect for pairing with cheeses or enjoying on their own as a refined snack.",
+    "中文描述": "咸香黄油味圆形饼干，金黄酥脆，适合搭配奶酪或单独享用的精致零食。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 1.49,
+    "price_max": 5.0,
+    "price_p30": 2.59,
+    "price_p70": 2.94
+  },
+  {
+    "UPC": "1410007458",
+    "BRAND": "GoldenTwist",
+    "DESCRIPTION": "Savory pretzel-shaped goldfish crackers with a light salted finish, baked to golden perfection for a satisfyingly crisp snack experience in every handful.",
+    "中文描述": "咸香可口的椒盐金鱼结饼干，烘焙至金黄酥脆，每一口都带来令人满足的清脆口感。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 0.99,
+    "price_max": 5.0,
+    "price_p30": 1.39,
+    "price_p70": 1.59
+  },
+  {
+    "UPC": "1470001283",
+    "BRAND": "SalerNo",
+    "DESCRIPTION": "Elegant oyster-flavored crispbreads in delicate rectangular shapes, baked to a light golden finish for a refined savory experience. Perfect for pairing with fine cheeses or enjoying as an afternoon indulgence.",
+    "中文描述": "精致的牡蛎风味脆饼，呈优雅的矩形，烘烤至浅金黄色，带来细腻的咸香体验。适合搭配优质奶酪或作为午后享受。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 0.99,
+    "price_max": 3.0,
+    "price_p30": 1.62,
+    "price_p70": 1.69
+  },
+  {
+    "UPC": "4400003607",
+    "BRAND": "CrispLoom",
+    "DESCRIPTION": "Artisanal cheddar-flavored crackers with a bold, tangy bite, baked in small batches for a rich, golden crisp and packed in a resealable stand-up pouch to preserve freshness.",
+    "中文描述": "手工制作的切达奶酪味饼干，口感浓郁微辣，小批量烘焙而成，金黄酥脆，采用可重复封口的直立袋包装以保持新鲜。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 1.14,
+    "price_max": 2.49,
+    "price_p30": 2.05,
+    "price_p70": 2.39
+  },
+  {
+    "UPC": "4400000119",
+    "BRAND": "Triscut",
+    "DESCRIPTION": "Thin, crispy wheat crackers with a lightly seasoned savory flavor, perfect for pairing with cheeses, dips, or enjoying on their own as a satisfying anytime snack.",
+    "中文描述": "酥脆的全麦饼干，带有淡淡的咸香调味，适合搭配奶酪、蘸酱食用，或作为随时享用的美味小食。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Snack Crackers",
+    "price_min": 1.14,
+    "price_max": 5.0,
+    "price_p30": 2.06,
+    "price_p70": 2.39
+  },
+  {
+    "UPC": "26508000000",
+    "BRAND": "DairyHaven",
+    "DESCRIPTION": "Premium sliced sharp cheddar cheese, individually wrapped for freshness, perfect for sandwiches and snacking",
+    "中文描述": "优质切片切达干酪，独立包装以保持新鲜，适合三明治和零食食用",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 2.0,
+    "price_max": 9.14,
+    "price_p30": 2.8201538461599998,
+    "price_p70": 3.36
+  },
+  {
+    "UPC": "3828153081",
+    "BRAND": "MeadowCream",
+    "DESCRIPTION": "Smooth and rich cream cheese crafted for bagels, spreads, and savory recipes, delivered in a convenient 8 oz foil-wrapped block to preserve freshness and quality.",
+    "中文描述": "顺滑浓郁的奶油奶酪，专为贝果、涂抹和咸味食谱打造，采用方便的8盎司铝箔包裹块状包装，保持新鲜度和品质。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 0.14,
+    "price_max": 2.2,
+    "price_p30": 0.89,
+    "price_p70": 0.99
+  },
+  {
+    "UPC": "3828153085",
+    "BRAND": "CreamHaven",
+    "DESCRIPTION": "Smooth and rich cream cheese in a convenient small tub, perfect for spreading on bagels or using in dips and desserts.",
+    "中文描述": "顺滑浓郁的奶油芝士，采用便捷小桶包装，非常适合涂抹百吉饼或用于蘸酱和甜点中。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 0.16,
+    "price_max": 1.0,
+    "price_p30": 0.45,
+    "price_p70": 0.5
+  },
+  {
+    "UPC": "4610000003",
+    "BRAND": "AlpineMead",
+    "DESCRIPTION": "Finely shredded mild cheddar cheese, crafted in small batches for a creamy texture and smooth melt, ideal for topping casseroles, soups, or enjoying with crackers.",
+    "中文描述": "精细切碎的温和切达奶酪，小批量制作，质地细腻顺滑，适合撒在砂锅、汤品上或搭配饼干享用。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 0.9,
+    "price_max": 1.79,
+    "price_p30": 1.3,
+    "price_p70": 1.59
+  },
+  {
+    "UPC": "2100000001",
+    "BRAND": "Creamstone Ridge",
+    "DESCRIPTION": "Rich and creamy Philadelphia-style cream cheese in a convenient small tub, perfect for spreading on fresh bagels or using in homemade cheesecakes.",
+    "中文描述": "浓郁顺滑的费城风味奶油奶酪，采用方便的小罐包装，适合涂抹在新鲜贝果上或用于制作自制芝士蛋糕。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 0.35,
+    "price_max": 0.69,
+    "price_p30": 0.51,
+    "price_p70": 0.59
+  },
+  {
+    "UPC": "26528000000",
+    "BRAND": "AlpineSlices",
+    "DESCRIPTION": "Premium sliced Swiss cheese with a smooth, nutty flavor, individually wrapped for freshness and ideal for sandwiches or charcuterie boards.",
+    "中文描述": "优质切片瑞士奶酪，口感顺滑微带坚果香，独立包装保鲜卫生，适合制作三明治或搭配冷盘拼盘。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 2.26,
+    "price_max": 8.95,
+    "price_p30": 3.0821760339,
+    "price_p70": 3.7
+  },
+  {
+    "UPC": "2100061422",
+    "BRAND": "BerryWhip",
+    "DESCRIPTION": "Smooth strawberry-infused soft cream cheese spread in a resealable tub, perfect for bagels, toast, and fruit pairings",
+    "中文描述": "顺滑的草莓混合软质奶油奶酪涂抹酱，采用可重复密封桶装，非常适合搭配贝果、吐司和水果食用",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 0.98,
+    "price_max": 1.69,
+    "price_p30": 1.35,
+    "price_p70": 1.5
+  },
+  {
+    "UPC": "2100061223",
+    "BRAND": "VelvetDale",
+    "DESCRIPTION": "Creamy Philadelphia-style cream cheese in a resealable tub, ideal for spreading on bagels or using in desserts.",
+    "中文描述": "奶油般顺滑的费城风格奶油奶酪，采用可重复封口小桶包装，适合涂抹在贝果上或用于制作甜点。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 0.49,
+    "price_max": 111.33,
+    "price_p30": 1.09,
+    "price_p70": 1.27
+  },
+  {
+    "UPC": "2100061960",
+    "BRAND": "Lakeshore Creamery",
+    "DESCRIPTION": "Individually wrapped mild cheddar cheese slices, perfect for sandwiches, burgers, and melting with a smooth finish.",
+    "中文描述": "独立包装的温和切达奶酪片，适合三明治、汉堡，融化顺滑，口感极佳。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 0.99,
+    "price_max": 2.29,
+    "price_p30": 1.94,
+    "price_p70": 1.99
+  },
+  {
+    "UPC": "26523800000",
+    "BRAND": "MeadowGlen",
+    "DESCRIPTION": "Premium sliced muenster cheese with a smooth, buttery texture, carefully aged for mild flavor and ideal for deli platters or gourmet sandwiches in resealable packaging to preserve freshness.",
+    "中文描述": "优质切片门斯特奶酪，质地柔滑细腻，经过精心陈化，味道温和，适合搭配熟食拼盘或制作高级三明治，采用可重复封口包装，保持新鲜。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cheeses",
+    "price_min": 1.9124324324,
+    "price_max": 9.75,
+    "price_p30": 2.8493010033499995,
+    "price_p70": 3.09
+  },
+  {
+    "UPC": "3040000048",
+    "BRAND": "SoftHaven",
+    "DESCRIPTION": "Gentle, two-ply bath tissue with a soft texture for everyday comfort and care, presented in a compact pack of 4 rolls",
+    "中文描述": "柔软的双层卫生纸，质地温和，适合日常使用，每包共4卷，小巧方便",
+    "PROMOTION_TIME": 37,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Bathroom Tissues",
+    "price_min": 0.69,
+    "price_max": 1.49,
+    "price_p30": 1.05,
+    "price_p70": 1.22
+  },
+  {
+    "UPC": "3828111129",
+    "BRAND": "CottonRidge",
+    "DESCRIPTION": "Elegant beige bathroom tissue in a soft two-ply sheet, designed for daily comfort and gentle care. Packaged in a compact 4-count bundle ideal for home or office restrooms.",
+    "中文描述": "优雅的米色卫生纸，采用柔软双层设计，适合日常使用，温和呵护肌肤。每包4卷，小巧包装，适合家庭或办公室卫生间。",
+    "PROMOTION_TIME": 37,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Bathroom Tissues",
+    "price_min": 0.48,
+    "price_max": 1.35,
+    "price_p30": 0.89,
+    "price_p70": 0.99
+  },
+  {
+    "UPC": "3828111217",
+    "BRAND": "WhitePine Naturals",
+    "DESCRIPTION": "Ultra-soft single-ply bath tissue with sustainable fiber content, ideal for sensitive skin and eco-conscious households.",
+    "中文描述": "超柔软单层卫生纸，采用可持续纤维制成，适合敏感肌肤和注重环保的家庭。",
+    "PROMOTION_TIME": 35,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Bathroom Tissues",
+    "price_min": 0.23,
+    "price_max": 3.0,
+    "price_p30": 0.49,
+    "price_p70": 0.55
+  },
+  {
+    "UPC": "4200013000",
+    "BRAND": "Northen Vale",
+    "DESCRIPTION": "Soft, quilted bathroom tissue in a convenient four-pack, designed for lasting comfort and gentle everyday use",
+    "中文描述": "柔软绗缝卫生纸，四包装，方便实用，适合日常持久舒适使用",
+    "PROMOTION_TIME": 37,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Bathroom Tissues",
+    "price_min": 0.65,
+    "price_max": 1.63,
+    "price_p30": 1.18,
+    "price_p70": 1.31
+  },
+  {
+    "UPC": "3700060571",
+    "BRAND": "SkyLoom Naturals",
+    "DESCRIPTION": "Luxuriously soft, biodegradable bathroom tissue made from sustainably sourced bamboo fibers, packaged in recyclable paper wrap for eco-conscious households.",
+    "中文描述": "采用可持续来源的竹纤维制成的奢华柔软卫生纸，以可回收纸包装，适合注重环保的家庭。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Bathroom Tissues",
+    "price_min": 0.53,
+    "price_max": 2.99,
+    "price_p30": 1.15,
+    "price_p70": 1.29
+  },
+  {
+    "UPC": "3700060511",
+    "BRAND": "ClearValley",
+    "DESCRIPTION": "Premium white bath tissue, triple-layered for strength and softness, packaged in convenient four-count rolls for home or office use",
+    "中文描述": "优质白色卫生纸，三层加厚设计，强韧柔软，每包四卷，方便家用或办公场所使用",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Bathroom Tissues",
+    "price_min": 0.51,
+    "price_max": 2.99,
+    "price_p30": 1.15,
+    "price_p70": 1.29
+  },
+  {
+    "UPC": "4200013700",
+    "BRAND": "PineLoom",
+    "DESCRIPTION": "Soft, embossed bathroom tissue in a convenient four-count pack, offering lasting comfort and gentle strength for daily use",
+    "中文描述": "四包装的柔软压花卫生纸，使用方便，提供持久舒适和温和的韧性，适合日常使用",
+    "PROMOTION_TIME": 37,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Bathroom Tissues",
+    "price_min": 0.59,
+    "price_max": 1.63,
+    "price_p30": 1.18,
+    "price_p70": 1.29
+  },
+  {
+    "UPC": "4400000329",
+    "BRAND": "SeaBreeze Foods",
+    "DESCRIPTION": "Lightly salted premium crackers made with whole grain wheat, offering a delicate crunch and ideal for pairing with cheeses or spreads. Packaged in a resealable freshness bag to maintain crispness.",
+    "中文描述": "轻盐优质饼干，采用全麦小麦制成，口感清脆，适合搭配奶酪或酱料食用。采用可重复封口保鲜袋包装，保持酥脆。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Crackers",
+    "price_min": 0.99,
+    "price_max": 3.0,
+    "price_p30": 1.79,
+    "price_p70": 1.99
+  },
+  {
+    "UPC": "6672112815",
+    "BRAND": "RedOval Foods",
+    "DESCRIPTION": "Thin, crispy white crackers with a delicate texture, perfect for pairing with cheeses and dips. Packaged in a resealable stand-up pouch to maintain freshness.",
+    "中文描述": "薄脆的白色饼干，口感酥脆，适合搭配奶酪和蘸酱。采用可重复密封的立式袋包装，保持新鲜。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Crackers",
+    "price_min": 1.04,
+    "price_max": 2.49,
+    "price_p30": 1.95,
+    "price_p70": 2.13
+  },
+  {
+    "UPC": "3828112085",
+    "BRAND": "HearthCraft Baking Co.",
+    "DESCRIPTION": "Classic oven-baked saltine crackers with a crisp, golden finish, ideal for soups, stews, or enjoying on their own. Packaged in a resealable freshness bag to maintain crunch and flavor over time.",
+    "中文描述": "经典烤制苏打饼干，口感酥脆，呈现金黄色泽，适合搭配汤品、炖菜或单独享用。采用可重复封口保鲜袋包装，持久保持酥脆与风味。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Crackers",
+    "price_min": 0.48,
+    "price_max": 1.65,
+    "price_p30": 1.25,
+    "price_p70": 1.45
+  },
+  {
+    "UPC": "4400000041",
+    "BRAND": "HoneyMaid",
+    "DESCRIPTION": "Golden honey graham crackers made with real honey and whole grain wheat, offering a sweet and wholesome snack perfect for lunchboxes or on-the-go moments.",
+    "中文描述": "金黄色蜂蜜全麦饼干，采用真正蜂蜜和全麦制成，香甜可口，是便当盒或外出时的理想健康零食。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Crackers",
+    "price_min": 1.37,
+    "price_max": 5.0,
+    "price_p30": 2.5,
+    "price_p70": 2.79
+  },
+  {
+    "UPC": "3010000133",
+    "BRAND": "ZestaCraft",
+    "DESCRIPTION": "Lightly salted crisp crackers with a golden finish, made from quality wheat flour for a satisfying crunch in every bite. Ideal for pairing with cheeses or enjoying on their own as a classic snack.",
+    "中文描述": "轻盐酥脆饼干，采用优质小麦粉制成，每口都带有金黄酥脆的口感。适合搭配奶酪或单独享用，是经典的零食之选。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Crackers",
+    "price_min": 0.82,
+    "price_max": 3.0,
+    "price_p30": 1.7,
+    "price_p70": 1.99
+  },
+  {
+    "UPC": "4400000057",
+    "BRAND": "Nabisco",
+    "DESCRIPTION": "Premium saltine crackers baked to a golden crisp, offering a light and satisfying crunch with every bite. Ideal for soups, salads, or enjoying on their own.",
+    "中文描述": "优质苏打饼干，烘烤至金黄酥脆，每一口都带来轻盈而令人满足的口感。搭配汤品、沙拉或单独享用皆宜。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Crackers",
+    "price_min": 0.89,
+    "price_max": 5.0,
+    "price_p30": 1.79,
+    "price_p70": 1.99
+  },
+  {
+    "UPC": "4400004627",
+    "BRAND": "CrispHarbor",
+    "DESCRIPTION": "Lightly baked sea salt flavor crackers with a delicate crunch, made from premium whole grain oats in resealable packaging for freshness.",
+    "中文描述": "轻烤海盐风味饼干，口感酥脆，采用优质全麦燕麦制成，配备可重复密封包装以保持新鲜。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      10
+    ],
+    "CATEGORY": "Crackers",
+    "price_min": 0.97,
+    "price_max": 5.0,
+    "price_p30": 1.89,
+    "price_p70": 1.99
+  },
+  {
+    "UPC": "5100001251",
+    "BRAND": "TrailRoot Eats",
+    "DESCRIPTION": "Hearty chicken noodle soup crafted for campfire-style flavor, packed in a convenient 10.75 oz can for quick meals anytime, anywhere",
+    "中文描述": "美味鸡肉面条汤，采用篝火风味配方，10.75盎司易拉罐装，方便快捷，随时随地享用",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Canned Soup",
+    "price_min": 0.22,
+    "price_max": 2.0,
+    "price_p30": 0.52,
+    "price_p70": 0.65
+  },
+  {
+    "UPC": "5100000011",
+    "BRAND": "CampFire Kitchen",
+    "DESCRIPTION": "Rich and savory tomato soup crafted with vine-ripened tomatoes, garden herbs, and a touch of cream for a smooth, comforting bowl. Ideal for quick meals or cozy nights in.",
+    "中文描述": "浓郁可口的番茄汤，采用藤蔓熟成番茄、香草和少许奶油精心烹制，口感顺滑，温暖身心，适合快速用餐或温馨夜晚享用。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Canned Soup",
+    "price_min": 0.19,
+    "price_max": 2.0,
+    "price_p30": 0.45,
+    "price_p70": 0.59
+  },
+  {
+    "UPC": "5100002421",
+    "BRAND": "Field & Hearth",
+    "DESCRIPTION": "Rich and savory beef broth crafted from slow-simmered bones, ideal for soups, stews, and enhancing everyday meals with deep, robust flavor.",
+    "中文描述": "浓郁的牛肉高汤，由慢炖骨头精心熬制而成，适合制作汤品、炖菜，为日常餐食增添醇厚风味。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Canned Soup",
+    "price_min": 0.49,
+    "price_max": 2.0,
+    "price_p30": 0.67,
+    "price_p70": 0.79
+  },
+  {
+    "UPC": "2400032320",
+    "BRAND": "SummitStew",
+    "DESCRIPTION": "Rich, slow-simmered beef broth with hints of garden herbs and roasted marrow, delivered in a recyclable steel can for pantry convenience.",
+    "中文描述": "浓郁慢炖牛肉汤，带有园艺香草和烤骨髓的风味，采用可回收钢罐包装，方便储存在食品柜中。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Canned Soup",
+    "price_min": 0.25,
+    "price_max": 3.0,
+    "price_p30": 0.74,
+    "price_p70": 0.87
+  },
+  {
+    "UPC": "2400032230",
+    "BRAND": "BrothCraft",
+    "DESCRIPTION": "Rich, slow-simmered chicken broth with real herbs and garden vegetables, perfect for soups, stews, and sauces.",
+    "中文描述": "浓郁慢炖鸡汤，含真正香草和园产蔬菜，适合制作汤品、炖菜和酱汁。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Canned Soup",
+    "price_min": 0.25,
+    "price_max": 3.0,
+    "price_p30": 0.74,
+    "price_p70": 0.85
+  },
+  {
+    "UPC": "1230000014",
+    "BRAND": "Summit Ridge",
+    "DESCRIPTION": "Single premium cigarette with smooth draw and refined tobacco blend, individually wrapped for freshness",
+    "中文描述": "单支优质香烟，顺滑吸阻，精选烟草混合配方，独立包装保持新鲜",
+    "PROMOTION_TIME": 60,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Cigarettes",
+    "price_min": 2.15,
+    "price_max": 2.8,
+    "price_p30": 2.24,
+    "price_p70": 2.3
+  },
+  {
+    "UPC": "1230000010",
+    "BRAND": "EmberWick",
+    "DESCRIPTION": "Single cigarette with a smooth, slow-burning tobacco blend wrapped in fine paper, designed for a refined smoking experience.",
+    "中文描述": "一支香烟，采用顺滑慢燃的烟草混合物，包裹在优质卷烟纸中，专为精致吸烟体验而设计。",
+    "PROMOTION_TIME": 60,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Cigarettes",
+    "price_min": 2.09,
+    "price_max": 2.8,
+    "price_p30": 2.14,
+    "price_p70": 2.36
+  },
+  {
+    "UPC": "2610000364",
+    "BRAND": "AshenHollow",
+    "DESCRIPTION": "Single hand-rolled cigarette crafted with aged Virginia tobacco, offering a clean burn and subtle earthy notes.",
+    "中文描述": "单支手工卷制香烟，采用陈年弗吉尼亚烟草制成，燃烧纯净，带有淡淡泥土香气。",
+    "PROMOTION_TIME": 60,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Cigarettes",
+    "price_min": 2.09,
+    "price_max": 2.8,
+    "price_p30": 2.14,
+    "price_p70": 2.332
+  },
+  {
+    "UPC": "1230000020",
+    "BRAND": "SilverPine",
+    "DESCRIPTION": "Single cigarette with a smooth, slow-burning blend of sun-cured tobacco wrapped in natural rice paper for a clean finish",
+    "中文描述": "单支香烟，采用日晒烟叶与天然米纸卷制，燃烧缓慢顺滑，口感纯净",
+    "PROMOTION_TIME": 60,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cigarettes",
+    "price_min": 2.09,
+    "price_max": 2.8,
+    "price_p30": 2.14,
+    "price_p70": 2.28
+  },
+  {
+    "UPC": "1230000024",
+    "BRAND": "HavenSmoke",
+    "DESCRIPTION": "Individually crafted cigarette with a balanced blend of air-cured and dark-fired tobaccos, offering a rich, full-bodied draw with subtle earthy undertones.",
+    "中文描述": "单支精制香烟，采用明火烤制与风干烟草均衡调配，带来浓郁醇厚的吸感，带有微妙的泥土风味。",
+    "PROMOTION_TIME": 60,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Cigarettes",
+    "price_min": 2.09,
+    "price_max": 2.8,
+    "price_p30": 2.14,
+    "price_p70": 2.297999999999999
+  },
+  {
+    "UPC": "2500002582",
+    "BRAND": "CitrusWave",
+    "DESCRIPTION": "A refreshing frozen limeade made with real lime juice, offering a tangy citrus burst in every sip. Perfect for cooling down on hot days or enjoying as a quick pick-me-up treat.",
+    "中文描述": "一款用真实青柠汁制成的清爽冷冻柠檬水，每一口都充满酸甜的柑橘风味。适合在炎热天气中降温或作为提神小饮享用。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      3,
+      7
+    ],
+    "CATEGORY": "Frozen Juices",
+    "price_min": 0.5,
+    "price_max": 3.0,
+    "price_p30": 0.99,
+    "price_p70": 1.15
+  },
+  {
+    "UPC": "3828190009",
+    "BRAND": "SunPeak",
+    "DESCRIPTION": "Chilled lemonade blend with real fruit pulp, perfect for summer refreshment, sold in a recyclable bottle for on-the-go convenience.",
+    "中文描述": "冰镇柠檬水混合饮品，含真实果肉，适合夏日解渴，采用可回收瓶装，方便随身携带。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Frozen Juices",
+    "price_min": 0.25,
+    "price_max": 2.0,
+    "price_p30": 0.75,
+    "price_p70": 0.95
+  },
+  {
+    "UPC": "2500002561",
+    "BRAND": "FrostWave",
+    "DESCRIPTION": "Chilled lemonade made with real citrus and a splash of honey, frozen for peak freshness and bold flavor in every serving.",
+    "中文描述": "采用真正柑橘和少许蜂蜜制成的冰镇柠檬水，冷冻保鲜，每一口都浓郁可口。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Juices",
+    "price_min": 0.5,
+    "price_max": 3.0,
+    "price_p30": 0.99,
+    "price_p70": 1.09
+  },
+  {
+    "UPC": "2500002558",
+    "BRAND": "BlushFrost",
+    "DESCRIPTION": "Frozen pink lemonade made with real fruit juice and a hint of raspberry for a naturally sweet, vibrant twist on a classic favorite.",
+    "中文描述": "采用真实果汁和淡淡树莓风味制成的冷冻粉红柠檬水，为经典口味带来自然香甜、活力四溢的新体验。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Frozen Juices",
+    "price_min": 0.43,
+    "price_max": 3.0,
+    "price_p30": 0.99,
+    "price_p70": 1.15
+  },
+  {
+    "UPC": "3828190013",
+    "BRAND": "BlushGrove",
+    "DESCRIPTION": "Frozen pink lemonade made with real fruit juice and a touch of ripe strawberry for a naturally sweet, refreshing taste. Perfect for beating the heat on sunny days.",
+    "中文描述": "采用真实果汁和少许成熟草莓制成的冰冻粉红柠檬水，口感自然清甜，清爽宜人，非常适合在晴天解暑饮用。",
+    "PROMOTION_TIME": 38,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Frozen Juices",
+    "price_min": 0.25,
+    "price_max": 2.0,
+    "price_p30": 0.75,
+    "price_p70": 0.93
+  },
+  {
+    "UPC": "3828112181",
+    "BRAND": "CocoaHollow",
+    "DESCRIPTION": "Handcrafted chocolate chip cookies made with rich cocoa and real vanilla, baked to a golden crisp. Individually wrapped for freshness, perfect for lunchboxes or on-the-go snacking.",
+    "中文描述": "手工制作的巧克力豆饼干，采用优质可可和真实香草精烘焙而成，外缘酥脆，内里松软。独立包装，保持新鲜，适合便当盒或外出随身携带。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Cookies",
+    "price_min": 0.84,
+    "price_max": 3.0,
+    "price_p30": 1.59,
+    "price_p70": 1.69
+  },
+  {
+    "UPC": "3828112185",
+    "BRAND": "CrumbHaven",
+    "DESCRIPTION": "Soft-baked chocolate chunk cookies with a hint of sea salt, made in small batches for a fresh-baked taste. Packed in a resealable premium carton to preserve freshness.",
+    "中文描述": "软烘巧克力碎饼干，略带海盐风味，小批量制作以保证新鲜口感。采用可重复封口的优质纸盒包装，保持新鲜。",
+    "PROMOTION_TIME": 24,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Cookies",
+    "price_min": 0.84,
+    "price_max": 3.0,
+    "price_p30": 1.59,
+    "price_p70": 1.69
+  },
+  {
+    "UPC": "1470001163",
+    "BRAND": "ButterLoom",
+    "DESCRIPTION": "Mini butter cookies crafted with rich creamery butter and a delicate golden crisp, perfect for tea pairings or dessert trays.",
+    "中文描述": "采用优质奶油制成的迷你黄油饼干，口感酥脆金黄，适合搭配茶饮或作为甜点拼盘。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      9
+    ],
+    "CATEGORY": "Cookies",
+    "price_min": 0.89,
+    "price_max": 5.0,
+    "price_p30": 1.89,
+    "price_p70": 1.99
+  },
+  {
+    "UPC": "3010044057",
+    "BRAND": "Keebler",
+    "DESCRIPTION": "Crunchy chocolate sandwich cookies with a creamy mint-filled center, inspired by classic dessert flavors and perfect for sharing or gifting.",
+    "中文描述": "酥脆的巧克力夹心饼干，内含清爽的薄荷奶油夹心，灵感源自经典甜点风味，适合分享或送礼。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cookies",
+    "price_min": 0.84,
+    "price_max": 5.0,
+    "price_p30": 1.79,
+    "price_p70": 1.99
+  },
+  {
+    "UPC": "3010003319",
+    "BRAND": "FudgeCraft",
+    "DESCRIPTION": "Indulgent fudge-filled stripe cookies baked with rich cocoa and a tender, buttery texture for a decadent anytime treat.",
+    "中文描述": "浓郁巧克力软糖夹心条纹饼干，采用优质可可烘焙，口感柔韧酥松，带来奢华的随时享用体验。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cookies",
+    "price_min": 0.83,
+    "price_max": 5.0,
+    "price_p30": 1.79,
+    "price_p70": 1.99
+  },
+  {
+    "UPC": "4400000004",
+    "BRAND": "GrahaBite",
+    "DESCRIPTION": "Whimsical bunny-shaped cookies with a crisp texture and a hint of honey-sweetened whole grain, perfect for lunchboxes or afternoon snacks.",
+    "中文描述": "趣味兔子造型饼干，口感酥脆，带有蜂蜜调和的全谷物香甜，适合午间便当或下午茶点心。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      7,
+      14
+    ],
+    "CATEGORY": "Cookies",
+    "price_min": 0.51,
+    "price_max": 0.99,
+    "price_p30": 0.79,
+    "price_p70": 0.89
+  },
+  {
+    "UPC": "4400000379",
+    "BRAND": "WildHaven",
+    "DESCRIPTION": "Whimsical animal-shaped cookies with a buttery crunch, perfect for snack time adventures and lunchbox surprises.",
+    "中文描述": "充满趣味的动物造型饼干，口感酥脆带黄油香气，适合零食时光和便当盒小惊喜。",
+    "PROMOTION_TIME": 25,
+    "DELEVERY_TIME": [
+      5,
+      12
+    ],
+    "CATEGORY": "Cookies",
+    "price_min": 0.51,
+    "price_max": 0.99,
+    "price_p30": 0.79,
+    "price_p70": 0.89
+  }
+]

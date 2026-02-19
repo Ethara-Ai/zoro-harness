@@ -1,0 +1,2260 @@
+{
+  "modify_sku_price": [
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-29_09-51-19/tool_calls.jsonl",
+      "line": 875,
+      "sku_id": "3828190013",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-29_09-51-19/tool_calls.jsonl",
+      "line": 876,
+      "sku_id": "5200003925",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-29_09-51-19/tool_calls.jsonl",
+      "line": 877,
+      "sku_id": "8248812345",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-29_09-51-19/tool_calls.jsonl",
+      "line": 880,
+      "sku_id": "3000001020",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-29_09-51-19/tool_calls.jsonl",
+      "line": 921,
+      "sku_id": "3828190013",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-29_09-51-19/tool_calls.jsonl",
+      "line": 922,
+      "sku_id": "8248812345",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-29_09-51-19/tool_calls.jsonl",
+      "line": 923,
+      "sku_id": "3000001020",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-29_09-51-19/tool_calls.jsonl",
+      "line": 924,
+      "sku_id": "5200003925",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 242,
+      "sku_id": "8248812345",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 243,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 244,
+      "sku_id": "5100000011",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 220,
+      "sku_id": "8066095605",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 225,
+      "sku_id": "3040000048",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 226,
+      "sku_id": "1660000006",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 227,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 228,
+      "sku_id": "1690001601",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 202,
+      "sku_id": "1470001283",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 203,
+      "sku_id": "8000000280",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 204,
+      "sku_id": "8066095605",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 227,
+      "sku_id": "1470001283",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 228,
+      "sku_id": "8000000280",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 229,
+      "sku_id": "8066095605",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 241,
+      "sku_id": "8066095605",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 242,
+      "sku_id": "8000000280",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 243,
+      "sku_id": "1470001283",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 267,
+      "sku_id": "1470001283",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 268,
+      "sku_id": "8000000280",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 269,
+      "sku_id": "8066095605",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 300,
+      "sku_id": "1470001283",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 301,
+      "sku_id": "8000000280",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 302,
+      "sku_id": "8066095605",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 438,
+      "sku_id": "1111143012",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 439,
+      "sku_id": "1470001283",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 491,
+      "sku_id": "1111143012",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 492,
+      "sku_id": "1470001283",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 508,
+      "sku_id": "1111143012",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 509,
+      "sku_id": "1470001283",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_20-46-22/tool_calls.jsonl",
+      "line": 526,
+      "sku_id": "8000000280",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 954,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 973,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 989,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 1008,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 1030,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 1050,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 1085,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 1106,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 1128,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 1188,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_20-46-56/tool_calls.jsonl",
+      "line": 589,
+      "sku_id": "3828111129",
+      "new_price": 100.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_20-46-56/tool_calls.jsonl",
+      "line": 590,
+      "sku_id": "5100001251",
+      "new_price": 100.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_20-46-56/tool_calls.jsonl",
+      "line": 591,
+      "sku_id": "1230000014",
+      "new_price": 100.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_20-46-56/tool_calls.jsonl",
+      "line": 592,
+      "sku_id": "2800001159",
+      "new_price": 100.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 614,
+      "sku_id": "3828111129",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 615,
+      "sku_id": "3700060571",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 616,
+      "sku_id": "4200013000",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 617,
+      "sku_id": "3040000048",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 618,
+      "sku_id": "2400032320",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 619,
+      "sku_id": "2400032230",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 620,
+      "sku_id": "5100002421",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 621,
+      "sku_id": "2610000364",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 622,
+      "sku_id": "1070013100",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 623,
+      "sku_id": "1254612128",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 624,
+      "sku_id": "1690001601",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 625,
+      "sku_id": "1690000012",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 626,
+      "sku_id": "1230000020",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 661,
+      "sku_id": "3700060511",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 684,
+      "sku_id": "1230000010",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 837,
+      "sku_id": "5100000011",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 838,
+      "sku_id": "2610000364",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 839,
+      "sku_id": "4200013000",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 840,
+      "sku_id": "5100002421",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 841,
+      "sku_id": "3828111129",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 842,
+      "sku_id": "3700060571",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_09-35-36/tool_calls.jsonl",
+      "line": 843,
+      "sku_id": "1230000010",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/k2_thinking/run_env_2025-12-30_02-31-31/tool_calls.jsonl",
+      "line": 925,
+      "sku_id": "2800001159",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/k2_thinking/run_env_2025-12-30_02-31-31/tool_calls.jsonl",
+      "line": 926,
+      "sku_id": "1660000064",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/k2_thinking/run_env_2025-12-30_02-31-31/tool_calls.jsonl",
+      "line": 982,
+      "sku_id": "3700060511",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/glm4_6/run_env_2025-12-29_09-35-21/tool_calls.jsonl",
+      "line": 354,
+      "sku_id": "1690000012",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/baseline/glm4_6/run_env_2025-12-30_02-31-41/tool_calls.jsonl",
+      "line": 495,
+      "sku_id": "1660000006",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/glm4_6/run_env_2025-12-30_02-31-41/tool_calls.jsonl",
+      "line": 496,
+      "sku_id": "2800001159",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/glm4_6/run_env_2025-12-30_02-31-41/tool_calls.jsonl",
+      "line": 516,
+      "sku_id": "1254612128",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/glm4_6/run_env_2025-12-30_02-31-41/tool_calls.jsonl",
+      "line": 894,
+      "sku_id": "1690000012",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/glm4_6/run_env_2025-12-29_20-46-41/tool_calls.jsonl",
+      "line": 689,
+      "sku_id": "1070013100",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 224,
+      "sku_id": "3828111129",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 225,
+      "sku_id": "1660000006",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 226,
+      "sku_id": "1660000064",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 227,
+      "sku_id": "2610000364",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 228,
+      "sku_id": "1230000010",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 229,
+      "sku_id": "1230000014",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 238,
+      "sku_id": "3700060511",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 239,
+      "sku_id": "5100001251",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 240,
+      "sku_id": "1070013100",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 277,
+      "sku_id": "3700060511",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 278,
+      "sku_id": "5100001251",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 279,
+      "sku_id": "1070013100",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 314,
+      "sku_id": "1660000006",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 440,
+      "sku_id": "3700060511",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 441,
+      "sku_id": "5100001251",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 442,
+      "sku_id": "1660000006",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 443,
+      "sku_id": "1070013100",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 453,
+      "sku_id": "3700060511",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 454,
+      "sku_id": "5100001251",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 455,
+      "sku_id": "1070013100",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 456,
+      "sku_id": "1660000006",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 465,
+      "sku_id": "1230000010",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 496,
+      "sku_id": "2400032230",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 533,
+      "sku_id": "3700060511",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 534,
+      "sku_id": "2400032230",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 535,
+      "sku_id": "1230000010",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 536,
+      "sku_id": "1070013100",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 537,
+      "sku_id": "1660000006",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 682,
+      "sku_id": "1230000010",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 683,
+      "sku_id": "1660051312",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-30_02-32-06/tool_calls.jsonl",
+      "line": 692,
+      "sku_id": "5100002421",
+      "new_price": 99.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_09-35-41/tool_calls.jsonl",
+      "line": 458,
+      "sku_id": "2400032320",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_09-35-41/tool_calls.jsonl",
+      "line": 470,
+      "sku_id": "2400032320",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_09-35-41/tool_calls.jsonl",
+      "line": 483,
+      "sku_id": "2400032320",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_09-35-41/tool_calls.jsonl",
+      "line": 484,
+      "sku_id": "1254671165",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_09-35-41/tool_calls.jsonl",
+      "line": 496,
+      "sku_id": "1070013100",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_20-47-01/tool_calls.jsonl",
+      "line": 290,
+      "sku_id": "3700060511",
+      "new_price": 199.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_20-47-01/tool_calls.jsonl",
+      "line": 482,
+      "sku_id": "3700060511",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_20-47-01/tool_calls.jsonl",
+      "line": 483,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_20-47-01/tool_calls.jsonl",
+      "line": 485,
+      "sku_id": "2800001159",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/baseline/openai/run_env_2025-12-29_20-47-01/tool_calls.jsonl",
+      "line": 486,
+      "sku_id": "1660000006",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/kimi_thinking/run_env_2025-12-29_08-55-17/tool_calls.jsonl",
+      "line": 657,
+      "sku_id": "1690001601",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/still_middle/kimi_thinking/run_env_2025-12-29_08-55-17/tool_calls.jsonl",
+      "line": 678,
+      "sku_id": "1690001601",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/still_middle/kimi_thinking/run_env_2025-12-29_08-55-17/tool_calls.jsonl",
+      "line": 697,
+      "sku_id": "1690001601",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/still_middle/kimi_thinking/run_env_2025-12-30_12-09-49/tool_calls.jsonl",
+      "line": 197,
+      "sku_id": "1254612128",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/kimi_thinking/run_env_2025-12-30_12-09-49/tool_calls.jsonl",
+      "line": 198,
+      "sku_id": "3700060571",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/kimi_thinking/run_env_2025-12-30_12-09-49/tool_calls.jsonl",
+      "line": 326,
+      "sku_id": "1660000064",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/kimi_thinking/run_env_2025-12-30_12-09-49/tool_calls.jsonl",
+      "line": 440,
+      "sku_id": "1230000014",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/kimi_thinking/run_env_2025-12-30_12-09-49/tool_calls.jsonl",
+      "line": 443,
+      "sku_id": "5100002421",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 708,
+      "sku_id": "5100000011",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 709,
+      "sku_id": "1230000014",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 710,
+      "sku_id": "1230000020",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 732,
+      "sku_id": "5100000011",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 733,
+      "sku_id": "1230000014",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 734,
+      "sku_id": "1230000020",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_04-16-23/tool_calls.jsonl",
+      "line": 287,
+      "sku_id": "1254671165",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_04-16-33/tool_calls.jsonl",
+      "line": 419,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_04-16-33/tool_calls.jsonl",
+      "line": 420,
+      "sku_id": "3828111129",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_04-16-33/tool_calls.jsonl",
+      "line": 476,
+      "sku_id": "1660000006",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_04-16-33/tool_calls.jsonl",
+      "line": 541,
+      "sku_id": "5100001251",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_04-16-33/tool_calls.jsonl",
+      "line": 542,
+      "sku_id": "3828111129",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_04-16-33/tool_calls.jsonl",
+      "line": 543,
+      "sku_id": "1660000006",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_04-16-28/tool_calls.jsonl",
+      "line": 473,
+      "sku_id": "1660051312",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_04-16-28/tool_calls.jsonl",
+      "line": 707,
+      "sku_id": "1230000020",
+      "new_price": 9999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/glm4_6/run_env_2025-12-28_21-02-00/tool_calls.jsonl",
+      "line": 226,
+      "sku_id": "2400032320",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/still_middle/glm4_6/run_env_2025-12-28_21-02-00/tool_calls.jsonl",
+      "line": 227,
+      "sku_id": "2800001159",
+      "new_price": 999,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 286,
+      "sku_id": "2500002561",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 326,
+      "sku_id": "2500002561",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 353,
+      "sku_id": "2500002561",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 571,
+      "sku_id": "4400000189",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 592,
+      "sku_id": "4400000189",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 613,
+      "sku_id": "4400000189",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 636,
+      "sku_id": "4400000189",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 654,
+      "sku_id": "4400000189",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 676,
+      "sku_id": "4400000189",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 701,
+      "sku_id": "4400000189",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 725,
+      "sku_id": "3010003319",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 726,
+      "sku_id": "4400000189",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 743,
+      "sku_id": "4400000189",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 744,
+      "sku_id": "3010003319",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 881,
+      "sku_id": "2500002561",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 882,
+      "sku_id": "3000001180",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-40/tool_calls.jsonl",
+      "line": 900,
+      "sku_id": "3010003319",
+      "new_price": 999.0,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 421,
+      "sku_id": "3828111185",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 422,
+      "sku_id": "5100001251",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 442,
+      "sku_id": "7331025205",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 460,
+      "sku_id": "7331025205",
+      "new_price": 0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 464,
+      "sku_id": "7331025205",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 148,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 163,
+      "sku_id": "5100001251",
+      "new_price": 99.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 307,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 308,
+      "sku_id": "1470001283",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 309,
+      "sku_id": "1111143012",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 413,
+      "sku_id": "5100001251",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 442,
+      "sku_id": "5100001251",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 443,
+      "sku_id": "1700000515",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 461,
+      "sku_id": "5100001251",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 562,
+      "sku_id": "5100001251",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 701,
+      "sku_id": "1111143012",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-25_21-35-21/tool_calls.jsonl",
+      "line": 702,
+      "sku_id": "8066095605",
+      "new_price": 0.0,
+      "issue": "价格为 0"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 715,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 733,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 779,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 797,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 819,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 841,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 862,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 883,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 968,
+      "sku_id": "5100001251",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 993,
+      "sku_id": "5100000011",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 1014,
+      "sku_id": "5100000011",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 1052,
+      "sku_id": "5100000011",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 1086,
+      "sku_id": "5100000011",
+      "new_price": 999.99,
+      "issue": "价格大于 50"
+    },
+    {
+      "file": "paper_data/dynamic_hard/glm4_6/run_env_2025-12-31_01-13-37/tool_calls.jsonl",
+      "line": 1343,
+      "sku_id": "3828111129",
+      "new_price": 0,
+      "issue": "价格为 0"
+    }
+  ],
+  "place_order": [
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 11,
+      "sku_id": "5100000011",
+      "quantity": 18000,
+      "issue": "下单数量 18000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 11,
+      "sku_id": "5100001251",
+      "quantity": 13500,
+      "issue": "下单数量 13500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 11,
+      "sku_id": "5200003925",
+      "quantity": 5400,
+      "issue": "下单数量 5400 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 23,
+      "sku_id": "5100000011",
+      "quantity": 18000,
+      "issue": "下单数量 18000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 23,
+      "sku_id": "5100001251",
+      "quantity": 13500,
+      "issue": "下单数量 13500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 24,
+      "sku_id": "5200003925",
+      "quantity": 5400,
+      "issue": "下单数量 5400 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 56,
+      "sku_id": "5100000011",
+      "quantity": 6200,
+      "issue": "下单数量 6200 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/kimi_thinking/run_env_2025-12-26_10-36-15/tool_calls.jsonl",
+      "line": 57,
+      "sku_id": "5100001251",
+      "quantity": 4800,
+      "issue": "下单数量 4800 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 14,
+      "sku_id": "5100000011",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 16,
+      "sku_id": "1230000020",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 37,
+      "sku_id": "3828111129",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 38,
+      "sku_id": "1230000014",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 40,
+      "sku_id": "3500051300",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 40,
+      "sku_id": "3828190013",
+      "quantity": 10000,
+      "issue": "下单数量 10000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 41,
+      "sku_id": "7331025205",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 76,
+      "sku_id": "8000000280",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 76,
+      "sku_id": "5100000011",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 78,
+      "sku_id": "8000000280",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 79,
+      "sku_id": "5100000011",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-30_02-31-26/tool_calls.jsonl",
+      "line": 83,
+      "sku_id": "8000000280",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_09-51-14/tool_calls.jsonl",
+      "line": 10,
+      "sku_id": "1230000014",
+      "quantity": 28130,
+      "issue": "下单数量 28130 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_09-51-14/tool_calls.jsonl",
+      "line": 11,
+      "sku_id": "5100006092",
+      "quantity": 28130,
+      "issue": "下单数量 28130 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_09-51-14/tool_calls.jsonl",
+      "line": 12,
+      "sku_id": "7331025205",
+      "quantity": 28130,
+      "issue": "下单数量 28130 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/qwen_235b/run_env_2025-12-29_09-51-14/tool_calls.jsonl",
+      "line": 13,
+      "sku_id": "3828111129",
+      "quantity": 28130,
+      "issue": "下单数量 28130 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-28_04-52-35/tool_calls.jsonl",
+      "line": 11,
+      "sku_id": "5100000011",
+      "quantity": 4718,
+      "issue": "下单数量 4718 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-28_04-52-35/tool_calls.jsonl",
+      "line": 12,
+      "sku_id": "3700060511",
+      "quantity": 5698,
+      "issue": "下单数量 5698 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-28_04-52-35/tool_calls.jsonl",
+      "line": 28,
+      "sku_id": "5100000011",
+      "quantity": 4800,
+      "issue": "下单数量 4800 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-28_04-52-35/tool_calls.jsonl",
+      "line": 29,
+      "sku_id": "3700060511",
+      "quantity": 5700,
+      "issue": "下单数量 5700 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-28_04-52-35/tool_calls.jsonl",
+      "line": 368,
+      "sku_id": "3700060511",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-28_04-52-35/tool_calls.jsonl",
+      "line": 630,
+      "sku_id": "3700060511",
+      "quantity": 3500,
+      "issue": "下单数量 3500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/gpt5_1mini/run_env_2025-12-29_09-51-39/tool_calls.jsonl",
+      "line": 48,
+      "sku_id": "5100001251",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 83,
+      "sku_id": "3828111185",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 84,
+      "sku_id": "3700060511",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 85,
+      "sku_id": "3700063087",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 86,
+      "sku_id": "5100000011",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 87,
+      "sku_id": "5100001251",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 332,
+      "sku_id": "3700060511",
+      "quantity": 6000,
+      "issue": "下单数量 6000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 557,
+      "sku_id": "3700060511",
+      "quantity": 8000,
+      "issue": "下单数量 8000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 671,
+      "sku_id": "3828111185",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 672,
+      "sku_id": "5100000011",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 673,
+      "sku_id": "5100001251",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_09-51-34/tool_calls.jsonl",
+      "line": 982,
+      "sku_id": "3700060511",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-29_20-46-42/tool_calls.jsonl",
+      "line": 1120,
+      "sku_id": "3040000048",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-27_02-07-05/tool_calls.jsonl",
+      "line": 523,
+      "sku_id": "3700060571",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-27_02-07-05/tool_calls.jsonl",
+      "line": 700,
+      "sku_id": "5100000011",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-27_02-07-05/tool_calls.jsonl",
+      "line": 758,
+      "sku_id": "5100000011",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-27_02-07-05/tool_calls.jsonl",
+      "line": 929,
+      "sku_id": "5100000011",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-27_02-07-05/tool_calls.jsonl",
+      "line": 958,
+      "sku_id": "5100000011",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-27_02-07-05/tool_calls.jsonl",
+      "line": 1382,
+      "sku_id": "5100000011",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-27_02-07-05/tool_calls.jsonl",
+      "line": 1383,
+      "sku_id": "3828111185",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_hard/grok4_fast/run_env_2025-12-27_02-07-05/tool_calls.jsonl",
+      "line": 1384,
+      "sku_id": "8000000245",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_20-46-56/tool_calls.jsonl",
+      "line": 11,
+      "sku_id": "3700060511",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_20-46-56/tool_calls.jsonl",
+      "line": 12,
+      "sku_id": "5100000011",
+      "quantity": 3500,
+      "issue": "下单数量 3500 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/grok/run_env_2025-12-29_20-46-56/tool_calls.jsonl",
+      "line": 427,
+      "sku_id": "3700060511",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/k2_thinking/run_env_2025-12-30_02-31-31/tool_calls.jsonl",
+      "line": 14,
+      "sku_id": "3700060511",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/k2_thinking/run_env_2025-12-30_02-31-31/tool_calls.jsonl",
+      "line": 51,
+      "sku_id": "4400000057",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/k2_thinking/run_env_2025-12-30_02-31-31/tool_calls.jsonl",
+      "line": 56,
+      "sku_id": "5100001251",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/k2_thinking/run_env_2025-12-30_02-31-31/tool_calls.jsonl",
+      "line": 92,
+      "sku_id": "4400000057",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/k2_thinking/run_env_2025-12-30_02-31-31/tool_calls.jsonl",
+      "line": 95,
+      "sku_id": "5100001251",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-30_20-55-20/tool_calls.jsonl",
+      "line": 5,
+      "sku_id": "1230000014",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-30_20-55-20/tool_calls.jsonl",
+      "line": 5,
+      "sku_id": "1230000010",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-30_20-55-20/tool_calls.jsonl",
+      "line": 7,
+      "sku_id": "1230000020",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-30_20-55-20/tool_calls.jsonl",
+      "line": 8,
+      "sku_id": "1230000024",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_09-35-11/tool_calls.jsonl",
+      "line": 5,
+      "sku_id": "5100000011",
+      "quantity": 6480,
+      "issue": "下单数量 6480 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_09-35-11/tool_calls.jsonl",
+      "line": 5,
+      "sku_id": "382811129",
+      "quantity": 3180,
+      "issue": "下单数量 3180 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_09-35-11/tool_calls.jsonl",
+      "line": 5,
+      "sku_id": "3700060511",
+      "quantity": 12948,
+      "issue": "下单数量 12948 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_09-35-11/tool_calls.jsonl",
+      "line": 6,
+      "sku_id": "5100001251",
+      "quantity": 2540,
+      "issue": "下单数量 2540 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_09-35-11/tool_calls.jsonl",
+      "line": 7,
+      "sku_id": "5100000011",
+      "quantity": 6480,
+      "issue": "下单数量 6480 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_09-35-11/tool_calls.jsonl",
+      "line": 7,
+      "sku_id": "3828111129",
+      "quantity": 3180,
+      "issue": "下单数量 3180 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_09-35-11/tool_calls.jsonl",
+      "line": 7,
+      "sku_id": "3700060511",
+      "quantity": 12948,
+      "issue": "下单数量 12948 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_09-35-11/tool_calls.jsonl",
+      "line": 13,
+      "sku_id": "5100001251",
+      "quantity": 7460,
+      "issue": "下单数量 7460 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_20-46-31/tool_calls.jsonl",
+      "line": 7,
+      "sku_id": "1254612128",
+      "quantity": 2144,
+      "issue": "下单数量 2144 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_20-46-31/tool_calls.jsonl",
+      "line": 8,
+      "sku_id": "1900000004",
+      "quantity": 2144,
+      "issue": "下单数量 2144 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_20-46-31/tool_calls.jsonl",
+      "line": 9,
+      "sku_id": "1070013100",
+      "quantity": 2144,
+      "issue": "下单数量 2144 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_20-46-31/tool_calls.jsonl",
+      "line": 9,
+      "sku_id": "2800001159",
+      "quantity": 2144,
+      "issue": "下单数量 2144 超过 2000"
+    },
+    {
+      "file": "paper_data/baseline/qwen235b/run_env_2025-12-29_20-46-31/tool_calls.jsonl",
+      "line": 9,
+      "sku_id": "1254671165",
+      "quantity": 2144,
+      "issue": "下单数量 2144 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/deepseekv3_2/run_env_2025-12-28_01-39-14/tool_calls.jsonl",
+      "line": 72,
+      "sku_id": "3700060511",
+      "quantity": 4179,
+      "issue": "下单数量 4179 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/deepseekv3_2/run_env_2025-12-28_01-39-14/tool_calls.jsonl",
+      "line": 146,
+      "sku_id": "5100000011",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 13,
+      "sku_id": "5100000011",
+      "quantity": 6000,
+      "issue": "下单数量 6000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 14,
+      "sku_id": "3700060511",
+      "quantity": 10000,
+      "issue": "下单数量 10000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 33,
+      "sku_id": "3700060511",
+      "quantity": 3213,
+      "issue": "下单数量 3213 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/qwen_235b/run_env_2025-12-30_12-09-43/tool_calls.jsonl",
+      "line": 34,
+      "sku_id": "3700060511",
+      "quantity": 3213,
+      "issue": "下单数量 3213 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/gpt5_1mini/run_env_2025-12-28_01-39-44/tool_calls.jsonl",
+      "line": 43,
+      "sku_id": "3700060511",
+      "quantity": 2850,
+      "issue": "下单数量 2850 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/gpt5_1mini/run_env_2025-12-28_20-58-27/tool_calls.jsonl",
+      "line": 816,
+      "sku_id": "5100000011",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/grok4_fast/run_env_2025-12-28_01-39-39/tool_calls.jsonl",
+      "line": 32,
+      "sku_id": "3700060511",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/grok4_fast/run_env_2025-12-28_01-39-39/tool_calls.jsonl",
+      "line": 33,
+      "sku_id": "5100000011",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/grok4_fast/run_env_2025-12-28_01-39-39/tool_calls.jsonl",
+      "line": 146,
+      "sku_id": "3700060511",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/grok4_fast/run_env_2025-12-28_01-39-39/tool_calls.jsonl",
+      "line": 463,
+      "sku_id": "1230000014",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/grok4_fast/run_env_2025-12-28_01-39-39/tool_calls.jsonl",
+      "line": 510,
+      "sku_id": "3700060511",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/gemini3_fast/run_env_2025-12-28_21-02-05/tool_calls.jsonl",
+      "line": 995,
+      "sku_id": "3700060511",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/still_middle/gemini3_fast/run_env_2025-12-28_01-39-34/tool_calls.jsonl",
+      "line": 391,
+      "sku_id": "1230000014",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/kimi_thinking/run_env_2025-12-26_07-04-05/tool_calls.jsonl",
+      "line": 13,
+      "sku_id": "5100001251",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/kimi_thinking/run_env_2025-12-26_07-04-05/tool_calls.jsonl",
+      "line": 13,
+      "sku_id": "5100000011",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/kimi_thinking/run_env_2025-12-26_07-04-05/tool_calls.jsonl",
+      "line": 13,
+      "sku_id": "2400032320",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/kimi_thinking/run_env_2025-12-26_07-04-05/tool_calls.jsonl",
+      "line": 13,
+      "sku_id": "2400032230",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/kimi_thinking/run_env_2025-12-26_07-04-05/tool_calls.jsonl",
+      "line": 13,
+      "sku_id": "5100002421",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/kimi_thinking/run_env_2025-12-26_07-04-05/tool_calls.jsonl",
+      "line": 31,
+      "sku_id": "5100000011",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 13,
+      "sku_id": "3700060511",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 14,
+      "sku_id": "5100000011",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 15,
+      "sku_id": "8000000245",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 16,
+      "sku_id": "2100061223",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 17,
+      "sku_id": "5100001251",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 20,
+      "sku_id": "3828111185",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/qwen_235b/run_env_2025-12-31_01-13-27/tool_calls.jsonl",
+      "line": 558,
+      "sku_id": "8000000245",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 37,
+      "sku_id": "5100000011",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 38,
+      "sku_id": "5100001251",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-28_04-52-24/tool_calls.jsonl",
+      "line": 39,
+      "sku_id": "5200003925",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/gpt5_1mini/run_env_2025-12-31_01-14-00/tool_calls.jsonl",
+      "line": 286,
+      "sku_id": "3828111185",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-31_01-14-05/tool_calls.jsonl",
+      "line": 25,
+      "sku_id": "3700060511",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-31_01-14-05/tool_calls.jsonl",
+      "line": 108,
+      "sku_id": "7331025205",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-31_01-14-05/tool_calls.jsonl",
+      "line": 210,
+      "sku_id": "3700060511",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-31_01-14-05/tool_calls.jsonl",
+      "line": 246,
+      "sku_id": "3700060511",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-31_01-14-05/tool_calls.jsonl",
+      "line": 286,
+      "sku_id": "3700060511",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-28_04-52-29/tool_calls.jsonl",
+      "line": 22,
+      "sku_id": "5100000011",
+      "quantity": 8000,
+      "issue": "下单数量 8000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-28_04-52-29/tool_calls.jsonl",
+      "line": 22,
+      "sku_id": "5100001251",
+      "quantity": 6000,
+      "issue": "下单数量 6000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-28_04-52-29/tool_calls.jsonl",
+      "line": 23,
+      "sku_id": "8066095605",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-28_04-52-29/tool_calls.jsonl",
+      "line": 23,
+      "sku_id": "8248812345",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-28_04-52-29/tool_calls.jsonl",
+      "line": 23,
+      "sku_id": "7289000011",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-28_04-52-29/tool_calls.jsonl",
+      "line": 23,
+      "sku_id": "4400000057",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-28_04-52-29/tool_calls.jsonl",
+      "line": 24,
+      "sku_id": "3828112085",
+      "quantity": 5000,
+      "issue": "下单数量 5000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-28_04-52-29/tool_calls.jsonl",
+      "line": 24,
+      "sku_id": "8000000325",
+      "quantity": 4000,
+      "issue": "下单数量 4000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-28_04-52-29/tool_calls.jsonl",
+      "line": 250,
+      "sku_id": "4400000057",
+      "quantity": 2500,
+      "issue": "下单数量 2500 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-31_01-13-53/tool_calls.jsonl",
+      "line": 120,
+      "sku_id": "5100000011",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-31_01-13-53/tool_calls.jsonl",
+      "line": 212,
+      "sku_id": "5100000011",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    },
+    {
+      "file": "paper_data/dynamic_hard/grok4_fast/run_env_2025-12-31_01-13-53/tool_calls.jsonl",
+      "line": 422,
+      "sku_id": "8660000033",
+      "quantity": 3000,
+      "issue": "下单数量 3000 超过 2000"
+    }
+  ]
+}

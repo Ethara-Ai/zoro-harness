@@ -1,0 +1,33 @@
+{
+  "original_count": 4941,
+  "null_records_removed": 1582,
+  "cleaned_count": 3359,
+  "zero_customer_count_dates": {
+    "12": [
+      {
+        "date": "12/25/88",
+        "store": 12,
+        "custcoun": 0.0,
+        "week": -37.0
+      },
+      {
+        "date": "12/25/89",
+        "store": 12,
+        "custcoun": 0.0,
+        "week": 15.0
+      },
+      {
+        "date": "12/25/90",
+        "store": 12,
+        "custcoun": 0.0,
+        "week": 67.0
+      },
+      {
+        "date": "01/09/91",
+        "store": 12,
+        "custcoun": 0.0,
+        "week": 69.0
+      }
+    ]
+  }
+}

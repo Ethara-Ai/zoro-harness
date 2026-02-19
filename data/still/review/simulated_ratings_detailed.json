@@ -1,0 +1,9182 @@
+{
+  "95": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {
+        "3700000862": 3.9
+      },
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660000064": 3.3019207683073226
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120027005": 3.0582733812949643
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "26503400000": 2.990642722117202
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015000": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.5403328050713156
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1900000123": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000225": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9172591206735268
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 3.0894308943089426
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "6233800215": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "5929057322": 1.774186991869919
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "59": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 2.7148387096774194
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103009": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010292": 3.860537634408602
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1600066610": 4.3
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100062398": 2.9551327433628325
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180010500": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3361732261": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 1.9914359861591693
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010003947": 2.4861904761904756
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.910957985182847
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015030": 2.8534013605442183
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "1111341101": 2.743816254416961
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7242100111": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "6233800215": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230011013": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "104": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "7020210104": 2.7325949367088604
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011401": 2.2778317152103553
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 2.9866666666666655
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201100": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125001": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "3828153005": 3.3830729166666673
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 1.6653530377668306
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "3400000330": 3.7545349508954358
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 3.0488607594936705
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9096331812142573
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "68": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {
+        "3700000822": 4.0
+      },
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "7020200005": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120027005": 2.126923076923077
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.907753925560974
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "5100000014": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201100": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3000006080": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4610000027": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "5929057322": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 3.08507326007326
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9000000000000004
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "7506400090": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015030": 2.092334194659776
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500056685": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128077": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "103": {
+    "Dish Detergent": {
+      "small": {
+        "3700000988": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "7020210103": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011401": 2.501419698314108
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010321": 3.955514705882353
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3800001411": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 3.005
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015100": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128037": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010003111": 2.682477341389728
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 1.8397569444444442
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.043438972439166
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010016147": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9118878005342834
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 1.9435536294691225
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000390": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "32": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {
+        "3700000988": 3.9
+      },
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1200000809": 3.0399624765478426
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800001611": 4.1
+      }
+    },
+    "Toothpastes": {
+      "small": {},
+      "middle": {
+        "3700000391": 4.1
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "1470002882": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9179383921696793
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.0658860074691985
+      }
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.5974752028854826
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128037": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "51": {
+    "Dish Detergent": {
+      "small": {
+        "3828128137": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690000302": 1.6014373716632444
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103123": 2.4085140553100364
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066310": 3.8688010043942245
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015100": 2.453177257525083
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {},
+      "middle": {
+        "3700035510": 4.0
+      },
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010001313": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.6610069101678184
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "3400000241": 3.8230183893468612
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010004911": 1.7911290322580637
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9143530518683876
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9000000000000004
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "67": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 2.0237723214285714
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4180020750": 3.3369140625
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9102873504448312
+      }
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9000000000000004
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "1707720116": 1.8317018909899891
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015100": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.4434739941118746
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "3400000330": 3.84440344403444
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063087": 4.0
+      }
+    },
+    "Analgesics": {
+      "small": {
+        "30573015030": 1.8901785714285702
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 3.4
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "93": {
+    "Dish Detergent": {
+      "small": {
+        "5170036848": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 2.9610662358642976
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504010": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.1
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4610000056": 3.2261648745519715
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.000113297269696
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 2.9885350318471344
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1470005553": 2.7028156221616713
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "1410007477": 1.5573275862068976
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "7506400090": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128065": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "94": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 2.2219999999999995
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011402": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9000000000000004
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "7269201110": 4.0
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066110": 4.0
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 3.4152360515021463
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.171983356449376
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "3400000330": 3.9
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.4328584995251656
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.921643960974746
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "1111341101": 1.9592700729927008
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230019213": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "33": {
+    "Dish Detergent": {
+      "small": {
+        "5170036848": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.9658930373360244
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103005": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201000": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066310": 3.819230769230769
+      },
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {},
+      "middle": {
+        "3700000391": 4.1
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100061146": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3010003111": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1470007543": 2.58876404494382
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.040246949875055
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.8371313672922254
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "30041080100": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 2.543971631205674
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "129": {
+    "Dish Detergent": {
+      "small": {
+        "3828128137": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011401": 2.617647058823529
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9000000000000004
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 3.0793628808864257
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 2.964349112426035
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "1254661556": 3.6999999999999997
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "5565367060": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9193559538084286
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "3500056000": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 2.919154929577465
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128073": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3361732261": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "89": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {
+        "3700000882": 4.0
+      },
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690000302": 1.5424739195231003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120021007": 2.3281059063136453
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010068": 3.8
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100060251": 2.064028776978417
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015000": 2.776335877862596
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "6233800215": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "1470002020": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 1.6972055888223552
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254671550": 3.060802069857697
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3828112081": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063087": 4.0
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 1.7361858190709045
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000392": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "116": {
+    "Dish Detergent": {
+      "small": {
+        "3828128109": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 2.094004282655246
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4850000193": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875104": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1600066610": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100061530": 3.2134244372990355
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180010500": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "7341029064": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.1629120879120878
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254691758": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9105084686204235
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9000000000000004
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230012413": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.1131634819532907
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "111": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3500044400": 4.4
+      }
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828103017": 4.1
+      }
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700060511": 3.921269098872985
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875117": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504010": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3800004900": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "26522500000": 3.1461290322580644
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015100": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010003111": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1470003053": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254661556": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 1.9190654205607476
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.015660735033328
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "3828161001": 3.1174460431654687
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000321": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128077": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "80": {
+    "Dish Detergent": {
+      "small": {
+        "2744338208": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504003": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.1
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000334": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060491": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "7341029181": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 3.1071972904318375
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "1410007606": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9406489549287675
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "3500055800": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 2.8899728997289973
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230019013": 2.4952380952380953
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "21": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690000302": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4180020750": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.922637652982378
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "1380016609": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125001": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "26503400000": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015100": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007947": 1.5814950980392157
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 3.0897136797454925
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063087": 4.0
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 2.1159544159544166
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "6233800215": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010003111": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230019013": 1.8659229208924946
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "81": {
+    "Dish Detergent": {
+      "small": {
+        "3828128209": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 2.570422535211268
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115005": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.1
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000334": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "26514100000": 3.574264705882353
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 3.143634385201306
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.2
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010003947": 2.838348868175766
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.927465447289168
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.007562802412673
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "3500055800": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 2.8661179698216737
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7242100111": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "1470002882": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "121": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011402": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115009": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504003": 3.352164730728617
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125001": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500057200": 3.5864244741873805
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 2.7296577946768066
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128037": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "7341029181": 2.17090395480226
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007438": 3.3338535414165666
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "3400000330": 3.860051216389244
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000034": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9415406431544766
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "30041080200": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.9930044843049326
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "86": {
+    "Dish Detergent": {
+      "small": {
+        "5170036848": 1.7195266272189358
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103009": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9000000000000004
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "1380010524": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3000006560": 4.3
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 1.825413223140496
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "2500002554": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 2.7606974552309147
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 2.8189134808853122
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.2609112709832133
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9058180044223625
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "3500055300": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 2.257359635811836
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 3.164486830154405
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "72": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 1.5192513368983962
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504010": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125005": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4610000025": 3.078735177865613
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015000": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128073": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "1470002820": 3.020597484276729
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 2.043816254416961
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254671550": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9243534885767404
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.035872407181454
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "3828161001": 3.8000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500057200": 2.427932960893854
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "126": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011401": 3.11819235225956
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115005": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.113929372197309
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "1111325381": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.005062067104435
+      }
+    },
+    "Crackers": {
+      "small": {
+        "7341029181": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4000000102": 4.1
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000702": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9400904624799264
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "30041080200": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "44": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {
+        "5170036848": 3.9286419753086417
+      },
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {},
+      "middle": {
+        "6233806130": 4.1
+      },
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9360422293150017
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504006": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800001611": 4.179995372646557
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4175701106": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.00243791201957
+      }
+    },
+    "Fabric Softeners": {
+      "small": {},
+      "middle": {
+        "3700035510": 4.03073593073593
+      },
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3361732261": 2.8228494623655913
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "4400000007": 2.6895813047711776
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4400000119": 4.2
+      }
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700060311": 3.9000000000000004
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 2.1690909090909094
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "110": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 2.0115384615384597
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 2.270723104056437
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011401": 2.7660223804679553
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "5100001127": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010320": 3.8552533992583435
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066110": 3.9425339366515835
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "1707720116": 2.303891402714932
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3361732261": 1.7705084745762707
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 1.5372881355932206
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.152591170825336
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.6418269230769234
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9007275528545753
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9000000000000004
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015030": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000392": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230011013": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "128": {
+    "Dish Detergent": {
+      "small": {
+        "5170036848": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 3.360485268630849
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.937508318913883
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.3
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3500058800": 3.206761565836299
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100062398": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.0
+      }
+    },
+    "Crackers": {
+      "small": {
+        "6672112775": 2.713175675675676
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.8132352941176464
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "3500055300": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "88": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 3.2946215139442234
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690000302": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011402": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.909760346686121
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115009": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "1380010118": 3.3722358722358727
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066310": 3.9849968213604576
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 2.520176297747306
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "6233800215": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 1.7539170506912443
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.478051181102362
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063087": 4.0
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31284310117": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "1111341101": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230011013": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "131": {
+    "Dish Detergent": {
+      "small": {
+        "2744338208": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 2.8167721518987356
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103009": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1600066510": 4.100582278481013
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3500059600": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 2.929569455727051
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "7731400101": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.8060194174757283
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010003947": 2.8782383419689115
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9444955974437814
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.078301637612256
+      }
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230012013": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "91": {
+    "Dish Detergent": {
+      "small": {
+        "5170036913": 2.1987610619469025
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "4900000572": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4180020750": 2.7306139714769153
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9025009230426275
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "5100001127": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066310": 3.911522872032426
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 2.809411764705882
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015100": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "6233800215": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 2.089097103918229
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1470007543": 3.1814297452752673
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1900000123": 2.9845208845208835
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 2.9271300448430493
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9000000000000004
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015030": 2.230841121495328
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500056685": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "62": {
+    "Dish Detergent": {
+      "small": {
+        "3828128137": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4850000193": 3.192642875839804
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201110": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1600066610": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3010001313": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1470003053": 1.5307912297426123
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.332584269662921
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9148651502540472
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "30041080100": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981000527": 2.1264591439688716
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000665": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128065": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "2610000517": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "109": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "4171011342": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "1480052322": 1.7226751592356688
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.991084762371387
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504010": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800001611": 4.109708848498661
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 2.9400673400673396
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.0
+      }
+    },
+    "Crackers": {
+      "small": {
+        "7731400101": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1470003053": 2.4098258706467663
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.045761954416803
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010003947": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700060311": 3.9019569656632886
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "3500057900": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981000527": 2.229115646258504
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000311": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230011013": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "100": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {
+        "3828128205": 4.0
+      },
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120026134": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.917241449580546
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010068": 3.899678869621066
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125001": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000390": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100061544": 2.3838983050847453
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "2500002554": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 3.13951612903226
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007947": 2.9388564760793465
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254671550": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 3.130833333333334
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.996335169362884
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045049642": 1.6836583101207054
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "107": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {
+        "3700000988": 4.003394762366634
+      },
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.1300268096514756
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.1
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 1.8345532831001077
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3361732261": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 2.6239999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000034": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9202953103669804
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.080577164366375
+      }
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 1.7448387096774196
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7242100111": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "53": {
+    "Dish Detergent": {
+      "small": {
+        "3700000988": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "7020200006": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4180020750": 2.9895716945996273
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115025": 3.0681818181818192
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "1380010423": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.3
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4610000022": 2.958947368421053
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 2.616666666666667
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 1.8083927157561361
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254671150": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 2.3300788954635108
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9327042932528395
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.078608964451314
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "3828161001": 3.8000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000392": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128077": 3.6
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "52": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 2.4714110429447853
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.1001360544217684
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120020010": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875104": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504010": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1600066610": 4.199999999999999
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100062398": 2.856013001083424
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180010500": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "7341029053": 2.594875
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 2.5136400322841
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "1254661531": 3.748195446973903
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.5871443624868284
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9412505971304794
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "7506400090": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 1.9462978723404256
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128073": 3.4974522292993644
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "130": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3500044400": 4.300000000000001
+      }
+    },
+    "Soft Drinks": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1200000017": 4.009067206288671
+      }
+    },
+    "Bottled Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828103017": 4.1
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100061423": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Cookies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4400000720": 4.0
+      }
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.1549876339653755
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063087": 4.0
+      }
+    }
+  },
+  "112": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.179292929292929
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103009": 2.8600000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9218688457129423
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504006": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125001": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060491": 1.7356608478802995
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Fabric Softeners": {
+      "small": {},
+      "middle": {
+        "3700035510": 4.0
+      },
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "7341029181": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "1410007662": 2.6463865546218486
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 4.006254339433999
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "30041080200": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.9865384615384616
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "1111341101": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "2610000437": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "115": {
+    "Dish Detergent": {
+      "small": {},
+      "middle": {
+        "3700000988": 3.9845144356955378
+      },
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 2.2032835820895524
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011401": 2.9977922077922075
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875104": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125001": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 2.83116769095698
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3361732261": 1.7535748331744518
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 3.271799307958478
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "1254671150": 3.820122324159021
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.968011637833412
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "30041080200": 2.245762711864404
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 3.8000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000382": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "77": {
+    "Dish Detergent": {
+      "small": {
+        "3828128137": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103009": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9000000000000004
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1600066610": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "26537200000": 3.5299270072992694
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3361732261": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 3.187300094073377
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.04085205719288
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010003947": 1.9680713128038898
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.954463468610127
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 1.783125864453665
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500056685": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "84": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 3.3966611018363944
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "7020210104": 2.1986547085201793
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011402": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115009": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cereals": {
+      "small": {
+        "3828125005": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "26503400000": 3.0467189030362394
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015100": 2.0443820224719107
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "7341029064": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.925486182190379
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.1593607305936073
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.925810464241289
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9000000000000004
+      }
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 1.7802249297094659
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230012813": 1.6136602451838877
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "124": {
+    "Dish Detergent": {
+      "small": {
+        "5170036848": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103009": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875104": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504010": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.212772202880743
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 3.3028301886792457
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.0
+      }
+    },
+    "Fabric Softeners": {
+      "small": {},
+      "middle": {
+        "3828128073": 3.925771324863884
+      },
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "7341029062": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 2.0226057906458794
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "1410007606": 3.014864864864864
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.012213804012989
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "7506400090": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "71": {
+    "Dish Detergent": {
+      "small": {
+        "3700000805": 3.444
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9082241238525226
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "5100000684": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125001": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 3.3354199683042793
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "2500002554": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "6672112765": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007947": 2.8470149253731343
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 1.7433093525179852
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9907371671169436
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.552159827213823
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000392": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 3.6
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "122": {
+    "Dish Detergent": {
+      "small": {
+        "2744338208": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103009": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9186366112775812
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1600066510": 4.167031306225261
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000382": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060491": 3.0
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.0
+      }
+    },
+    "Crackers": {
+      "small": {
+        "7731400202": 1.630609597924773
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 3.0638069705093836
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010003947": 3.2394891944990176
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.966993679089151
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "3500055300": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 2.311355034065102
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7242100111": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230012813": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "40": {
+    "Dish Detergent": {
+      "small": {
+        "3700000988": 2.449038461538462
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660050592": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120027005": 2.3246527777777772
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "5100001261": 3.9984858361425144
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "1707720116": 2.5444833625218912
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180012800": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 3.2634730538922154
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1470005553": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010003947": 2.634363411619283
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9096929072071718
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "5400014190": 3.9082202650162663
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 2.0645454545454545
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000306": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "6233800215": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230011013": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "47": {
+    "Dish Detergent": {
+      "small": {
+        "3700000988": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "4900000572": 3.2200195312499997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4180020750": 3.299861303744799
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.918197711196734
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 3.1682926829268308
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201000": 3.3970917225950785
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066310": 3.993537218695903
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 2.7759723422644775
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "3890007852": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "7045311135": 1.9003208556149735
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254671150": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 2.0481792717086833
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063087": 4.0
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "3828161001": 3.8000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000392": 1.9670769230769234
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128077": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010003111": 3.4
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "78": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 2.4057109557109553
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120020010": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115009": 2.7716129032258072
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125001": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 3.525409836065574
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Fabric Softeners": {
+      "small": {},
+      "middle": {
+        "3700035510": 4.0
+      },
+      "big": {}
+    },
+    "Crackers": {
+      "small": {},
+      "middle": {
+        "3828112089": 3.8
+      },
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.7838571428571424
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0759284731774414
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.6508357915437557
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.92433268948826
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9052437766975996
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015030": 3.8000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000310": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "2": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 3.0456000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103123": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9220113493659654
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "5100000684": 2.1896103896103902
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201000": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066310": 3.974658385093168
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100062398": 3.197234611953613
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180010500": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 2.7407794676806088
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 1.7581521739130435
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "2800013170": 3.8944237918215614
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9000000000000004
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3500056685": 3.0373493975903614
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "14": {
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 2.568975903614458
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Soft Drinks": {
+      "small": {
+        "1200000809": 2.084615384615385
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120020010": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9000000000000004
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504010": 2.995636998254799
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1600066610": 4.199999999999999
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "1111341101": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100061530": 3.1047570850202426
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "5929057333": 1.9136761487964988
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1470003053": 3.276
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254691758": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.173032069970845
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9286769713830565
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 2.5216216216216223
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7242100111": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128065": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230019213": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "132": {
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.315515610217597
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9266038764131306
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.160857091626323
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.0
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "7341029181": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.917763998866325
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9644003109760413
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128109": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000392": 3.3775100401606424
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "92": {
+    "Soft Drinks": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4900000639": 4.052963949016733
+      }
+    },
+    "Bottled Juices": {
+      "small": {},
+      "middle": {
+        "3120020005": 3.9
+      },
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {
+        "3700063527": 3.7
+      },
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010321": 3.9
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2100061223": 4.300000000000001
+      }
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4000000102": 4.1
+      }
+    },
+    "Cookies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4400000551": 4.1
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "102": {
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 2.9641577060931903
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.925812340443739
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.292826153376107
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000278": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "3828153005": 3.072463768115945
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.0
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 1.507684529828109
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 3.253846153846154
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.908306639074725
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.017178442971375
+      }
+    },
+    "Crackers": {
+      "small": {
+        "5929057322": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothbrushes": {
+      "small": {
+        "3500055300": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045049642": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "56": {
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120027005": 2.8045036764705884
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9267451502516852
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "5100001127": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504006": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066310": 3.9226713532513178
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100061530": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180015000": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 1.907469879518072
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 2.8037735849056604
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 2.7140625
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015020": 2.6500000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500056685": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "105": {
+    "Soft Drinks": {
+      "small": {
+        "1660053102": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103009": 3.330217028380634
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.911182482931362
+      }
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9000000000000004
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010321": 3.8
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.3
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3500057200": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 3.268085106382979
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180012800": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {},
+      "middle": {
+        "3828128073": 4.0
+      },
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002600": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254671550": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063087": 4.0
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "7506400090": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "18": {
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.3587484035759894
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "5100001587": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800001611": 4.11439355075119
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 2.1988054607508536
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "2500002554": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "5929057322": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.8825672159583697
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.5889150943396224
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.909265279819271
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.011514253980008
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128113": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 2.044790739091719
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000306": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "9": {
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120020010": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115029": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7057504010": 2.679999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100062398": 2.188
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180010500": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128073": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 2.0451612903225804
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.664224548049477
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "3400000330": 3.7128996074032528
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.0958579881656805
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9140936914954043
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 1.739851024208566
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "73": {
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 2.8674928503336505
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828103017": 4.2
+      }
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.915480463344305
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.3
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "2500002554": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {},
+      "middle": {
+        "3828128073": 4.1
+      },
+      "big": {}
+    },
+    "Crackers": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4400000057": 4.1
+      }
+    },
+    "Cookies": {
+      "small": {
+        "1410007947": 2.6965648854961835
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9028603108706292
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.978439360701975
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3700000901": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "7506400090": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "74": {
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "5100001587": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.3
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 2.4319420783645653
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "7731400202": 2.844615384615385
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.904625735912531
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.086905754795663
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.9730337078651683
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.900156972763556
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.989953510361674
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "5170036848": 3.208823529411766
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "28": {
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4180020750": 2.61764705882353
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9119996394958094
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875104": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010292": 3.8308746048472075
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125005": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "26503400000": 3.5576923076923084
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180010500": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 3.1410821643286573
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "3400000241": 3.9
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 2.6927654609101515
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063087": 4.0
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 2.2051282051282053
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "3828161001": 3.8000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000392": 3.6097949886104774
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128073": 1.9151162790697671
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "8": {
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.2720975609756096
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9194526265930523
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "5100006032": 4.1
+      }
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.3
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 3.402739726027397
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "2500002554": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "5929057322": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 3.3149771689497713
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.640402969247084
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.913738268581982
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9163635539026718
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128109": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "7506400090": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.8355802047781569
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500057200": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "75": {
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4850000193": 2.8811607992388204
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "5100000684": 3.075857687420585
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201110": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "1600062760": 2.9916201117318435
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 2.059949622166247
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "3010001610": 3.297250229147571
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.009758386113066
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "1410007662": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3700000988": 2.24396467124632
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "7506400090": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045049642": 2.093490196078432
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500059700": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "119": {
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3828103123": 3.3659509395629517
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875104": 2.7263736263736265
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066660": 3.9608490566037737
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "26537200000": 3.2865384615384614
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "1470002820": 3.1760714285714284
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.30854119425548
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "3400000330": 3.7582822085889567
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.901639344262295
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.94619993831784
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 2.235229759299782
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500056685": 2.421281464530892
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7242100111": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128065": 3.10197628458498
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "54": {
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011401": 2.5293631100082714
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 2.479881656804733
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201100": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {
+        "1600066110": 3.800810654313839
+      },
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "2100062398": 3.5071646341463416
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "1470002820": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 3.336734693877551
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {
+        "2200000965": 3.711161731207289
+      },
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010016147": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.924796026162595
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 2.3534042553191488
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015030": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500056685": 2.9538713195201742
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128073": 3.2001848428835498
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "98": {
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.914587196386936
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.3
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "5929057322": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007947": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 1.9007623888182974
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9080510396006423
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9607038806665895
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3700000901": 3.5115789473684225
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 2.4099770642201834
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500057200": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "106": {
+    "Soft Drinks": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1200000017": 4.163123740427247
+      }
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.910628560139607
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 2.3022284122562673
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {
+        "3700063527": 3.7
+      },
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010321": 3.9
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3800003700": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "26522500000": 3.4021978021978017
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "4180012100": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1470006843": 2.9110489510489517
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1900000123": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Dish Detergent": {
+      "small": {
+        "3700000988": 2.395484949832776
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "7045011401": 2.0804109589041095
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015020": 3.8000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "1111341101": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128077": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010003111": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230012013": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000225": 3.4
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "101": {
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.917877103354114
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.1
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 3.546153846153846
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "7341029181": 1.6849107142857145
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 2.1988695652173913
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.0
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "1410007662": 2.1822303921568627
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.909616085304463
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9315873741994514
+      }
+    },
+    "Toothbrushes": {
+      "small": {
+        "3500055300": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128109": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000311": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7242100111": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "2240000441": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "2610000287": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "90": {
+    "Soft Drinks": {
+      "small": {
+        "1660000026": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4180020750": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9057832660979894
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063087": 4.0
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010068": 3.8
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3800001411": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "26522500000": 2.9535253227408145
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128077": 2.7283018867924533
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "4400000335": 3.3780165289256203
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254671550": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3828112081": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128205": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806130": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "3828161001": 3.8000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3500056685": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "1470002882": 3.4
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "83": {
+    "Soft Drinks": {
+      "small": {
+        "1690010951": 3.3703992210321325
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.914360857750155
+      }
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269208000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.238141188420518
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "2500002554": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "1470002882": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 1.5490439770554492
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.081714115070675
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010004911": 2.126680672268908
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.918720254426142
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9000000000000004
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "5170036558": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "31981007729": 1.866800401203611
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7242100111": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 3.6
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "123": {
+    "Soft Drinks": {
+      "small": {
+        "7020200006": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "3828115021": 2.982644628099174
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {
+        "1380010321": 4.0
+      },
+      "big": {}
+    },
+    "Cereals": {
+      "small": {
+        "3828125001": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "26537200000": 2.656673306772908
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9000000000000004
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "5170036848": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "7506400090": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045049642": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "6233800215": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 2.8596986817325805
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "70": {
+    "Soft Drinks": {
+      "small": {
+        "1690000302": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.921184610854844
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "5100006032": 4.1
+      }
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.2483824586628325
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "2100060471": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "5929057322": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 2.4062554300608165
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3400000246": 4.017902033975775
+      }
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9116465961552556
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.941006163107353
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128209": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 3.1955908289241624
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "1111341101": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128037": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cigarettes": {
+      "small": {
+        "1230010113": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "12": {
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 1.8085106382978724
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "4125875106": 3.3000000000000003
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201110": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045049642": 2.11306266548985
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.3
+      }
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000334": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 3.6
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "5460000233": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 3.1166444740346204
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007946": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.1729547641963425
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "5170036848": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Tuna": {
+      "small": {
+        "7067000001": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "76": {
+    "Soft Drinks": {
+      "small": {
+        "1690000301": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "3120027005": 3.3035384615384613
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Canned Soup": {
+      "small": {
+        "5100001127": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201110": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.199999999999999
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 1.6588235294117646
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {
+        "2500002554": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128077": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007947": 2.397852028639618
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "1254671550": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.013866462372563
+      }
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045046824": 3.6290686735653814
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000334": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Crackers": {
+      "small": {
+        "6672112765": 1.5
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "114": {
+    "Soft Drinks": {
+      "small": {
+        "7143400150": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "5300015407": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2400032230": 3.9067075659322508
+      }
+    },
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Cereals": {
+      "small": {
+        "3800003510": 2.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cheeses": {
+      "small": {
+        "4530010183": 1.5187739463601535
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128037": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "7045311135": 3.145685840707965
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "4400000118": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.905330226850329
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 3.9210654313839033
+      }
+    },
+    "Crackers": {
+      "small": {
+        "3010002915": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Dish Detergent": {
+      "small": {
+        "3700000901": 2.55
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Laundry Detergents": {
+      "small": {
+        "6233806160": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30045049642": 1.9266478342749531
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000392": 3.6999999999999997
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "113": {
+    "Soft Drinks": {
+      "small": {
+        "1660051170": 3.0450549450549445
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bottled Juices": {
+      "small": {
+        "4140900006": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Canned Soup": {
+      "small": {
+        "5100000660": 2.4000000000000004
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Entrees": {
+      "small": {
+        "7269201000": 3.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cereals": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3800000120": 4.1
+      }
+    },
+    "Cheeses": {
+      "small": {
+        "4175701106": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Crackers": {
+      "small": {
+        "7341029064": 3.4
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Cookies": {
+      "small": {
+        "1410007952": 3.272533543804262
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Front_end_candies": {
+      "small": {
+        "30766074120": 2.45
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Snack Crackers": {
+      "small": {
+        "3010032219": 2.9812962962962963
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Bathroom Tissues": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4200013700": 3.9000000000000004
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.055880168358505
+      }
+    },
+    "Dish Detergent": {
+      "small": {
+        "3828128109": 1.5
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Analgesics": {
+      "small": {
+        "30573015040": 1.8300448430493277
+      },
+      "middle": {},
+      "big": {}
+    },
+    "Toothpastes": {
+      "small": {
+        "3700000345": 2.5999999999999996
+      },
+      "middle": {},
+      "big": {}
+    }
+  },
+  "137": {
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.3
+      }
+    },
+    "Cheeses": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "2100061526": 4.202427155540549
+      }
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190013": 4.011094383138203
+      }
+    }
+  },
+  "5": {
+    "Frozen Entrees": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "1380010340": 4.199999999999999
+      }
+    },
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.2
+      }
+    },
+    "Front_end_candies": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "4000000102": 4.1
+      }
+    },
+    "Paper Towels": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3700063037": 4.1000000000000005
+      }
+    }
+  },
+  "48": {
+    "Frozen Juices": {
+      "small": {},
+      "middle": {},
+      "big": {
+        "3828190029": 4.1
+      }
+    },
+    "Fabric Softeners": {
+      "small": {
+        "3828128077": 2.55
+      },
+      "middle": {},
+      "big": {}
+    }
+  }
+}
