@@ -1,0 +1,91 @@
+\subsection{Problem Formulation and Overview}
+
+
+
+We model supermarket operations as a Markov Decision Process (MDP), in which an autonomous agent manages a single retail store over a finite horizon of days. At each day $t$, the agent makes a sequence of operational decisions that jointly determine the store’s daily outcomes.
+
+Formally, the MDP is defined as $(\mathcal{S}, \mathcal{A}, \mathcal{T}, R, \gamma)$,
+% \begin{equation}
+% \mathcal{M} = (\mathcal{S}, \mathcal{A}, \mathcal{T}, R, \gamma),
+% \end{equation}
+where $\mathcal{S}$ denotes the state space, $\mathcal{A}$ the action space, $\mathcal{T}$ the stochastic transition dynamics, $R$ the reward function, and $\gamma \in (0,1]$ the discount factor.
+
+At the beginning of each day $t$, the agent observes the initial state $S_{t,0}$ and executes a sequence of intra-day actions indexed by $k$. Each action $a_{t,k} \in \mathcal{A}$ induces a transition to the next intra-day state $S_{t,k+1}$. When the agent issues the \textit{end-today} action, the environment transitions to the initial state of the next day, $S_{t+1,0}$, according to the transition dynamics $\mathcal{T}$. Figure~\ref{fig:workflow} illustrates the overall interaction process.
+
+The environment supports long-horizon operation over more than one thousand simulated days, with episodes terminating if the store fails to pay rent for five consecutive days.
+
+\subsection{State Space}
+
+The intra-day state $S_{t,k}$ summarizes the complete operational context of the store at step $k$ of day $t$ and is composed of multiple interdependent components:
+% \begin{equation}
+$S_{t,k} = \big(
+S_{t,k}^{\text{prod}},
+S_{t,k}^{\text{inv}},
+S_{t,k}^{\text{sup}},
+S_{t,k}^{\text{dem}},
+S_{t,k}^{\text{ext}},
+S_{t,k}^{\text{fin}}
+\big)$.
+% \end{equation}
+% Specifically,
+\begin{itemize}[leftmargin=*]
+    \item $S_{t,k}^{\text{prod}}$ and $S_{t,k}^{\text{inv}}$ encode product-level attributes and on-hand inventory status, including prices, shelf life, and historical sales records. Product demand is grounded in real-world retail data derived from the Dominick’s dataset \citep{DominicksDataset}.
+    \item $S_{t,k}^{\text{sup}}$ represents the supply chain state, including supplier prices, quality levels, and delivery lead times, constructed to reflect empirically observed price--quality relationships \citep{supplychain}.
+    \item $S_{t,k}^{\text{dem}}$ captures demand-side signals such as recent customer traffic and aggregated review statistics, which influence consumer purchasing behavior \citep{Fedewa2021FiveStarGrowth}.
+    \item $S_{t,k}^{\text{ext}}$ represents external contextual information, including active news events with market-, category-, or product-level impact scope, synthesized to resemble real-world financial news \citep{ashraq2025financialNewsArticles}.
+    \item $S_{t,k}^{\text{fin}}$ denotes the financial state of the store, including available cash and estimated net worth, accounting for inventory depreciation over product shelf life.
+\end{itemize}
+
+Together, these components define a richly structured yet partially stochastic state space. Further details of the environment design are deferred to Appendix~\ref{appendix:env_details}.
+
+\subsection{Action Space}
+
+At each time step $t$, the agent selects an action $a_t \in \mathcal{A}$, defined as a tuple of decision components:
+% \begin{equation}
+$a_t =
+\big(
+a_t^{\text{price}},
+a_t^{\text{repl}},
+a_t^{\text{info}},
+a_t^{\text{mem}},
+a_t^{\text{end}}
+\big)$.
+% \end{equation}
+Each component corresponds to a distinct class of operational decisions:
+\begin{itemize}[leftmargin=*]
+    \item $a_t^{\text{price}}$ denotes pricing decisions for individual SKUs;
+    \item $a_t^{\text{repl}}$ denotes inventory replenishment decisions, including supplier selection and order quantities;
+    \item $a_t^{\text{info}}$ denotes information acquisition actions, such as querying sales history, customer reviews, supplier conditions, or current news;
+    \item $a_t^{\text{mem}}$ denotes memory operations that allow the agent to write and retrieve persistent notes across days;
+    \item $a_t^{\text{end}}$ denotes a day-termination action that concludes the current decision phase.
+\end{itemize}
+
+Within a single day, the agent may execute multiple information queries and operational adjustments before issuing the $a_t^{\text{end}}$ action to advance the environment to the next day.
+
+\subsection{Day Transition Dynamics}
+
+After the agent issues the day-termination action, the environment transitions to the next day according to
+% \begin{equation}
+$S_{t,k+1} \sim \mathcal{T}(\cdot \mid S_{t,k}, a_t)$,
+% \end{equation}
+where the transition function $\mathcal{T}$ factorizes into a sequence of stochastic updates that jointly model daily supermarket operations.
+
+Specifically, each day-level transition consists of the following steps:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Customer traffic sampling.}  
+    The total customer traffic for the day is sampled according to stochastic demand dynamics.
+    
+    \item \textbf{Sales realization.}  
+    Given the sampled customer traffic and exogenous factors (e.g., promotions, seasonal effects, and news signals), the realized sales volume of each product is determined.
+    
+    \item \textbf{Reviews and returns generation.}  
+    Customer reviews and product return events are generated conditional on sales outcomes, product quality, and external influences.
+    
+    \item \textbf{Inventory update.}  
+    Sold units are deducted from on-hand inventory, and replenishment orders scheduled to arrive on the current day are added to stock.
+    
+    \item \textbf{Financial and exogenous state update.}  
+    The agent’s financial state is updated based on realized revenues and costs, after which new exogenous information (e.g., news or market signals) for the next day is generated.
+\end{enumerate}
+
+\input{latex/table/overall_framework}

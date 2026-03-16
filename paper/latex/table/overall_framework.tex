@@ -1,0 +1,92 @@
+\begin{table*}[t]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lrrrrcc}
+\toprule
+Model 
+& Avg. Days $\uparrow$ 
+& Avg. Daily Sales $\uparrow$ 
+& Avg. Daily Income $\uparrow$ 
+& Expiry Ratio $\downarrow$ 
+& Return Ratio $\downarrow$ 
+& Max Days $\uparrow$ \\
+\midrule
+
+% =====================================================
+\multicolumn{7}{l}{\cellcolor{gray!20}\textit{Framework: Evolving Strategy \& Execution}} \\
+\midrule
+GLM-4.6 & 52.40 & 174.34 & 124.67 & 0.0773 & 0.1293 & 58 \\
+Kimi-K2 (Thinking) & 54.25 & 260.68 & 168.72 & \textbf{0.0239} & 0.1179 & 58 \\
+GPT-5.2 & \textbf{81.00} & \textbf{457.21} & \textbf{358.27} & 0.0660 & \textbf{0.1141} & \textbf{81} \\
+\midrule
+\textbf{Average (3 models)} 
+& \textbf{62.55} 
+& \textbf{297.41} 
+& \textbf{217.22} 
+& 0.0557
+& 0.1204 
+& \textbf{65.67} \\
+\midrule
+
+% =====================================================
+\multicolumn{7}{l}{\cellcolor{gray!20}\textit{Framework: Reflection (Day-Level)}} \\
+\midrule
+GLM-4.6 & 55.00 & 160.70 & 125.67 & \textbf{0.0194} & 0.1176 & 62 \\
+Kimi-K2 (Thinking) & \textbf{58.33} & 216.51 & 184.01 & 0.0964 & 0.1255 & \textbf{71} \\
+GPT-5.2 & 64.00 & \textbf{283.88} & \textbf{260.88} & 0.1774 & \textbf{0.0887} & 64 \\
+\midrule
+\textbf{Average (3 models)} 
+& 59.11 
+& 220.36 
+& 190.19 
+& 0.0977 
+& 0.1106 
+& 65.67 \\
+\midrule
+
+% =====================================================
+\multicolumn{7}{l}{\cellcolor{gray!20}\textit{Framework: Reflection (Step-Level)}} \\
+\midrule
+GLM-4.6 & 51.67 & 92.35 & 77.18 & \textbf{0.0148} & 0.1072 & 57 \\
+Kimi-K2 (Thinking) & 51.67 & 181.19 & 111.29 & 0.0353 & 0.1362 & 53 \\
+GPT-5.2 & \textbf{56.00} & \textbf{398.71} & \textbf{324.01} & 0.1536 & \textbf{0.1048} & \textbf{56} \\
+\midrule
+\textbf{Average (3 models)} 
+& 53.11 
+& 224.08 
+& 170.83 
+& 0.0679 
+& 0.1161 
+& 55.33 \\
+\midrule
+
+% =====================================================
+\multicolumn{7}{l}{\cellcolor{gray!20}\textit{Framework: Plan-and-Act}} \\
+\midrule
+GLM-4.6 & 48.33 & 231.35 & 113.01 & 0.0198 & 0.1096 & 55 \\
+Kimi-K2 (Thinking) & 48.67 & 170.26 & 105.36 & \textbf{0.0000} & \textbf{0.1056} & 51 \\
+GPT-5.2 & \textbf{64.00} & \textbf{323.88} & \textbf{193.02} & 0.0152 & 0.1096 & \textbf{64} \\
+\midrule
+\textbf{Average (3 models)} 
+& 53.67 
+& 241.83 
+& 137.13 
+& \textbf{0.0117} 
+& \textbf{0.1083} 
+& 56.67 \\
+\midrule
+
+% =====================================================
+\multicolumn{7}{l}{\cellcolor{gray!20}\textit{Heuristic Policy (Upper Bound, Easy)}} \\
+\midrule
+Hand-crafted Policy & 180.00 & 674.18 & 729.46 & 0.0266 & 0.0070 & 180 \\
+\bottomrule
+\end{tabular}
+}
+\caption{
+Performance comparison of three representative large language models under four agent frameworks in the \textsc{Easy} environment. 
+A hand-crafted heuristic policy is included as an approximate upper bound.
+}
+\label{tab:framework_stats}
+\vspace{-5mm}
+\end{table*}

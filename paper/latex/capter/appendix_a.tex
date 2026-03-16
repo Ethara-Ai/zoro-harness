@@ -1,0 +1,323 @@
+
+\subsection{State Space Decomposition}
+
+We construct the environment using real-world retail data from the Dominick’s dataset \citep{DominicksDataset}. From the 20 available product categories, we select 96 SKUs with the most complete and informative sales records. The richness of these observations enables reliable modeling of the relationship between pricing decisions and realized demand.
+
+\paragraph{Key Symbols.}
+Let $\mathcal{J}$ denote the set of selected SKUs, with cardinality $|\mathcal{J}| = J$ (where $J=96$ in our experiments). Each SKU $j \in \mathcal{J}$ belongs to a product category $\mathrm{cat}(j) \in \{1,\ldots,20\}$. For each SKU $j$, let $\mathcal{K}(j)$ denote its associated supplier set, with $|\mathcal{K}(j)| = 5$.
+
+\subsubsection{Product State $S_t^{\text{prod}}$}
+
+For each SKU $j$, we maintain a set of static attributes together with time-varying operational signals:
+\begin{equation}
+S_{t,j}^{\text{prod}} =
+\big(
+\texttt{id}_j,\ \texttt{desc}_j,\ L_j,\ p_{jt},\ \mathbf{h}^{\text{sales}}_{j,t},\ \mathbf{r}_{j,t}
+\big).
+\end{equation}
+Here, $\texttt{id}_j$ and $\texttt{desc}_j$ denote the unique identifier and textual description of SKU $j$, respectively. $L_j$ denotes the shelf life (in days), and $p_{jt}$ is the retail price on day $t$. The term $\mathbf{h}^{\text{sales}}_{j,t}$ encodes historical sales statistics, while $\mathbf{r}_{j,t}$ summarizes aggregated customer review signals, such as average rating and review volume.
+
+\paragraph{Data grounding.}
+The SKU set and cost priors are constructed from the Dominick’s dataset \citep{DominicksDataset}. Historical sales records from the same source are used to calibrate the demand model.
+
+\subsubsection{Inventory State $S_t^{\text{inv}}$}
+
+Inventory is represented at the SKU level with age tracking. Let $I_{jt}$ denote the on-hand units of SKU $j$ at the beginning of day $t$. To support shelf-life constraints and depreciation, we track the arrival time and remaining shelf life of each unit.
+
+\paragraph{Capacity constraint and pending queue.}
+Let $\mathrm{Cap}$ denote the total inventory capacity of the store. If incoming replenishment orders would violate this constraint, excess units are placed into a first-in-first-out (FIFO) pending queue $\mathcal{Q}_t$ and become available only after sufficient inventory space is released:
+\begin{equation}
+\sum_{j\in\mathcal{J}} \sum_{a=0}^{L_j} I_{jt}^{(a)} \le \mathrm{Cap}.
+\end{equation}
+
+\paragraph{Stockout signal.}
+When realized demand exceeds the available sellable inventory of SKU $j$ on day $t$, a stockout indicator is triggered. This signal is recorded at the end of day $t$ and exposed to the agent as explicit operational feedback.
+
+\paragraph{Expiration and destruction.}
+At each day transition, inventory units whose residence time exceeds their shelf life are removed from the system.
+
+\subsubsection{Supply Chain State $S_t^{\text{sup}}$}
+
+Each SKU $j$ is associated with a set of suppliers $k \in \mathcal{K}(j)$. The supplier state includes procurement price $c_{jk}$, quality level $q_{jk}$, and lead-time distribution:
+\begin{equation}
+S_{t,j}^{\text{sup}} =
+\big\{(c_{jk}, q_{jk}, \mathcal{L}_{jk}) : k \in \mathcal{K}(j)\big\}.
+\end{equation}
+Lead time $\ell_{jk} \sim \mathcal{L}_{jk}$ is sampled when an order is placed. Procurement prices are discretized into tiers using Dominick’s cost signals \citep{DominicksDataset}, following empirically observed positive correlations between price tier and quality level \citep{supplychain}.
+
+\paragraph{Enforced diversity.}
+To avoid degenerate supplier configurations, we enforce that each SKU has (i) one supplier with maximal quality, (ii) one supplier with minimal price and minimal quality, and remaining suppliers spanning intermediate price–quality levels.
+
+\subsubsection{Demand Signals and Demand Generation}
+\label{app:demand}
+
+Demand-related components capture both observable market signals and the stochastic process governing realized demand. We define
+\begin{equation}
+S_t^{\text{dem}} =
+\big(
+N_t,\ \{\mathbf{r}_{j,t}\}_{j\in\mathcal{J}}
+\big),
+\end{equation}
+where $N_t$ denotes daily customer traffic.
+
+\paragraph{Customer traffic.}
+Daily customer traffic is derived from the Dominick’s dataset.
+
+\paragraph{Consumer choice and demand generation.}
+Given customer traffic $N_t$, prices $\{p_{jt}\}_{j\in\mathcal{J}}$, review signals $\{\mathbf{r}_{j,t}\}$, and external news $\mathcal{E}_t$, we generate realized demand using a discrete-choice model. Following standard practice in empirical economics, we adopt a Multinomial Logit (MNL) framework \citep{mcfadden_conditional_1974, Uncles01041987}.
+
+For SKU $j$, the raw utility is defined as
+\begin{equation}
+U_{jt}^{\mathrm{raw}} = \alpha_j + \beta_j p_{jt} + \varepsilon_{jt},
+\end{equation}
+where $\alpha_j$ captures intrinsic preference, $\beta_j$ models price sensitivity, and $\varepsilon_{jt}$ represents idiosyncratic shocks.
+
+We further incorporate review effects, news signals, and within-category substitution:
+\begin{equation}
+\begin{aligned}
+\tilde{U}_{jt}
+&= U_{jt}^{\mathrm{raw}}
+ + \Delta_j(\mathbf{r}_{j,t}, \mathcal{E}_t) \\
+&\quad + \sum_{\substack{i \neq j \\ \mathrm{cat}(i)=\mathrm{cat}(j)}}
+\gamma_{ji}\exp(\tilde{U}_{it}).
+\end{aligned}
+\end{equation}
+
+With the outside option utility normalized to zero, the purchase probability for SKU $j$ on day $t$ is
+\begin{equation}
+p_{jt}^* =
+\frac{\exp(\tilde{U}_{jt})}
+{1 + \sum_{i=1}^{J}\exp(\tilde{U}_{it})}.
+\end{equation}
+
+\paragraph{Realized demand.}
+Given traffic $N_t$ and purchase probabilities $\{p_{jt}^*\}$, potential demand is sampled as
+\begin{equation}
+y_{jt} \sim \mathrm{Binomial}(N_t,\ p_{jt}^*),
+\end{equation}
+and realized sales are capped by available on-hand inventory.
+
+\subsubsection{External Information $S_t^{\text{ext}}$ (News Module)}
+
+We maintain a set of active news events $\mathcal{E}_t$. Each event $e \in \mathcal{E}_t$ is represented as
+\begin{equation}
+\begin{aligned}
+e = (&\texttt{type},\ \texttt{scope},\ \texttt{target},\\
+     &\texttt{side},\ \texttt{sign},\ \eta,\\
+     &\texttt{text},\ \texttt{ttl})
+\end{aligned}
+\end{equation}
+
+where \texttt{scope} $\in \{\text{macro}, \text{category}, \text{product}, \text{neutral}\}$,
+\texttt{side} $\in \{\text{demand}, \text{supply}, \text{both}\}$,
+\texttt{sign} $\in \{+1,-1\}$,
+$\eta$ denotes impact magnitude, and \texttt{ttl} is the time-to-live in days. News texts are synthesized using an LLM to resemble financial news corpora \citep{ashraq2025financialNewsArticles}.
+
+\paragraph{Impact application.}
+News impacts are incorporated into (i) demand utilities and/or (ii) supplier prices depending on \texttt{side} and \texttt{scope}. Neutral news has $\eta = 0$ by design.
+
+\subsubsection{Financial State $S_t^{\text{fin}}$}
+
+Let $F_t$ denote available funds at the start of day $t$. Net worth is computed as
+\begin{equation}
+\mathrm{NW}_t = F_t + \sum_{j\in\mathcal{J}} \sum_{a=0}^{L_j} I_{jt}^{(a)} \cdot v_j(a),
+\end{equation}
+where $v_j(a)$ denotes the per-unit value at age $a$. We adopt linear shelf-life depreciation:
+\begin{equation}
+v_j(a) = c_j \cdot \max\!\left(0,\ 1 - \frac{a}{L_j}\right),
+\end{equation}
+with $c_j$ denoting a reference procurement cost (e.g., the mean or realized supplier cost).
+
+
+\subsection{Policy Detail}
+\subsubsection{Policy Presentation}
+\label{appendix:policy}
+
+To support structured and interpretable decision making, we represent the agent policy using a hierarchical abstraction that separates strategic intent from executable actions.
+Specifically, each policy is composed of three layers:
+
+\begin{enumerate}
+    \item \textbf{Macro Strategy}, which captures high-level managerial principles that persist across days;
+    \item \textbf{Execution Strategy}, which encodes structured operational guidance in a machine-readable form;
+    \item \textbf{Daily Actions}, which enumerate concrete executable operations submitted to the environment.
+\end{enumerate}
+
+This design enables the agent to reason at different temporal and semantic granularities, while maintaining a clear separation between planning and execution.
+
+\paragraph{Macro Strategy.}
+The macro strategy consists of a set of natural-language statements that describe high-level objectives (e.g., prioritizing inventory turnover or focusing on high-margin products).
+These statements are non-executable and serve as persistent guidance for downstream decision making.
+
+\paragraph{Execution Strategy.}
+The execution strategy consists of six key components. 
+\texttt{focus\_skus} specifies the SKUs that require immediate attention.
+\texttt{sku\_supplier\_mapping} denotes the corresponding suppliers for each SKU.
+\texttt{news\_to\_monitor} identifies relevant news signals to track.
+\texttt{skus\_to\_reorder} indicates SKUs that require replenishment.
+\texttt{price\_adjustment} specifies the SKUs whose prices should be adjusted along with the corresponding adjustment magnitudes.
+\texttt{sku\_to\_monitor} denotes SKUs under observation.
+The \texttt{other} field captures additional execution directives.
+
+\paragraph{Daily Actions.}
+Daily actions consist of two operation types:
+\texttt{place\_order}, which places purchase orders for selected SKUs, and
+\texttt{modify\_sku\_price}, which adjusts the prices of specified SKUs.
+
+
+\paragraph{Strategy--Execution Protocol.}
+Policy usage follows a two-phase protocol.
+In the \emph{strategy phase}, the agent analyzes the environment and constructs its macro and execution strategies.
+In the subsequent \emph{execution phase}, the finalized strategy is consumed to generate executable daily actions.
+The strategy is immutable during execution, enforcing a clear separation between deliberation and action.
+
+\subsubsection{Policy Example}
+
+See in Table~\ref{tab:daily_strategy}.
+
+\label{appendix:policy_exp}
+\input{latex/table/strategy_example}
+
+
+\subsection{Environment Setting}
+\label{appendix:env_setting}
+
+\subsubsection{Easy Environment Configuration}
+
+The \texttt{Easy} configuration is designed for simpler scenarios with limited resources and a reduced category set.
+
+\begin{itemize}
+    \item \textbf{Time Range:}
+    \begin{itemize}
+        \item Data begin time: 06/06/91
+        \item Data end time: 12/31/95
+        \item Store begin time: 09/07/91
+        \item Store ID: 15
+    \end{itemize}
+    
+    \item \textbf{Financial Parameters:}
+    \begin{itemize}
+        \item Initial funds: 10,000
+        \item Daily rent: 250
+        \item Inventory capacity: 10,000
+    \end{itemize}
+    
+    \item \textbf{Feature Enablement:}
+    \begin{itemize}
+        \item Review enabled: \texttt{True}
+        \item Review ratio: 0.02
+        \item News enabled: \texttt{False}
+    \end{itemize}
+    
+    \item \textbf{Selected Categories (5 categories):}
+    \begin{itemize}
+        \item Bathroom\_Tissues
+        \item Canned\_Soup
+        \item Cigarettes
+        \item Front\_end\_candies
+        \item Soft\_Drinks
+    \end{itemize}
+    
+    \item \textbf{Category Effects:} All categories have a uniform effect of -0.2
+    
+    \item \textbf{Random Seed:} 42 (for reproducibility)
+\end{itemize}
+
+\subsubsection{Middle Environment Configuration}
+
+The \texttt{Middle} configuration uses static data but with full resource capacity and all categories enabled.
+
+\begin{itemize}
+    \item \textbf{Time Range:} Same as \texttt{Easy}
+    
+    \item \textbf{Financial Parameters:}
+    \begin{itemize}
+        \item Initial funds: 50,000
+        \item Daily rent: 1,000
+        \item Inventory capacity: 40,000
+    \end{itemize}
+    
+    \item \textbf{Feature Enablement:}
+    \begin{itemize}
+        \item Review enabled: \texttt{True}
+        \item Review ratio: 0.02
+        \item News enabled: \texttt{False}
+    \end{itemize}
+    
+    \item \textbf{Selected Categories (20 categories):}
+    \begin{itemize}
+        \item Bathroom\_Tissues, Beer, Bottled\_Juices, Canned\_Soup, Canned\_Tuna
+        \item Cereals, Cheeses, Cigarettes, Cookies, Crackers
+        \item Dish\_Detergent, Fabric\_Softeners, Front\_end\_candies, Frozen\_Entrees
+        \item Frozen\_Juices, Oatmeal, Paper\_Towels, Snack\_Crackers
+        \item Soft\_Drinks, Toothpastes
+    \end{itemize}
+    
+    \item \textbf{Category Effects:} All categories have a uniform effect of -0.2
+    
+    \item \textbf{Random Seed:} 42
+\end{itemize}
+
+\subsubsection{Hard Environment Configuration}
+
+The \texttt{Hard} configuration uses dynamic data with news events enabled, providing the most complex simulation environment.
+
+\begin{itemize}
+    \item \textbf{Time Range:} Same as other configurations
+    
+    \item \textbf{Financial Parameters:}
+    \begin{itemize}
+        \item Initial funds: 50,000
+        \item Daily rent: 1,000
+        \item Inventory capacity: 40,000
+    \end{itemize}
+    
+    \item \textbf{Feature Enablement:}
+    \begin{itemize}
+        \item Review enabled: \texttt{True}
+        \item Review ratio: 0.02
+        \item News enabled: \texttt{True}
+    \end{itemize}
+    
+    \item \textbf{News Configuration:}
+    \begin{itemize}
+        \item News impact base scale: 0.4
+        \item News daily count: 20
+        \item News random seed: 42
+        \item News sample ratios:
+        \begin{itemize}
+            \item Neutral: 0.9
+            \item Single category: 0.02
+            \item Macro all: 0.03
+            \item SKU level: 0.05
+        \end{itemize}
+        \item News impact mode weights:
+        \begin{itemize}
+            \item Neutral: 0.0
+            \item Macro all: 1.0
+            \item Single category: 1.0
+            \item SKU level: 1.2
+        \end{itemize}
+    \end{itemize}
+    
+    \item \textbf{Selected Categories:} Same 20 categories as \texttt{Middle}
+    
+    \item \textbf{Category Effects:} All categories have a uniform effect of -0.2
+    
+    \item \textbf{Random Seed:} 42
+\end{itemize}
+
+
+
+\subsection{Environment Simulation}
+\label{appendix:environment_simulation}
+See in Figure ~\ref{fig:env_setting}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{latex/figures/networth_and_funds.pdf}
+\caption{
+Net worth and available funds trajectories of the heuristic policy under different environment configurations, illustrating the calibrated difficulty levels. The \textit{Middle} and \textit{Hard} settings involve a larger number of product categories, enabling higher potential net worth and cash accumulation over the course of an episode.
+}
+\label{fig:env_setting}
+\vspace{-5mm}
+\end{figure}

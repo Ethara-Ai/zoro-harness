@@ -1,0 +1,141 @@
+\subsection{Hallucinations in Reasoning and Planning}
+\label{appendix:hallucinations}
+
+This appendix provides representative examples of hallucinations observed during long-horizon rollouts, focusing on reasoning-time errors that propagate into multi-step planning despite internally coherent logic.
+
+\subsubsection{Non-existent SKUs}
+
+During execution, models occasionally reference or plan around SKUs that do not exist in the environment. Across all rollouts, we identify 14 distinct non-existent SKUs that repeatedly appear in final daily strategies, indicating persistent hallucinations rather than isolated parsing or formatting errors. Representative examples include SKU identifiers such as \texttt{10700013100}, \texttt{166051312}, and \texttt{440004627}.
+
+\paragraph{Example.}
+In the following strategy output, the model includes a non-existent SKU (\texttt{440004627}) in its set of focus SKUs. This hallucinated identifier is subsequently treated as a valid product in downstream reasoning and planning:
+\begin{verbatim}
+{
+  "day": 14,
+  "current_date": "1991-09-22",
+  "strategy": {
+    "macro_strategy": ***,
+    "execute_strategy": {
+      "focus_skus": [
+        "3000001460",
+        "3700063037",
+        "440004627",
+        "5100001251"
+      ],
+      "news_to_monitor" ***, 
+    },
+    "today_action": ***,
+  }
+}
+\end{verbatim}
+
+\subsubsection{Hallucinated Dates}
+
+Models also hallucinate temporal information during tool-based reasoning when required to provide calendar dates that are not explicitly specified by the environment. Instead of querying the current simulation date, the model resolves this underspecification by fabricating a plausible calendar mapping in order to proceed with execution.
+
+\paragraph{Example.}
+The following excerpt illustrates the model’s reasoning process when attempting to issue a tool call that requires valid date strings:
+\begin{verbatim}
+Tool requires dates in YYYY-MM-DD 
+or MM/DD/YY.
+Only day index is known: Day 14.
+No calendar start date is provided.
+
+Assume Day 1 = 2023-01-01.
+Infer Day 14 = 2023-01-14.
+
+start_date = 2023-01-13
+end_date   = 2023-01-14
+\end{verbatim}
+
+Based on this fabricated assumption, the model issues a syntactically valid tool call using the inferred dates. Although the reasoning chain is internally consistent, the assumed calendar mapping is not grounded in the true environment state, resulting in a semantically incorrect interaction.
+
+These examples highlight a recurring failure mode in which models resolve underspecified variables through plausible fabrication rather than explicit information acquisition, leading to planning trajectories that appear coherent yet diverge from the actual environment dynamics.
+\subsection{Invalid or Irrational Actions}
+\label{appendix:invalid_action}
+
+We identify invalid or economically irrational actions by applying a set of heuristic rules to model-issued tool calls. Specifically, we flag actions that violate basic economic or operational constraints, including: (i) setting product prices to zero, negative values, or unrealistically high levels (e.g., exceeding 50); and (ii) placing orders with quantities far beyond plausible operational scales for a single SKU.
+
+Across all evaluated rollouts, we detect more than 300 such anomalous tool calls. Among them, 197 correspond to invalid or irrational price modifications, while 125 involve excessively large ordering decisions. These behaviors are observed across multiple models and environment configurations.
+
+\paragraph{Excessive Ordering.}
+The following example is taken from a rollout of the \textit{Kimi K2 Thinking} model in the \textit{Hard} environment. The model places an implausibly large order for a single SKU, far exceeding realistic replenishment volumes:
+\begin{verbatim}
+tool: place_order
+model: Kimi K2 Thinking
+sku_id: 5100000011
+quantity: 18000
+\end{verbatim}
+Although syntactically valid, such actions introduce extreme inventory shocks that are misaligned with realistic retail operations.
+
+\paragraph{Invalid Price Modifications.}
+Irrational pricing behavior is also observed across models. In the following example, the model updates the price of a SKU by several orders of magnitude (log excerpted from \texttt{still\_hard/kimi\_thinking/tool\_calls.jsonl}):
+\begin{verbatim}
+tool: modify_sku_price
+model: Kimi K2 Thinking
+old_price: 0.25
+new_price: 999.0
+\end{verbatim}
+In other cases, models attempt to assign zero or negative prices, which are explicitly rejected by the environment. While such invalid actions are prevented at execution time, extreme but valid values can still propagate downstream and destabilize subsequent decision-making.
+
+Overall, these results indicate that current LLM-based agents lack reliable internal mechanisms for enforcing basic economic plausibility at the action level, even when tool interfaces enforce syntactic validity and detailed execution logs are available for inspection.
+
+
+
+
+\subsection{Rollout Results}
+\label{appendix:total_results}
+
+See in Table~\ref{tab:three_scenarios_all_metrics_no_purchase_aligned_names}
+
+\input{latex/table/overall_env_performance}
+
+\subsection{Strategy Score Analysis}
+\label{appendix:score_analysis}
+
+See in Figure ~\ref{fig:macro_easy}, ~\ref{fig:exec_easy}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1\linewidth]{latex/figures/strategy_similarity_still_middle_macro.pdf}
+\caption{
+Macro strategy similarity over time in the easy environment.
+Higher values indicate greater consistency in high-level decisions across days.
+}
+    \label{fig:macro_easy}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1\linewidth]{latex/figures/strategy_similarity_still_middle_exec.pdf}
+    \caption{
+Execution strategy similarity over time in the easy environment.
+Execution-level behaviors exhibit substantially higher temporal variability than macro strategies.
+}
+    \label{fig:exec_easy}
+\end{figure}
+
+\subsection{Tool use Analysis}
+\label{appendix:tool_use_analysis}
+
+See in Figure~\ref{fig:tool_relation}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{latex/figures/focus_sku_tool_view_sku_reviews_vs_sales.pdf}
+    \caption{Correlation between the frequency of SKU review queries during rollouts and average daily sales across all runs. Each point represents a single rollout. We observe a positive association between review-related tool usage and sales performance. The Pearson correlation coefficient $r$ and the corresponding $p$-value are reported in the figure.}
+    \label{fig:tool_relation}
+\end{figure}
+
+\subsection{Category Analysis}
+\label{appendix:category_analysis}
+
+See in Table~\ref{tab:strategy_sku_cat_context}
+
+\input{latex/table/analysis_strategy}
+
+\subsection{All Model and Framework Results}
+
+\input{latex/table/overall_performance}
+
+See in Table~\ref{tab:scenario_stats}

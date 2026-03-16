@@ -1,0 +1,53 @@
+\begin{table*}[t]
+\centering
+\renewcommand{\arraystretch}{1.15}
+
+\begin{tabular}{p{3.4cm} p{11.6cm}}
+\toprule
+\textbf{Strategy Type} & \textbf{Strategy Value} \\
+\midrule
+
+macro\_strategy &
+Tissues (SKU~3700060511) face an imminent stockout with current inventory below one day of coverage; incoming replenishments scheduled for 10-08 and 10-10 imply an unavoidable short-term gap and an estimated loss of approximately 1{,}200 units. \\
+& Soups (SKU~5100000011) exhibit declining sales and persistently high return rates following a recent price increase, indicating substantial margin erosion. \\
+& Cigarettes and ginger ale remain operationally stable with high customer ratings and low return rates. \\
+& Overall operational risk is assessed as high due to anticipated revenue loss and return-driven inefficiencies. \\
+
+\midrule
+execute\_strategy &
+focus\_skus: 3700060511, 5100000011, 1254612128 \\
+& sku\_supplier\_mapping: 
+(3700060511, supplier\_4), 
+(5100000011, supplier\_1), 
+(1230000014, supplier\_1), 
+(1690000012, supplier\_3), 
+(1254612128, supplier\_3) \\
+& news\_to\_monitor: [ ] \\
+& skus\_to\_reorder: [ ] \\
+& price\_adjustments: 
+sku\_id = 5100000011, adjustment = decrease to 0.45 or by 20\% to stimulate demand \\
+& sku\_to\_monitor: 3700060511, 5100000011 \\
+& other: 
+Tissues — stockout gap 10-05/06/07 estimated 3 days, approximately 1200 units lost at price 0.65 ($\sim$780 revenue); incoming supply covers post-10-08; no further reorder feasible \\
+& Soups — return rate approximately 25\% persists despite supplier\_1; reviews indicate supplier\_4 dominant issues but effects persist; sales declined after price hike; monitor next 3 days sales, returns, and supplier quality \\
+& Mints — low stock but incoming sufficient \\
+& Core — stable operations excluding tissues and soups risks; customer traffic approximately 30k/day steady \\
+& risk\_level: high \\
+
+\midrule
+today\_action &
+place\_order: 
+(3700060511, supplier\_4, quantity = 800),
+(1254612128, supplier\_3, quantity = 600) \\
+& modify\_sku\_price:
+(sku\_id = 5100000011, new\_price = 0.45),
+(sku\_id = 1690000012, new\_price = 0.78) \\
+
+
+\bottomrule
+\end{tabular}
+
+\caption{Example Strategy}
+\label{tab:daily_strategy}
+
+\end{table*}

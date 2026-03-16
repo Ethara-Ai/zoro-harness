@@ -1,0 +1,252 @@
+1. 贴表格
+2. 补充实验
+3. 最好能够增加一下 baseline 在不同env 难度下的结果
+
+
+Response to Reviewer on Framework Comparison
+
+Thank you for the suggestion to broaden the framework comparison.
+
+Our Evolving Strategy & Execution framework (Sec.3) operates at day-level granularity, explicitly decoupling long-term strategy evolution from short-term execution. In the original submission, the Reflection baseline was implemented at the same daily granularity to ensure a structurally aligned and fair comparison (Sec.4.3).
+
+Following your suggestion, we additionally implemented Step-level Reflection and Plan-and-Act under the same environment and economic constraints. The primary comparison is reported in Table 1; the extended four-framework comparison is provided in Table 8.
+
+All results below are obtained under the Easy environment. Each framework is evaluated with three LLM backbones (GLM-4.6, Kimi-K2-Thinking, GPT-5.2). For every model–framework pair, we run three independent episodes with identical initial budget, inventory, and demand configurations and report averaged metrics.
+
+As shown below, our framework consistently achieves stronger long-horizon performance, reflected in longer survival duration and higher cumulative economic returns across models.
+
+Easy Environment — Framework Comparison (Averaged over 3 LLMs, K2-Thinking, GLM 4.6, GPT5-2)
+
+| Framework                          | Avg. Days ↑ | Avg. Daily Sales ↑ | Avg. Daily Income ↑ | Expiry ↓ | Return ↓ |
+|-------------------------------------|------------|-------------------|--------------------|----------|----------|
+| Evolving Strategy & Execution       | **62.55**  | **297.41**        | **217.22**         | 0.0557   | 0.1204   |
+| Reflection (Day-Level)              | 59.11      | 220.36            | 190.19             | 0.0977   | 0.1106   |
+| Reflection (Step-Level)             | 53.11      | 224.08            | 170.83             | 0.0679   | 0.1161   |
+| Plan-and-Act                        | 53.67      | 241.83            | 137.13             | **0.0117** | **0.1083** |
+| Heuristic Policy (Upper Bound)      | 180.00     | 674.18            | 729.46             | 0.0266   | 0.0070   |
+
+While Plan-and-Act achieves slightly lower expiry/return ratios, it yields substantially lower cumulative income and survival duration. In contrast, our framework maintains stronger economic accumulation without sacrificing stability, narrowing the gap to the heuristic upper bound.
+
+⸻
+
+Response to Reviewer sRTG
+
+
+
+
+
+
+
+Response to Reviewer
+
+We thank the reviewer for the helpful comments. Below we address each concern concisely.
+
+⸻
+
+(1) Quantitative Results for Middle and Hard
+
+While Table 1 reports detailed results for the Easy setting, full quantitative results for Middle and Hard environments are provided in Appendix B.3 Table 6 under the proposed framework, covering all six metrics defined in Sec. 4.2.
+
+Across models, we observe:
+	•	Decreasing survival duration from Easy → Middle → Hard
+	•	Increasing expiry and return ratios
+	•	Declining per-category efficiency
+	•	Limited scaling of SKU/category coverage
+
+The heuristic policy remains stable across difficulty levels (Sec. 4.1), indicating that degradation reflects agent limitations rather than environment instability.
+
+⸻
+
+(2) Comparison to Established Agent Paradigms
+
+Our Evolving Strategy & Execution framework (Sec.3) operates at day-level granularity, explicitly decoupling long-term strategy evolution from short-term execution. In the original submission, the Reflection baseline was implemented at the same daily granularity to ensure a structurally aligned and fair comparison (Sec.4.3).
+
+Following your suggestion, we additionally implemented Step-level Reflection and Plan-and-Act under the same environment and economic constraints. The primary comparison is reported in Table 1; the extended four-framework comparison is provided in Table 8.
+
+All results below are obtained under the Easy environment. Each framework is evaluated with three LLM backbones (GLM-4.6, Kimi-K2-Thinking, GPT-5.2). For every model–framework pair, we run three independent episodes with identical initial budget, inventory, and demand configurations and report averaged metrics.
+
+As shown below, our framework consistently achieves stronger long-horizon performance, reflected in longer survival duration and higher cumulative economic returns across models.
+
+Easy Environment — Framework Comparison (Averaged over 3 LLMs, K2-Thinking, GLM 4.6, GPT5-2)
+Easy Environment — Framework Comparison
+
+| Framework                     | Model Setting        | Avg. Days ↑ | Avg. Daily Sales ↑ | Avg. Daily Income ↑ | Expiry ↓ | Return ↓ |
+|--------------------------------|----------------------|------------|-------------------|--------------------|----------|----------|
+| Evolving Strategy & Execution  | Avg. (3 LLMs)        | 62.55      | 297.41            | 217.22             | 0.0557   | 0.1204   |
+|                                | GPT-5.2              | **81.00**  | **457.21**        | **358.27**         | 0.0660   | **0.1141** |
+| Reflection (Day-Level)         | Avg. (3 LLMs)        | 59.11      | 220.36            | 190.19             | 0.0977   | 0.1106   |
+|                                | GPT-5.2              | 64.00      | 283.88            | 260.88             | 0.1774   | **0.0887** |
+| Reflection (Step-Level)        | Avg. (3 LLMs)        | 53.11      | 224.08            | 170.83             | 0.0679   | 0.1161   |
+|                                | GPT-5.2              | **56.00**  | **398.71**        | **324.01**         | 0.1536   | **0.1048** |
+| Plan-and-Act                   | Avg. (3 LLMs)        | 53.67      | 241.83            | 137.13             | **0.0117** | 0.1083   |
+|                                | GPT-5.2              | **64.00**  | 323.88            | 193.02             | 0.0152   | 0.1096   |
+| Heuristic Policy (Upper Bound) | —                    | 180.00     | 674.18            | 729.46             | 0.0266   | 0.0070   |
+
+While Plan-and-Act achieves slightly lower expiry/return ratios, it yields substantially lower cumulative income and survival duration. In contrast, our framework maintains stronger economic accumulation without sacrificing stability, narrowing the gap to the heuristic upper bound.
+
+⸻
+
+(3) Stronger Models and Benchmark Headroom
+
+We evaluate GPT5-2 model in 上面的table 中,可以发现更强的close source 在我们的框架下表现更佳,但是还是无法正常的运营店铺,还是 Policy 还是有所gap
+
+
+⸻
+
+(4) Public Accessibility
+
+Due to ACL double-blind policy, the code is not publicly released. However, all source code, prompts, and logs are included in the supplementary materials. We will release the full benchmark upon acceptance.
+
+⸻
+
+We appreciate the reviewer’s suggestions and will revise the manuscript to improve clarity and presentation.
+
+
+
+
+
+
+
+
+
+
+
+Response to Reviewer WWXt
+
+Summary Of Weaknesses:
+The proposed evolving strategy and execution framework are vaguely described in section 3.1, which does not make it clear to the reader what the key novelties are.
+
+Experiments conducted on 7 existing LLMs are merely an engineering setting for a practical problem.
+
+The benchmark has limited value and usefulness for the ACL research community.
+
+讲 motivation then 讲 novelty
+
+% Thank you for your comment regarding the practical value of the benchmark.
+
+% Our motivation is to evaluate LLM-based agents in environments where decisions have long-term, compounding consequences under economic constraints. While the retail setting is indeed domain-specific, it is intentionally designed to instantiate several fundamental challenges that extend beyond retail itself: long-horizon planning, delayed feedback, resource allocation under budget constraints, coordination across interdependent components, and robustness to non-stationary signals. We view the retail simulation as a concrete and controlled testbed for studying these broader properties of agent behavior.
+
+
+% 提出的 Agent Framework novelty 在于 Prior agent frameworks, including ReAct, Reflec- 202
+% tion, and Plan-and-Act, either do not maintain a persistent 
+% global strategy, leading to inconsistent behaviors, 
+% or revise strategies during action execution, which 
+% can induce oscillation and gradual goal drift in 
+% long-horizon environments.
+% To address these limitations, we propose an 209
+% explicit two-stage interaction framework, termed 
+% Evolving Strategy & Execution, that separates 
+% strategic deliberation from operational execution. 
+% The framework maintains a persistent global strat- 
+% egy and restricts strategy updates to a day-level 
+% granularity to prevent excessive short-term fluctua- 
+% tions. 
+
+% 我们将提出的 framework在当前环境下进行了实验, 相比于其他framework, 我们的效果更好
+% ## Easy Environment — Framework Comparison
+
+% ### Evolving Strategy & Execution
+
+% | Model | Avg. Days ↑ | Avg. Daily Sales ↑ | Avg. Daily Income ↑ | Expiry Ratio ↓ | Return Ratio ↓ | Max Days ↑ |
+% |--------|------------|-------------------|--------------------|---------------|---------------|------------|
+% | GLM-4.6 | 52.40 | 174.34 | 124.67 | 0.0773 | 0.1293 | 58 |
+% | Kimi-K2 (Thinking) | 54.25 | 260.68 | 168.72 | **0.0239** | 0.1179 | 58 |
+% | GPT-5.2 | **81.00** | **457.21** | **358.27** | 0.0660 | **0.1141** | **81** |
+% | **Average (3 models)** | **62.55** | **297.41** | **217.22** | 0.0557 | 0.1204 | **65.67** |
+
+% ---
+
+% ### Reflection (Day-Level)
+
+% | Model | Avg. Days ↑ | Avg. Daily Sales ↑ | Avg. Daily Income ↑ | Expiry Ratio ↓ | Return Ratio ↓ | Max Days ↑ |
+% |--------|------------|-------------------|--------------------|---------------|---------------|------------|
+% | GLM-4.6 | 55.00 | 160.70 | 125.67 | **0.0194** | 0.1176 | 62 |
+% | Kimi-K2 (Thinking) | **58.33** | 216.51 | 184.01 | 0.0964 | 0.1255 | **71** |
+% | GPT-5.2 | 64.00 | **283.88** | **260.88** | 0.1774 | **0.0887** | 64 |
+% | **Average (3 models)** | 59.11 | 220.36 | 190.19 | 0.0977 | 0.1106 | 65.67 |
+
+% ---
+
+% ### Reflection (Step-Level)
+
+% | Model | Avg. Days ↑ | Avg. Daily Sales ↑ | Avg. Daily Income ↑ | Expiry Ratio ↓ | Return Ratio ↓ | Max Days ↑ |
+% |--------|------------|-------------------|--------------------|---------------|---------------|------------|
+% | GLM-4.6 | 51.67 | 92.35 | 77.18 | **0.0148** | 0.1072 | 57 |
+% | Kimi-K2 (Thinking) | 51.67 | 181.19 | 111.29 | 0.0353 | 0.1362 | 53 |
+% | GPT-5.2 | **56.00** | **398.71** | **324.01** | 0.1536 | **0.1048** | **56** |
+% | **Average (3 models)** | 53.11 | 224.08 | 170.83 | 0.0679 | 0.1161 | 55.33 |
+
+% ---
+
+% ### Plan-and-Act
+
+% | Model | Avg. Days ↑ | Avg. Daily Sales ↑ | Avg. Daily Income ↑ | Expiry Ratio ↓ | Return Ratio ↓ | Max Days ↑ |
+% |--------|------------|-------------------|--------------------|---------------|---------------|------------|
+% | GLM-4.6 | 48.33 | 231.35 | 113.01 | 0.0198 | 0.1096 | 55 |
+% | Kimi-K2 (Thinking) | 48.67 | 170.26 | 105.36 | **0.0000** | **0.1056** | 51 |
+% | GPT-5.2 | **64.00** | **323.88** | **193.02** | 0.0152 | 0.1096 | **64** |
+% | **Average (3 models)** | 53.67 | 241.83 | 137.13 | **0.0117** | **0.1083** | 56.67 |
+
+% ---
+
+% ### Heuristic Policy (Upper Bound, Easy)
+
+% | Policy | Avg. Days ↑ | Avg. Daily Sales ↑ | Avg. Daily Income ↑ | Expiry Ratio ↓ | Return Ratio ↓ | Max Days ↑ |
+% |----------|------------|-------------------|--------------------|---------------|---------------|------------|
+% | Hand-crafted Policy | 180.00 | 674.18 | 729.46 | 0.0266 | 0.0070 | 180 |
+
+
+% We acknowledge that the environment is not intended to represent all real-world applications. Rather, it serves as a structured scenario to isolate and stress-test long-term decision consistency—an aspect that is often underrepresented in existing short-horizon benchmarks.
+
+% If your concern is that the setting appears limited in scope or lacks practical relevance, we would greatly appreciate further clarification on which aspect you find less meaningful (e.g., domain specificity, realism of assumptions, generalizability, scalability, or evaluation metrics). Understanding the specific concern would allow us to address it more precisely and improve the presentation accordingly.
+
+
+Thank you for raising the concern regarding the practical value of the benchmark.
+
+Scope and Motivation
+
+Our goal is not to model retail as an end application, but to evaluate LLM-based agents in environments where decisions generate long-term, compounding consequences under economic constraints. The retail simulation serves as a controlled testbed to expose core structural challenges in sequential decision-making, including:
+	•	long-horizon planning with delayed feedback
+	•	budget-constrained resource allocation
+	•	coordination across interdependent actions
+	•	robustness to non-stationary demand
+
+These properties are domain-agnostic and arise in many real-world decision systems. We use retail because it provides interpretable economic signals and measurable cumulative outcomes.
+
+⸻
+
+Methodological Contribution
+
+Prior agent frameworks (e.g., ReAct, Reflection, Plan-and-Act) typically exhibit one of two limitations in long-horizon settings:
+	1.	They do not maintain a persistent global strategy, leading to temporal inconsistency.
+	2.	They revise strategies during execution at fine granularity, which can induce oscillation and gradual goal drift.
+
+We propose Evolving Strategy & Execution, a two-stage interaction framework that:
+	•	explicitly separates strategic deliberation from operational execution,
+	•	maintains a persistent global strategy, and
+	•	restricts strategy updates to day-level granularity.
+    •	introduces hierarchical strategy grouping, decomposing global objectives into executable sub-strategies with explicit operational roles.
+    
+This design enforces temporal coherence while preserving controlled adaptability.
+
+⸻
+
+Experimental Setup (Table X)
+
+Results in Table Belowed are obtained under the Easy environment described in the main paper. Each framework is evaluated with three LLM backbones (GLM-4.6, Kimi-K2-Thinking, GPT-5.2). For every model–framework pair, we run three independent episodes under identical initial budget, inventory, and demand configurations and report averaged metrics.
+
+As shown in Table below, our framework consistently achieves superior long-horizon performance in this benchmark, reflected in longer survival duration and higher cumulative economic returns compared to alternative interaction designs.
+
+Easy Environment — Framework Comparison (Averaged over 3 LLMs, K2-Thinking, GLM 4.6, GPT5-2)
+
+| Framework                          | Avg. Days ↑ | Avg. Daily Sales ↑ | Avg. Daily Income ↑ | Expiry ↓ | Return ↓ |
+|-------------------------------------|------------|-------------------|--------------------|----------|----------|
+| Evolving Strategy & Execution       | **62.55**  | **297.41**        | **217.22**         | 0.0557   | 0.1204   |
+| Reflection (Day-Level)              | 59.11      | 220.36            | 190.19             | 0.0977   | 0.1106   |
+| Reflection (Step-Level)             | 53.11      | 224.08            | 170.83             | 0.0679   | 0.1161   |
+| Plan-and-Act                        | 53.67      | 241.83            | 137.13             | **0.0117** | **0.1083** |
+| Heuristic Policy (Upper Bound)      | 180.00     | 674.18            | 729.46             | 0.0266   | 0.0070   |
+
+We acknowledge that the environment does not aim to cover all real-world applications. Rather, it serves as a structured setting to isolate and stress-test long-term decision consistency—an aspect often underrepresented in short-horizon benchmarks. We view it as complementary to existing evaluation paradigms.
+
+If there are concerns regarding the validity of the benchmark or the proposed framework, we would appreciate clarification on the specific issue—e.g., assumptions in the environment design, generalizability of the setting, evaluation metrics, or attribution of performance gains. The benchmark explicitly instantiates compounding dynamics and budget-constrained decisions, and the framework is designed to stabilize strategy updates under such conditions. We are happy to provide further clarification or additional analysis if needed.

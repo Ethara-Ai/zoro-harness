@@ -1,0 +1,71 @@
+We conduct experiments under three environment configurations with increasing levels of difficulty. These configurations vary in market 
+complexity, budget constraints, and the presence of exogenous dynamics.
+
+
+\subsection{Environment Configurations}
+
+
+We employ a heuristic policy with full access to the environment’s internal state as a calibration baseline for each environment variant. Environment parameters are tuned such that the heuristic policy remains stable across different difficulty levels while still experiencing meaningful operational pressure in Appendix ~\ref{appendix:environment_simulation}. To evaluate models' information-processing and external perception capabilities, we design three environment configurations:
+\begin{itemize}[leftmargin=*]
+    \item \textit{Easy}: A controlled environment without dynamic news events or adaptive supplier price--quality relationships. The market contains five product categories. The agent is initialized with a budget of 10{,}000 and incurs a fixed daily rent of 250.
+    \item \textit{Middle}: A moderately complex environment that expands the product space to all twenty categories while still excluding dynamic news events and supplier adaptations. The initial budget is increased to 50{,}000, with a daily rent of 1{,}000.
+    \item \textit{Hard}: The most challenging and realistic environment, incorporating dynamically generated news events and time-varying supplier price--quality relationships. The market includes all twenty product categories. The agent starts with a budget of 50{,}000, pays a daily rent of 1{,}000, and receives twenty news items per day.
+\end{itemize}
+Detailed specifications of all environment configurations are provided in Appendix~\ref{appendix:env_setting}.
+
+\subsection{Evaluation Metrics}
+
+\paragraph{Metrics.}
+We evaluate store-level operational performance using the following metrics (↑ indicates higher is better; ↓ indicates lower is better):
+\begin{itemize}[leftmargin=*]
+    \item \textit{Days}~(↑): the number of operating days before episode termination;
+    \item \textit{MaxDays}~(↑): the maximum number of operating days achieved across three rollouts;
+    \item \textit{Avg. Daily Sales}~(↑): the average number of items sold per day;
+    \item \textit{Avg. Daily Income}~(↑): the average money earned per day;
+    \item \textit{Expiry Ratio}~(↓): the fraction of products that expire before being sold;
+    \item \textit{Return Ratio}~(↓): the fraction of sold products that are returned by customers.
+\end{itemize}
+
+All reported metrics are averaged over three independent rollouts, each subject to a fixed maximum execution horizon.
+
+
+
+
+% \paragraph{Strategy-Level Metrics.}
+% Under the \textit{Evolving Strategy} framework, we further assess strategic behavior using metrics that capture strategy volatility over time, strategy consistency across decision steps, and the alignment between declared strategies and executed actions.
+
+% \subsection{Agent Frameworks}
+
+% We compare our proposed \textit{Evolving Strategy \& Execution} framework with a Reflection-based baseline \citep{reflection}. Unlike our approach, the Reflection framework does not explicitly represent or maintain high-level strategies. Instead, it relies on iterative experience reflection to summarize past interactions and update a global long-term memory.
+
+% Both frameworks operate under a maximum context length of 40k tokens. Each simulated day consists of up to 50 interaction rounds. For the Reflection baseline, an additional reflection step is performed at the end of each day to summarize execution outcomes and update the long-term memory.
+
+% \subsection{Models}
+
+% We conduct experiments using a diverse set of contemporary large language models, including Qwen-235B-Thinking \citep{qwen3technicalreport}, Kimi K2 Thinking \citep{kimiteam2025kimik2openagentic}, GLM-4.6 \citep{glm4_5}, DeepSeek-V3.2-Exp \citep{deepseekai2025deepseekv32pushingfrontieropen}, Gemini-3-Flash-Preview \citep{gemini3flashpreview}, Grok-4.1-Fast \citep{xai_grok41fast}, and GPT-5-Mini \citep{openai_gpt5mini2025}.
+
+% Due to the substantial token costs incurred during long-horizon rollouts, we use lower-cost variants for closed-source models to ensure experimental feasibility.
+
+% \subsection{Settings}
+
+% We evaluate seven large language models under each of the three environment configurations. Each model is assessed using three independent rollouts, and all reported metrics are averaged over these runs.
+
+% To isolate the effect of the agent framework, we further conduct a controlled comparison between the proposed framework and the Reflection baseline in the \textit{Easy} environment. In this setting, each framework is evaluated with three independent rollouts under identical environmental conditions.
+
+% Finally, to quantify the gap between current LLM-based agents and an environment-optimal strategy, we implement a hand-crafted policy based on internal knowledge that can't be accessed to the agents. This policy serves as an approximate upper bound on achievable performance within the simulated environment.
+
+\subsection{Experimental Setup}
+
+\paragraph{Agent Frameworks.}
+
+Preliminary experiments indicate that simple ReAct-style interaction frameworks are unstable in long-horizon settings, frequently exhibiting premature episode termination during mid-horizon execution. This observation motivates the evaluation of agent frameworks that explicitly support sustained strategic control.
+
+We compare our proposed \textit{Evolving Strategy \& Execution} framework with step-level Reflection, day-level Reflection, and the Plan-and-Act baseline \citep{reflection, 2025planandact}. For the Reflection framework, we implement two variants with different reflection frequencies: (1) step-level reflection, where the agent reflects after each action, and (2) day-level reflection, where reflection is performed once per day after completing daily actions.
+
+Full prompt specifications for all frameworks are provided in Appendix~\ref{appendix:prompt}.
+
+\paragraph{Models and Evaluation Protocol.}
+
+We evaluate a diverse set of contemporary large language models, including Qwen-235B (Thinking) \citep{qwen3technicalreport}, Kimi K2 (Thinking) \citep{kimiteam2025kimik2openagentic}, GLM-4.6 \citep{glm4_5}, DeepSeek-V3.2-Exp \citep{deepseekai2025deepseekv32pushingfrontieropen}, Gemini-3-Flash-Preview \citep{gemini3flashpreview}, Grok-4.1 Fast \citep{xai_grok41fast}, GPT-5-Mini \citep{openai_gpt5mini2025}, and GPT-5.2 \citep{openai_gpt52}. To manage the substantial token costs of long-horizon rollouts, lower-cost variants are used for closed-source models when available.
+
+Each model is evaluated across three environment configurations, with three independent rollouts per configuration; results are averaged across runs. To isolate the effect of the agent framework, we conduct controlled comparisons between our framework and baseline methods in the \textit{Easy} environment under identical conditions. We further implement a hand-crafted policy based on privileged internal knowledge unavailable to the agents, which serves as an approximate upper bound on performance.

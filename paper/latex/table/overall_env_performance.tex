@@ -1,0 +1,162 @@
+% \begin{table*}[t]
+% \centering
+% {\fontsize{6.8pt}{8.6pt}\selectfont
+% \setlength{\tabcolsep}{2.2pt}
+% \resizebox{\textwidth}{!}{
+% \begin{tabular}{lcccccc ccccccc ccccccc}
+% \toprule
+% \multirow{2}{*}{\textbf{Model}} &
+% \multicolumn{6}{c}{\textbf{EASY (5 Cat.)}} &
+% \multicolumn{6}{c}{\textbf{MIDDLE (20 Cat.)}} &
+% \multicolumn{6}{c}{\textbf{HARD (20 Cat.)}} \\
+% \cline{2-19}
+%  & \textbf{Days} & \textbf{Sales} & \textbf{Profit}
+%  & \textbf{Expire$\downarrow$} & \textbf{Return$\downarrow$} & \textbf{MaxDays}
+%  & \textbf{Days} & \textbf{Sales} & \textbf{Profit}
+%  & \textbf{Expire$\downarrow$} & \textbf{Return$\downarrow$} & \textbf{MaxDays}
+%  & \textbf{Days} & \textbf{Sales} & \textbf{Profit}
+%  & \textbf{Expire$\downarrow$} & \textbf{Return$\downarrow$} & \textbf{MaxDays} \\
+% \midrule
+
+% DeepSeek-V3.2 (Exp.) &
+% 58.33 & 229.19 & 183.26 & 0.0889 & 0.1122 & 66 &
+% 54.67 & 263.68 & 255.30 & 0.1064 & 0.1818 & 63 &
+% 56.67 & 165.86 & 175.79 & 0.0787 & 0.1978 & 59 \\
+
+% Gemini-3 (Fast) &
+% 50.67 & 399.39 & 294.71 & 0.0799 & 0.1311 & 59 &
+% 42.67 & 439.05 & 449.04 & 0.0188 & 0.1630 & 48 &
+% 35.33 & 513.10 & 650.94 & 0.0906 & 0.1542 & 44 \\
+
+% GLM-4.6 &
+% 52.40 & 174.34 & 124.67 & 0.0773 & 0.1293 & 58 &
+% 54.33 & 182.55 & 131.90 & 0.0237 & 0.1274 & 56 &
+% 53.33 & 205.76 & 203.07 & 0.0645 & 0.1648 & 55 \\
+
+% Grok-4.1 Fast &
+% 61.75 & 508.08 & 336.94 & 0.0417 & 0.0847 & 88 &
+% 51.00 & 720.69 & 398.23 & 0.0407 & 0.1160 & 59 &
+% 33.67 & 504.57 & 364.52 & 0.0424 & 0.1797 & 50 \\
+
+% Kimi-K2 (Thinking) &
+% 54.25 & 260.68 & 168.72 & 0.0239 & 0.1179 & 58 &
+% 37.00 & 347.78 & 356.10 & 0.0037 & 0.1677 & 50 &
+% 43.67 & 248.64 & 312.82 & 0.0113 & 0.1889 & 57 \\
+
+% OpenAI-5.1 Mini &
+% 51.75 & 192.90 & 122.46 & 0.0360 & 0.1237 & 55 &
+% 56.33 & 336.24 & 223.60 & 0.1307 & 0.1235 & 57 &
+% 55.33 & 331.36 & 335.32 & 0.1949 & 0.1923 & 57 \\
+
+% Qwen-235B &
+% 37.50 & 420.31 & 236.50 & 0.0745 & 0.0841 & 48 &
+% 29.33 & 216.06 & 179.42 & 0.0639 & 0.1333 & 45 &
+% 40.33 & 433.64 & 268.06 & 0.1746 & 0.1834 & 48 \\
+
+% \midrule
+% \textbf{Average (7 models)} &
+% 52.38 & 301.98 & 203.30 & 0.0590 & 0.1068 & 61.71 &
+% 46.48 & 364.24 & 282.48 & 0.0491 & 0.1399 & 54.00 &
+% 45.48 & 320.96 & 311.28 & 0.0960 & 0.1791 & 52.86 \\
+
+% \midrule
+% \textbf{Hand-crafted Policy (Env Data)} &
+% 180.00 & 674.18 & 729.46 & 0.0266 & 0.0070 & 180 &
+% 180.00 & 1870.21 & 2809.39 & 0.0272 & 0.0074 & 180 &
+% 180.00 & 1667.84 & 2748.94 & 0.0507 & 0.0075 & 180 \\
+
+% \bottomrule
+% \end{tabular}
+% }}
+% \caption{
+% Unified results across three scenarios.
+% Lower Expire and Return ratios indicate better operational stability.
+% A hand-crafted policy derived from environment data is reported as an approximate upper bound.
+% }
+% \label{tab:three_scenarios_all_metrics_no_purchase_aligned_names}
+% \vspace{-5mm}
+% \end{table*}
+\begin{table*}[t]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{lrrrrcc}
+    \toprule
+    Model & Avg. Days $\uparrow$ & Avg. Daily Sales $\uparrow$ & Avg. Daily Income $\uparrow$ & Expiry Ratio $\downarrow$ & Return Ratio $\downarrow$ & Max Days $\uparrow$ \\
+    \midrule
+
+    % =====================================================
+    \multicolumn{7}{l}{\cellcolor{gray!20}\textit{Difficulty: EASY (5 Categories)}} \\
+    \midrule
+    DeepSeek-V3.2 (Exp.) & 58.33 & 229.19 & 183.26 & 0.0889 & 0.1122 & 66 \\
+    Gemini-3 (Fast)      & 50.67 & 399.39 & 294.71 & 0.0799 & 0.1311 & 59 \\
+    GLM-4.6              & 52.40 & 174.34 & 124.67 & 0.0773 & 0.1293 & 58 \\
+    Grok-4.1 Fast        & 61.75 & 508.08 & 336.94 & 0.0417 & 0.0847 & 88 \\
+    Kimi-K2 (Thinking)   & 54.25 & 260.68 & 168.72 & 0.0239 & 0.1179 & 58 \\
+    OpenAI-5.1 Mini      & 51.75 & 192.90 & 122.46 & 0.0360 & 0.1237 & 55 \\
+    Qwen-235B            & 37.50 & 420.31 & 236.50 & 0.0745 & 0.0841 & 48 \\
+    \midrule
+    \textbf{Average (7 models)} 
+        & \textbf{52.38} 
+        & \textbf{301.98} 
+        & \textbf{203.30} 
+        & \textbf{0.0590} 
+        & \textbf{0.1068} 
+        & \textbf{61.71} \\
+    \midrule
+    Hand-crafted Policy & 180.00 & 674.18 & 729.46 & 0.0266 & 0.0070 & 180 \\
+    \midrule
+
+    % =====================================================
+    \multicolumn{7}{l}{\cellcolor{gray!20}\textit{Difficulty: MIDDLE (20 Categories)}} \\
+    \midrule
+    DeepSeek-V3.2 (Exp.) & 54.67 & 263.68 & 255.30 & 0.1064 & 0.1818 & 63 \\
+    Gemini-3 (Fast)      & 42.67 & 439.05 & 449.04 & 0.0188 & 0.1630 & 48 \\
+    GLM-4.6              & 54.33 & 182.55 & 131.90 & 0.0237 & 0.1274 & 56 \\
+    Grok-4.1 Fast        & 51.00 & 720.69 & 398.23 & 0.0407 & 0.1160 & 59 \\
+    Kimi-K2 (Thinking)   & 37.00 & 347.78 & 356.10 & 0.0037 & 0.1677 & 50 \\
+    OpenAI-5.1 Mini      & 56.33 & 336.24 & 223.60 & 0.1307 & 0.1235 & 57 \\
+    Qwen-235B            & 29.33 & 216.06 & 179.42 & 0.0639 & 0.1333 & 45 \\
+    \midrule
+    \textbf{Average (7 models)} 
+        & \textbf{46.48} 
+        & \textbf{364.24} 
+        & \textbf{282.48} 
+        & \textbf{0.0491} 
+        & \textbf{0.1399} 
+        & \textbf{54.00} \\
+    \midrule
+    Hand-crafted Policy & 180.00 & 1870.21 & 2809.39 & 0.0272 & 0.0074 & 180 \\
+    \midrule
+
+    % =====================================================
+    \multicolumn{7}{l}{\cellcolor{gray!20}\textit{Difficulty: HARD (20 Categories)}} \\
+    \midrule
+    DeepSeek-V3.2 (Exp.) & 56.67 & 165.86 & 175.79 & 0.0787 & 0.1978 & 59 \\
+    Gemini-3 (Fast)      & 35.33 & 513.10 & 650.94 & 0.0906 & 0.1542 & 44 \\
+    GLM-4.6              & 53.33 & 205.76 & 203.07 & 0.0645 & 0.1648 & 55 \\
+    Grok-4.1 Fast        & 33.67 & 504.57 & 364.52 & 0.0424 & 0.1797 & 50 \\
+    Kimi-K2 (Thinking)   & 43.67 & 248.64 & 312.82 & 0.0113 & 0.1889 & 57 \\
+    OpenAI-5.1 Mini      & 55.33 & 331.36 & 335.32 & 0.1949 & 0.1923 & 57 \\
+    Qwen-235B            & 40.33 & 433.64 & 268.06 & 0.1746 & 0.1834 & 48 \\
+    \midrule
+    \textbf{Average (7 models)} 
+        & \textbf{45.48} 
+        & \textbf{320.96} 
+        & \textbf{311.28} 
+        & \textbf{0.0960} 
+        & \textbf{0.1791} 
+        & \textbf{52.86} \\
+    \midrule
+    Hand-crafted Policy & 180.00 & 1667.84 & 2748.94 & 0.0507 & 0.0075 & 180 \\
+
+    \bottomrule
+    \end{tabular}
+    }
+    \caption{
+    Performance comparison of seven large language models under three difficulty levels.
+    Lower Expiry and Return ratios indicate better operational stability.
+    A hand-crafted policy is included as an approximate upper bound for each difficulty.
+    }
+    \label{tab:three_difficulty_flat}
+    \vspace{-5mm}
+\end{table*}

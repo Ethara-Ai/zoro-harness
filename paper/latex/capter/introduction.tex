@@ -1,0 +1,38 @@
+% Recent large language models (LLMs), especially when augmented with reasoning and tool-use capabilities, have achieved strong performance on a range of cognitively demanding tasks, including code editing, mathematical problem solving, and complex information retrieval \citep{swe-bench, hle, omni-olpc}. However, growing evidence suggests that such capabilities do not yet translate into robust, general-purpose autonomy across the full spectrum of human cognitive labor \citep{amodei2024machines, kwa2025measuringaiabilitycomplete, aisi2025limitations}. In particular, prior work shows that superhuman or near-superhuman performance is largely limited to short-horizon or highly structured settings, while performance degrades in tasks requiring long-term planning, persistent goal maintenance, and adaptation to dynamic environments \citep{kwa2025measuringaiabilitycomplete, metr2025measuring}.
+
+% To evaluate LLM-based agents in more realistic settings, prior work has introduced agent-based benchmarks covering web interaction \citep{mialon2023gaiabenchmarkgeneralai, browsecomp, webarenarea, mind2web}, code editing \citep{swe-bench, tbench_2025}, and multimodal understanding \citep{mmmupro, videommmu}. While effective, these benchmarks primarily focus on short-horizon tasks with limited temporal dependencies, limiting their ability to assess sustained interaction with complex, evolving environments. Recent simulation-based benchmarks targeting long-horizon autonomy \citep{nof1, andonlabs2025vendingbench2, backlund2025vendingbenchbenchmarklongtermcoherence} consistently show that even state-of-the-art agents struggle to maintain coherent strategies over extended time spans.
+
+% In this work, we introduce a new benchmark grounded in real-world commercial data and informed by established economic modeling principles. We focus on a supermarket operation scenario, which requires long-term decision-making, continual interaction with a dynamic environment, and the integration of heterogeneous information sources. The benchmark evaluates whether LLM-based agents can autonomously sustain realistic business operations under dynamic, multi-factor conditions.
+
+% Our contributions are summarized as follows:
+
+% \begin{itemize}[leftmargin=*]
+% \item We introduce a high-fidelity business simulation environment that models key aspects of real-world retail operations, including inventory management, pricing and sales dynamics, supply-chain control, customer feedback, and external news events. The environment captures realistic operational constraints and temporal dependencies, enabling systematic evaluation of long-horizon agent behavior. We further propose the \textit{Evolving Strategy \& Execution Agent} framework, which outperforms a Reflection-based baseline across all evaluated metrics.
+
+% \item 
+% \end{itemize}
+
+Recent large language models (LLMs), particularly when augmented with reasoning and tool-use capabilities, have demonstrated strong performance on a variety of cognitively demanding tasks, including code editing, mathematical problem solving, and complex information retrieval \citep{swe-bench, hle, omni-olpc}. However, accumulating empirical evidence indicates that such capabilities fail to generalize into robust, domain-agnostic autonomy, especially in realistic settings requiring long-horizon planning, persistent objective alignment, and stable behavioral consistency—core prerequisites for participation in real-world economic systems \citep{amodei2024machines, kwa2025measuringaiabilitycomplete, metr2025measuring}. Correspondingly, existing agent benchmarks—spanning web interaction \citep{mialon2023gaiabenchmarkgeneralai, browsecomp, webarenarea, mind2web, swe-bench, tbench_2025} primarily focus on short-horizon or highly structured tasks, limiting their ability to evaluate sustained interaction with complex, evolving environments. Recent studies on long-horizon autonomy consistently demonstrate that even state-of-the-art agents struggle to maintain coherent strategies over extended time spans \citep{nof1, andonlabs2025vendingbench2, backlund2025vendingbenchbenchmarklongtermcoherence}.
+
+\begin{figure*}[t]
+\begin{center}
+\includegraphics[width=\linewidth]{latex/figures/env.pdf}
+\end{center}
+\caption{
+Overview of the hierarchical supermarket environment, illustrating intra-day agent–environment interactions and end-of-day state transition dynamics.
+}
+\label{fig:workflow}
+\vspace{-5mm}
+\end{figure*}
+
+To systematically study this challenge, we introduce \textit{RetailBench}, a new benchmark grounded in real-world commercial data and informed by established economic modeling principles.RetailBench centers on a supermarket operation scenario that demands long-horizon decision-making, sustained interaction with a dynamic environment, and the integration of heterogeneous historical information. The benchmark evaluates whether LLM-based agents can autonomously sustain realistic business operations under complex, multi-factor conditions.
+
+
+We evaluate eight state-of-the-art LLMs in this environment. Our results show that current models struggle to maintain stable decision quality as the decision space expands and often fail to incorporate all relevant information. Moreover, hallucinations and economically irrational behaviors frequently emerge during long-horizon execution, leading to environment collapse and preventing sustained autonomous operation.
+
+Our contributions are summarized as follows:
+\begin{itemize}[leftmargin=*]
+    \item We introduce \textit{RetailBench}, a high-fidelity benchmark for evaluating long-horizon autonomous decision-making in realistic retail environments.
+    \item We propose the \textit{Evolving Strategy \& Execution} agent framework, which improves operational stability compared to a Reflection-based baseline.
+    \item Through extensive experiments, we identify systematic failure modes of current LLM-based agents in long-horizon, multi-factor decision-making settings.
+\end{itemize}
