@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-分析 paper_data 文件夹下的运行数据，按场景（still_middle, still_hard, dynamic_hard）分别展示
+分析 paper_data 文件夹下的运行数据，按输入目录中的场景子文件夹分别展示
 """
 
 import json
@@ -14,6 +14,47 @@ try:
     HAS_TABULATE = True
 except ImportError:
     HAS_TABULATE = False
+
+
+SCENARIO_DISPLAY_NAMES = {
+    'still_middle': 'Easy',
+    'still_hard': 'Middle',
+    'dynamic_hard': 'Hard',
+    'baseline': 'Baseline',
+}
+
+KNOWN_CONFIG_TYPES = {
+    'still_middle',
+    'still_hard',
+    'dynamic_middle',
+    'dynamic_hard',
+    'still_middle2',
+}
+
+
+def get_scenario_display_name(scenario_name: str) -> str:
+    """将场景名映射为显示名，未知场景保持原名。"""
+    return SCENARIO_DISPLAY_NAMES.get(scenario_name, scenario_name)
+
+
+def get_scenario_color_map(scenarios, plt_module):
+    """为场景生成颜色映射；已知场景用固定色，未知场景自动分配。"""
+    base_colors = {
+        'still_middle': '#3989BD',
+        'still_hard': '#FF8F2B',
+        'dynamic_hard': '#50B150',
+        'baseline': '#8F8F8F',
+    }
+    color_map = {}
+    unknown = [s for s in scenarios if s not in base_colors]
+    if unknown:
+        palette = plt_module.cm.tab20(range(len(unknown)))
+        for idx, scenario in enumerate(unknown):
+            color_map[scenario] = palette[idx]
+    for scenario in scenarios:
+        if scenario in base_colors:
+            color_map[scenario] = base_colors[scenario]
+    return color_map
 
 def parse_date(date_str):
     """解析日期字符串"""
@@ -130,16 +171,11 @@ def analyze_tool_calls(tool_calls_path):
     dates.sort()
     run_days = len(set(dates))
 
-    if 'still_middle' in tool_calls_path:
-        scenario = 'still_middle'
-    elif 'still_hard' in tool_calls_path:
-        scenario = 'still_hard'
-    elif 'dynamic_hard' in tool_calls_path:
-        scenario = 'dynamic_hard'
+    path_key = str(tool_calls_path).lower()
+    if 'middle' in path_key and 'hard' not in path_key:
+        category_number = 5
     else:
-        scenario = 'unknown'
-
-    category_number = 5 if scenario == 'still_middle' else 20
+        category_number = 20
     
     avg_daily_sales = sum(d['total_sales'] for d in daily_data) / len(daily_data) if daily_data else 0
     avg_daily_profit = sum(d['money_earned'] for d in daily_data) / len(daily_data) if daily_data else 0
@@ -211,8 +247,9 @@ def validate_args_json(run_dir, scenario_name):
             # 对于非 baseline 场景，直接使用 config_type 字段
             config_type = args.get('config_type', '')
         
-        if config_type != scenario_name and scenario_name != 'baseline':
-            # baseline 场景不需要与文件夹名匹配，因为它可能包含多个配置类型
+        # 仅当场景名本身就是配置类型时，才严格校验匹配；
+        # 对于自定义场景目录（例如按 framework 分组）不做该限制。
+        if scenario_name in KNOWN_CONFIG_TYPES and config_type != scenario_name:
             print(f"    Warning: {run_dir.name} - args.json config_type '{config_type}' doesn't match folder '{scenario_name}'")
             return False, config_type
         
@@ -238,22 +275,26 @@ def analyze_paper_data(paper_data_dir):
     }
     
     try:
-        for scenario_dir in paper_data_path.iterdir():
-            if not scenario_dir.is_dir():
-                continue
-            
+        scenario_dirs = sorted(
+            [d for d in paper_data_path.iterdir() if d.is_dir()],
+            key=lambda p: p.name,
+        )
+        for scenario_dir in scenario_dirs:
             scenario_name = scenario_dir.name
             print(f"Processing scenario: {scenario_name}")
-            
-            for model_dir in scenario_dir.iterdir():
-                if not model_dir.is_dir():
-                    continue
-                
+
+            model_dirs = sorted(
+                [d for d in scenario_dir.iterdir() if d.is_dir()],
+                key=lambda p: p.name,
+            )
+            for model_dir in model_dirs:
                 model_name = model_dir.name
-                
-                for run_dir in model_dir.iterdir():
-                    if not run_dir.is_dir() or not run_dir.name.startswith('run_env_'):
-                        continue
+
+                run_dirs = sorted(
+                    [d for d in model_dir.iterdir() if d.is_dir() and d.name.startswith('run_')],
+                    key=lambda p: p.name,
+                )
+                for run_dir in run_dirs:
                     
                     validation_stats['total_runs'] += 1
                     
@@ -339,17 +380,19 @@ def calculate_statistics(scenario_data):
             if not config_type or config_type == 'unknown':
                 config_type = scenario
             
-            # 根据场景确定类别数量
-            if config_type == 'still_middle' or config_type == 'baseline':
+            # 根据配置类型/场景名称推断类别数量
+            config_key = str(config_type).lower()
+            scenario_key = str(scenario).lower()
+            if 'middle' in config_key and 'hard' not in config_key:
                 category_number = 5
-            elif config_type in ['still_hard', 'dynamic_hard']:
+            elif 'hard' in config_key:
+                category_number = 20
+            elif 'middle' in scenario_key and 'hard' not in scenario_key:
+                category_number = 5
+            elif 'hard' in scenario_key:
                 category_number = 20
             else:
-                # 默认从路径判断
-                if 'still_middle' in scenario or 'baseline' in scenario:
-                    category_number = 5
-                else:
-                    category_number = 20
+                category_number = 20
             
             # 直接计算：平均每类销量 = 平均每天销量 / 类别数
             avg_daily_sales_per_category = avg_daily_sales / category_number if category_number > 0 else 0
@@ -419,14 +462,11 @@ def print_statistics(all_stats):
     print("\n" + "="*100)
     print("统计结果（按场景分组）")
     print("="*100)
-    
-    scenario_order = ['still_middle', 'still_hard', 'dynamic_hard', 'baseline']
-    
-    for scenario in scenario_order:
-        if scenario not in all_stats:
-            continue
-        
-        stats = all_stats[scenario]
+
+    scenario_names = list(all_stats.keys())
+
+    for scenario in scenario_names:
+        stats = all_stats.get(scenario, {})
         if not stats:
             continue
         
@@ -471,10 +511,10 @@ def print_statistics(all_stats):
         else:
             print(format_table_manually(headers, table_data))
         
-        # 计算七个模型的平均值
+        # 计算当前场景所有模型的平均值
         if len(stats) > 0:
             print(f"\n{'='*100}")
-            print("七个模型平均值:")
+            print(f"{len(stats)} 个模型平均值:")
             print(f"{'='*100}\n")
             
             # 计算平均值
@@ -583,14 +623,11 @@ def plot_networth_trajectory(all_stats, output_dir='paper_data_analysis'):
         return
     
     os.makedirs(output_dir, exist_ok=True)
-    scenario_order = ['still_middle', 'still_hard', 'dynamic_hard', 'baseline']
-    
+    scenario_names = list(all_stats.keys())
+
     # 为每个场景创建单独的图
-    for scenario in scenario_order:
-        if scenario not in all_stats:
-            continue
-        
-        stats = all_stats[scenario]
+    for scenario in scenario_names:
+        stats = all_stats.get(scenario, {})
         if not stats:
             continue
         
@@ -639,7 +676,7 @@ def plot_networth_trajectory(all_stats, output_dir='paper_data_analysis'):
 
 def plot_category_metrics(all_stats, output_dir='paper_data_analysis'):
     """绘制 Sales Per Category 和 Income Per Category 柱状图
-    将两个指标放在一个图中，所有场景（still_middle, still_hard, dynamic_hard）放在一起
+    将两个指标放在一个图中，按输入目录中的所有场景绘制
     包含启发式策略（Heuristic Policy）作为对比
     """
     try:
@@ -652,9 +689,11 @@ def plot_category_metrics(all_stats, output_dir='paper_data_analysis'):
         return
     
     os.makedirs(output_dir, exist_ok=True)
-    
-    # 只处理这三个场景
-    scenarios_to_plot = ['still_middle', 'still_hard', 'dynamic_hard']
+
+    scenarios_to_plot = [s for s, stats in all_stats.items() if stats]
+    if not scenarios_to_plot:
+        print("No scenario data found for plotting")
+        return
     
     # 启发式策略数据（Sales By Category, Income By Category）
     heuristic_data = {
@@ -686,8 +725,7 @@ def plot_category_metrics(all_stats, output_dir='paper_data_analysis'):
     # 收集所有模型名称（跨所有场景）
     all_model_names = set()
     for scenario in scenarios_to_plot:
-        if scenario in all_stats:
-            all_model_names.update(all_stats[scenario].keys())
+        all_model_names.update(all_stats[scenario].keys())
     all_model_names = sorted(all_model_names)
     
     if not all_model_names:
@@ -702,8 +740,6 @@ def plot_category_metrics(all_stats, output_dir='paper_data_analysis'):
     profit_data = {scenario: [] for scenario in scenarios_to_plot}
     
     for scenario in scenarios_to_plot:
-        if scenario not in all_stats:
-            continue
         stats = all_stats[scenario]
         for model_name in all_model_names:
             if model_name in stats:
@@ -718,22 +754,15 @@ def plot_category_metrics(all_stats, output_dir='paper_data_analysis'):
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(max(14, len(all_model_names) * 1.2), 12))
     
     x = np.arange(len(all_model_names))
-    width = 0.2  # 每个场景一个柱子，三个场景 + 启发式策略共占宽度
-    
-    # 场景颜色映射（使用更专业、更协调的配色方案）
-    scenario_colors = {
-        'still_middle': '#3989BD',  # 深蓝色 - 专业且易读
-        'still_hard': '#FF8F2B',    # 深紫红色 - 与蓝色形成良好对比
-        'dynamic_hard': '#50B150'   # 深橙色 - 温暖且醒目
-    }
+    num_scenarios = len(scenarios_to_plot)
+    width = min(0.8 / max(num_scenarios, 1), 0.22)
+    scenario_colors = get_scenario_color_map(scenarios_to_plot, plt)
     
     # 绘制 Sales Per Category
     for i, scenario in enumerate(scenarios_to_plot):
-        if scenario not in all_stats:
-            continue
-        offset = (i - 1.5) * width  # -1.5, -0.5, 0.5
+        offset = (i - (num_scenarios - 1) / 2) * width
         color = scenario_colors.get(scenario, 'gray')
-        scenerio_text = "Easy" if scenario == 'still_middle' else "Middle" if scenario == 'still_hard' else "Hard"
+        scenerio_text = get_scenario_display_name(scenario)
         bars = ax1.bar(x + offset, sales_data[scenario], width, label=scenerio_text, 
                       alpha=0.8, color=color)
         
@@ -746,12 +775,12 @@ def plot_category_metrics(all_stats, output_dir='paper_data_analysis'):
                        ha='center', va='bottom')
     
     # 添加启发式策略（用水平线表示，每个场景一条线，使用与柱状图相同的颜色）
-    for i, scenario in enumerate(scenarios_to_plot):
+    for scenario in scenarios_to_plot:
         if scenario in heuristic_data:
             heuristic_sales = heuristic_data[scenario]['sales_per_category']
             color = scenario_colors.get(scenario, 'red')
             # 绘制贯穿整个图表的水平参考线
-            scenerio_text = "Easy" if scenario == 'still_middle' else "Middle" if scenario == 'still_hard' else "Hard"
+            scenerio_text = get_scenario_display_name(scenario)
             ax1.axhline(y=heuristic_sales, color=color, linestyle='--', linewidth=2, 
                        alpha=0.7, label=f'Heuristic ({scenerio_text})')
     
@@ -764,11 +793,9 @@ def plot_category_metrics(all_stats, output_dir='paper_data_analysis'):
     
     # 绘制 Income Per Category
     for i, scenario in enumerate(scenarios_to_plot):
-        if scenario not in all_stats:
-            continue
-        offset = (i - 1.5) * width
+        offset = (i - (num_scenarios - 1) / 2) * width
         color = scenario_colors.get(scenario, 'gray')
-        scenerio_text = "Easy" if scenario == 'still_middle' else "Middle" if scenario == 'still_hard' else "Hard"
+        scenerio_text = get_scenario_display_name(scenario)
         bars = ax2.bar(x + offset, profit_data[scenario], width, label=scenerio_text, 
                       alpha=0.8, color=color)
         
@@ -781,12 +808,12 @@ def plot_category_metrics(all_stats, output_dir='paper_data_analysis'):
                        ha='center', va='bottom')
     
     # 添加启发式策略（用水平线表示，每个场景一条线，使用与柱状图相同的颜色）
-    for i, scenario in enumerate(scenarios_to_plot):
+    for scenario in scenarios_to_plot:
         if scenario in heuristic_data:
             heuristic_income = heuristic_data[scenario]['income_per_category']
             color = scenario_colors.get(scenario, 'red')
             # 绘制贯穿整个图表的水平参考线
-            scenerio_text = "Easy" if scenario == 'still_middle' else "Middle" if scenario == 'still_hard' else "Hard"
+            scenerio_text = get_scenario_display_name(scenario)
             ax2.axhline(y=heuristic_income, color=color, linestyle='--', linewidth=2, 
                        alpha=0.7, label=f'Heuristic ({scenerio_text})')
     
@@ -824,16 +851,11 @@ def plot_selected_models_metrics(all_stats, output_dir='paper_data_analysis'):
         return
     
     os.makedirs(output_dir, exist_ok=True)
-    
-    # 只处理这三个场景
-    scenarios_to_plot = ['still_middle', 'still_hard', 'dynamic_hard']
-    
-    # 场景显示名称映射
-    scenario_display_names = {
-        'still_middle': 'Easy',
-        'still_hard': 'Middle',
-        'dynamic_hard': 'Hard'
-    }
+
+    scenarios_to_plot = [s for s, stats in all_stats.items() if stats]
+    if not scenarios_to_plot:
+        print("No scenario data found for plotting selected models")
+        return
     
     # 模型名称映射
     model_name_mapping = {
@@ -857,20 +879,13 @@ def plot_selected_models_metrics(all_stats, output_dir='paper_data_analysis'):
         print("Selected models not found")
         return
     
-    # 场景颜色映射
-    scenario_colors = {
-        'still_middle': '#3989BD',
-        'still_hard': '#FF8F2B',
-        'dynamic_hard': '#50B150'
-    }
+    scenario_colors = get_scenario_color_map(scenarios_to_plot, plt)
     
     # 准备数据：每个场景每个模型的两个指标
     sales_data = {scenario: [] for scenario in scenarios_to_plot}
     profit_data = {scenario: [] for scenario in scenarios_to_plot}
     
     for scenario in scenarios_to_plot:
-        if scenario not in all_stats:
-            continue
         stats = all_stats[scenario]
         for model_name in selected_model_names:
             if model_name in stats:
@@ -886,25 +901,24 @@ def plot_selected_models_metrics(all_stats, output_dir='paper_data_analysis'):
     
     x = np.arange(len(selected_model_names))
     width = 0.13  # 每个柱子宽度
+    num_scenarios = len(scenarios_to_plot)
     
     # 将原始模型名称映射为显示名称
     display_model_names = [model_name_mapping.get(name, name) for name in selected_model_names]
     
     # 为每个模型绘制柱状图
-    # 每个模型位置：3个场景，每个场景有2个柱子（Sales和Income）
+    # 每个模型位置：N个场景，每个场景有2个柱子（Sales和Income）
     for model_idx in range(len(selected_model_names)):
         base_x = model_idx
         
         # 为每个场景绘制Sales和Income
         for i, scenario in enumerate(scenarios_to_plot):
-            if scenario not in all_stats:
-                continue
-            scenario_offset = (i - 1) * width * 2.5  # 场景之间的间距
+            scenario_offset = (i - (num_scenarios - 1) / 2) * width * 2.5  # 场景之间的间距
             
             # 绘制Sales数据（实心柱，alpha=0.8）
             color = scenario_colors.get(scenario, 'gray')
             sales_val = sales_data[scenario][model_idx]
-            scenario_display = scenario_display_names.get(scenario, scenario.upper())
+            scenario_display = get_scenario_display_name(scenario)
             if sales_val > 0:
                 # 只在第一个模型时添加图例标签
                 label = f'{scenario_display} (Sales)' if model_idx == 0 else ''
@@ -948,9 +962,29 @@ def plot_selected_models_metrics(all_stats, output_dir='paper_data_analysis'):
     plt.close()
 
 def main():
-    paper_data_dir = 'paper_data'
-    
-    print("开始分析 paper_data 文件夹...")
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description='分析 paper_data 场景数据（场景自动按输入目录子文件夹识别）'
+    )
+    parser.add_argument(
+        '--paper-data-dir',
+        type=str,
+        default='paper_data',
+        help='输入目录路径（默认: paper_data）'
+    )
+    parser.add_argument(
+        '--output-dir',
+        type=str,
+        default='paper_data_analysis',
+        help='输出目录路径（默认: paper_data_analysis）'
+    )
+    args = parser.parse_args()
+
+    paper_data_dir = args.paper_data_dir
+    output_dir = args.output_dir
+
+    print(f"开始分析目录: {paper_data_dir}")
     scenario_data = analyze_paper_data(paper_data_dir)
     
     if not scenario_data:
@@ -965,19 +999,18 @@ def main():
     all_stats = calculate_statistics(scenario_data)
     
     print_statistics(all_stats)
-    save_statistics(all_stats)
+    save_statistics(all_stats, output_dir=output_dir)
     
     print("\n绘制 networth 变化轨迹...")
-    plot_networth_trajectory(all_stats)
+    plot_networth_trajectory(all_stats, output_dir=output_dir)
     
     print("\n绘制类别指标柱状图...")
-    plot_category_metrics(all_stats)
+    plot_category_metrics(all_stats, output_dir=output_dir)
     
     print("\n绘制选定模型的类别指标柱状图...")
-    plot_selected_models_metrics(all_stats)
+    plot_selected_models_metrics(all_stats, output_dir=output_dir)
     
     print("\n分析完成！")
 
 if __name__ == '__main__':
     main()
-

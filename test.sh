@@ -7,6 +7,8 @@ bash run_parallel_commands.sh --config script/run_sota.sh --interval 5 --wait
 
 bash run_parallel_commands.sh --config script/run_gpt5_2.sh --interval 5 --wait
 
+bash run_parallel_commands.sh --config script/run_gpt5_2_v2.sh --interval 5 --wait
+
 
 sudo pmset disablesleep 1
 
