@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls -la paper/latex/*.tex)"
+      "Bash(ls -la paper/latex/*.tex)",
+      "Bash(cd paper/latex && pdflatex -interaction=nonstopmode acl_latex.tex 2>&1 | tail -30)",
+      "Bash(pdflatex -interaction=nonstopmode acl_latex.tex > /tmp/compile3.log 2>&1 && echo \"=== First pass completed ===\" && bibtex acl_latex > /tmp/bibtex.log 2>&1 && echo \"=== Bibtex completed ===\" && pdflatex -interaction=nonstopmode acl_latex.tex > /tmp/compile4.log 2>&1 && echo \"=== Second pass completed ===\" && pdflatex -interaction=nonstopmode acl_latex.tex > /tmp/compile5.log 2>&1 && echo \"=== Final pass completed ===\" && ls -lh acl_latex.pdf)",
+      "Bash(pdflatex -interaction=nonstopmode acl_latex.tex 2>&1 | grep -E \"\\(Error|Fatal|completed successfully|PDF\\)\" | tail -20)"
     ]
   }
 }

@@ -1,0 +1,21 @@
+data_dir = ""
+language = "zh"
+
+[log]
+level = "info"
+
+[[projects]]
+name = "notes-claude-telegram"
+
+[projects.agent]
+type = "claudecode"
+
+[projects.agent.options]
+work_dir = "/Users/linghuazhang/Desktop/Project/RetailBench"
+mode = "default"
+
+[[projects.platforms]]
+type = "telegram"
+
+[projects.platforms.options]
+token = "8394900134:AAE4iaWrtb8q3JRAzBgAOwaPvlYYZxfFoeg"

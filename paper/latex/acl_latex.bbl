@@ -1,4 +1,4 @@
-\begin{thebibliography}{40}
+\begin{thebibliography}{38}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Amodei(2024)}]{amodei2024machines}
@@ -26,13 +26,6 @@ ashraq. 2025.
 \newblock financial-news-articles.
 \newblock \url{https://huggingface.co/datasets/ashraq/financial-news-articles}.
 \newblock Accessed: 2025-12-01.
-
-\bibitem[{Backlund and
-  Petersson(2025)}]{backlund2025vendingbenchbenchmarklongtermcoherence}
-Axel Backlund and Lukas Petersson. 2025.
-\newblock \href {https://arxiv.org/abs/2502.15840} {Vending-bench: A benchmark
-  for long-term coherence of autonomous agents}.
-\newblock \emph{Preprint}, arXiv:2502.15840.
 
 \bibitem[{DeepSeek-AI et~al.(2025)DeepSeek-AI, Liu, Mei, Lin, Xue, Wang, Xu,
   Wu, Zhang, Lin, Dong, Lu, Zhao, Deng, Xu, Ruan, Dai, Guo, Yang, Chen, Li,
@@ -184,13 +177,6 @@ Grégoire Mialon, Clémentine Fourrier, Craig Swift, Thomas Wolf, Yann LeCun,
   general ai assistants}.
 \newblock \emph{Preprint}, arXiv:2311.12983.
 
-\bibitem[{{Nof1.ai}(2025)}]{nof1}
-{Nof1.ai}. 2025.
-\newblock Alpha arena — exploring the limits of large language models as
-  quant traders.
-\newblock \url{https://nof1.ai/blog/TechPost1}.
-\newblock Accessed: 2025-12-10.
-
 \bibitem[{{OpenAI}(2025{\natexlab{a}})}]{openai_gpt5mini2025}
 {OpenAI}. 2025{\natexlab{a}}.
 \newblock Gpt-5 mini.
@@ -331,6 +317,13 @@ Long Phan, Alice Gatti, Ziwen Han, Nathaniel Li, Josephina Hu, Hugh Zhang, Chen
 \newblock \href {https://arxiv.org/abs/2501.14249} {Humanity's last exam}.
 \newblock \emph{Preprint}, arXiv:2501.14249.
 
+\bibitem[{Shar et~al.(2022)Shar, Sun, Wang, and Gupta}]{inventory}
+Ibrahim Shar, Wenhuan Sun, Haiyan Wang, and Chetan Gupta. 2022.
+\newblock \href {https://doi.org/10.1109/CASE49997.2022.9926659} {Deep
+  reinforcement learning toward robust multi-echelon supply chain inventory
+  optimization}.
+\newblock pages 1385--1391.
+
 \bibitem[{Shinn et~al.(2023)Shinn, Cassano, Berman, Gopinath, Narasimhan, and
   Yao}]{reflection}
 Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik
@@ -390,15 +383,10 @@ Kimi Team, Yifan Bai, Yiping Bao, Guanduo Chen, Jiahao Chen, Ningxin Chen,
   intelligence}.
 \newblock \emph{Preprint}, arXiv:2507.20534.
 
-\bibitem[{Team(2025{\natexlab{a}})}]{qwen3technicalreport}
-Qwen Team. 2025{\natexlab{a}}.
+\bibitem[{Team(2025)}]{qwen3technicalreport}
+Qwen Team. 2025.
 \newblock \href {https://arxiv.org/abs/2505.09388} {Qwen3 technical report}.
 \newblock \emph{Preprint}, arXiv:2505.09388.
-
-\bibitem[{Team(2025{\natexlab{b}})}]{tbench_2025}
-The Terminal-Bench Team. 2025{\natexlab{b}}.
-\newblock \href {https://github.com/laude-institute/terminal-bench}
-  {Terminal-bench: A benchmark for ai agents in terminal environments}.
 
 \bibitem[{Uncles(1987)}]{Uncles01041987}
 Mark~D. Uncles. 1987.

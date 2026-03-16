@@ -18,45 +18,46 @@ Reallocated name_sep_char (elt_size=1) to 40000 items from 20000.
 Warning--entry type for "openai_gpt52" isn't style-file defined
 --line 639 of file custom.bib
 Warning--empty year in DominicksDataset
-You've used 40 entries,
+Warning--empty booktitle in inventory
+You've used 38 entries,
             3764 wiz_defined-function locations,
-            955 strings with 43810 characters,
-and the built_in function-call counts, 86905 in all, are:
-= -- 6010
-> -- 10773
-< -- 27
-+ -- 4371
+            947 strings with 43541 characters,
+and the built_in function-call counts, 86333 in all, are:
+= -- 5948
+> -- 10767
+< -- 23
++ -- 4370
 - -- 4096
-* -- 9125
-:= -- 15205
-add.period$ -- 168
-call.type$ -- 40
-change.case$ -- 2122
-chr.to.int$ -- 51
-cite$ -- 41
-duplicate$ -- 1693
-empty$ -- 2001
-format.name$ -- 4182
-if$ -- 15434
-int.to.chr$ -- 6
+* -- 9108
+:= -- 15087
+add.period$ -- 160
+call.type$ -- 38
+change.case$ -- 2111
+chr.to.int$ -- 47
+cite$ -- 40
+duplicate$ -- 1661
+empty$ -- 1943
+format.name$ -- 4178
+if$ -- 15301
+int.to.chr$ -- 5
 int.to.str$ -- 6
-missing$ -- 414
-newline$ -- 212
-num.names$ -- 162
-pop$ -- 2754
+missing$ -- 412
+newline$ -- 202
+num.names$ -- 154
+pop$ -- 2750
 preamble$ -- 1
-purify$ -- 2070
+purify$ -- 2062
 quote$ -- 0
-skip$ -- 3411
+skip$ -- 3368
 stack$ -- 0
-substring$ -- 552
-swap$ -- 960
-text.length$ -- 3
+substring$ -- 563
+swap$ -- 958
+text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 360
-warning$ -- 1
-while$ -- 127
+type$ -- 342
+warning$ -- 2
+while$ -- 123
 width$ -- 0
-write$ -- 527
-(There were 2 warnings)
+write$ -- 502
+(There were 3 warnings)
