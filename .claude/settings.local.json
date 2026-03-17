@@ -28,7 +28,27 @@
       "Bash(find /Users/linghuazhang/Desktop/Project/RetailBench -name \"__pycache__\" -type d -exec rm -rf {} + 2>/dev/null; find /Users/linghuazhang/Desktop/Project/RetailBench -name \"*.pyc\" -delete 2>/dev/null; echo \"Cleaned up Python cache files\")",
       "Bash(ls -la /Users/linghuazhang/Desktop/Project/RetailBench/*.md)",
       "Bash(git add .gitattributes .gitignore LICENSE requirements.txt paper/AUTO_REVIEW.md)",
-      "Bash(git add -u)"
+      "Bash(git add -u)",
+      "Bash(cd /Users/linghuazhang/Desktop/Project/RetailBench/arxiv_submission && pdflatex -interaction=nonstopmode main.tex 2>&1 | tail -50)",
+      "Bash(git commit -m \"$\\(cat <<'EOF'\nchore: clean up repository for GitHub release\n\n- Remove temporary files \\(venv, __pycache__, logs, *.log\\)\n- Remove runtime directories \\(model_run_time/, submission/, arxiv_submission/\\)\n- Remove LaTeX temporary files \\(*.aux, *.blg, *.bbl, *.out, *.fdb_latexmk\\)\n- Add requirements.txt for project dependencies\n- Add MIT LICENSE for open source distribution\n- Improve .gitignore with comprehensive rules\n- Setup Git LFS for paper_data/ directory\n- Add paper/AUTO_REVIEW.md for review tracking\n\nThis cleanup reduces repository size by ~3GB and prepares the project\nfor public GitHub release.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push origin main)",
+      "Bash(cd /Users/linghuazhang/Desktop/Project/RetailBench/arxiv_submission/capter && for file in *.tex; do sed -i '' 's|latex/figures/|figures/|g' \"$file\"; sed -i '' 's|latex/table/|table/|g' \"$file\"; done && echo \"Chapter paths updated\")",
+      "Bash(cd /Users/linghuazhang/Desktop/Project/RetailBench/arxiv_submission && sed -i '' 's|latex/capter/|capter/|g' main.tex && sed -i '' 's|./capter/|capter/|g' main.tex && echo \"Main file paths updated\")",
+      "Bash(bibtex main && echo \"BibTeX completed\")",
+      "Bash(ls -la /Users/linghuazhang/Desktop/Project/RetailBench/*.py /Users/linghuazhang/Desktop/Project/RetailBench/*.sh 2>/dev/null | wc -l)",
+      "Bash(find /Users/linghuazhang/Desktop/Project/RetailBench -name \"*.py\" -exec grep -l \"from inventory\\\\|from sku\\\\|import stream_chat\" {} \\\\; | grep -v \"__pycache__\")",
+      "Bash(grep -rn \"from stream_chat import\\\\|from inventory import\\\\|from sku import\" /Users/linghuazhang/Desktop/Project/RetailBench/agents/ /Users/linghuazhang/Desktop/Project/RetailBench/*.py 2>/dev/null)",
+      "Bash(grep -n \"from inventory\\\\|from sku\\\\|from stream_chat\" /Users/linghuazhang/Desktop/Project/RetailBench/*.py /Users/linghuazhang/Desktop/Project/RetailBench/agents/*.py 2>/dev/null)",
+      "Bash(ls -la /Users/linghuazhang/Desktop/Project/RetailBench/*.py)",
+      "Bash(pdflatex -interaction=nonstopmode main.tex >/dev/null 2>&1 && pdflatex -interaction=nonstopmode main.tex 2>&1 | grep -E \"\\(Output written|Error|Warning\\)\" | head -5)",
+      "Bash(pdflatex -interaction=nonstopmode main.tex 2>&1 | tail -50)",
+      "Bash(git add -A)",
+      "Bash(git add agents/ analysis/plot_*.py module/inventory.py module/sku.py module/stream_chat.py script/)",
+      "Bash(git commit -m \"$\\(cat <<'EOF'\nrefactor: organize root directory structure\n\n- Create agents/ directory and move agent scripts:\n  - run_plan_and_act.py\n  - run_reflection.py  \n  - run_step_reflection.py\n  - run_exec_strategy_env.py\n- Move utility modules to module/:\n  - inventory.py\n  - sku.py\n  - stream_chat.py\n- Move plotting scripts to analysis/:\n  - plot_customer_count.py\n  - plot_env_data_networth.py\n  - plot_logs.py\n- Move shell scripts to script/:\n  - run_commands.sh\n  - run_parallel_commands.sh\n  - cc-content.sh\n  - test.py, test.sh\n- Update import statements in all affected files:\n  - agents/run_*.py: from stream_chat -> from module.stream_chat\n  - run_env.py: from stream_chat -> from module.stream_chat\n  - retail_environment.py: from inventory/sku -> from module.inventory/sku\n\nRoot directory now contains only essential files:\n  - retail_environment.py \\(core simulation environment\\)\n  - run_env.py \\(main agent entry point\\)\n  - requirements.txt\n  - README files and documentation\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(ls -la /Users/linghuazhang/Desktop/Project/RetailBench/*.py /Users/linghuazhang/Desktop/Project/RetailBench/*.sh 2>/dev/null)",
+      "Bash(git add paper/ paper_data/ env_data/ env_data_analysis/ strategy_analysis/ .cc-connect/)",
+      "Bash(pdflatex -interaction=nonstopmode -output-directory=arxiv_submission arxiv_submission/main.tex 2>&1 | tail -20)",
+      "Bash(git commit -m \"chore: update paper and data files\n\n- Update paper LaTeX files and figures\n- Add paper review state and AUTO_REVIEW\n- Clean up temporary data files\n- Remove CC connect images\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\")"
     ]
   }
 }

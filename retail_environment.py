@@ -14,7 +14,7 @@ from util.sql_formatter import format_sql_rows
 from util.logger import get_logger, set_logger_level
 from module.customer_manager import CustomerManager
 from module.supplier_manager import SupplierManager
-from inventory import Inventory
+from module.inventory import Inventory
 from module.order_manager import OrderManager, Order
 from module.news_manager import NewsManager
 from module.record_manager import (
@@ -22,7 +22,7 @@ from module.record_manager import (
     SupplierOrderRecord,
 )
 from module.review_manager import WINDOW_DAYS, ReviewManager
-from sku import SKU, Merchandise
+from module.sku import SKU, Merchandise
 
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 

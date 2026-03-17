@@ -31,7 +31,7 @@ from module.strategy_manager import (
     get_strategy_tool_definitions,
 )
 
-from stream_chat import stream_chat
+from module.stream_chat import stream_chat
 
 def parse_tool_calls(text: str) -> tuple[List[Dict[str, Any]], str]:
     """
