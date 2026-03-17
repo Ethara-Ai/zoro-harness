@@ -16,7 +16,7 @@ Recent large language models (LLMs), particularly when augmented with reasoning 
 
 \begin{figure*}[t]
 \begin{center}
-\includegraphics[width=\linewidth]{latex/figures/env.pdf}
+\includegraphics[width=\linewidth]{figures/env.pdf}
 \end{center}
 \caption{
 Overview of the hierarchical supermarket environment, illustrating intra-day agent–environment interactions and end-of-day state transition dynamics.
@@ -32,7 +32,7 @@ We evaluate eight state-of-the-art LLMs in this environment. Our results show th
 
 Our contributions are summarized as follows:
 \begin{itemize}[leftmargin=*]
-    \item We introduce \textit{RetailBench}, a high-fidelity benchmark for evaluating long-horizon autonomous decision-making in realistic retail environments.
-    \item We propose the \textit{Evolving Strategy \& Execution} agent framework, which improves operational stability compared to a Reflection-based baseline.
-    \item Through extensive experiments, we identify systematic failure modes of current LLM-based agents in long-horizon, multi-factor decision-making settings.
+    \item We introduce \textit{RetailBench}, an open-source benchmark for evaluating long-horizon decision-making in simulated retail environments, characterized by coupled pricing-inventory control, stochastic demand, and multi-day planning horizons.
+    \item We propose the \textit{Evolving Strategy \& Execution} agent framework, which separates high-level strategy formulation from low-level execution. In our experiments, this framework is associated with higher mean operational stability metrics compared to a day-level Reflection baseline.
+    \item Through extensive experiments, we identify systematic patterns in how current LLM-based agents fail in long-horizon, multi-factor decision-making settings within the RetailBench environment.
 \end{itemize}

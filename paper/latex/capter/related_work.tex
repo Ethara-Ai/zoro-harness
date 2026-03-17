@@ -6,3 +6,24 @@ In parallel, a growing body of benchmarks targets long-horizon planning abilitie
 
 \paragraph{Long-horizon agent frameworks.}
 Recent advances in agent design address these challenges by introducing structured frameworks that decouple high-level planning from low-level execution. Approaches such as Plan-and-Act \citep{erdogan2025planandactimprovingplanningagents} and EAGLET \citep{si2025goalplanjustwish} adopt planner--executor architectures to support hierarchical decision-making, dynamic replanning, and improved execution stability over long horizons. Extensions to multi-agent settings ELHPlan \citep{ling2025elhplanefficientlonghorizontask} and plan-aware context management frameworks PAACE \citep{yuksel2025paaceplanawareautomatedagent} further emphasize task decomposition, explicit strategy representation, and memory-aware context control. Together, these works indicate that scalable long-horizon autonomy increasingly relies on structured planning modules and controlled execution mechanisms rather than monolithic end-to-end policies.
+
+\paragraph{Positioning relative to existing benchmarks.}
+RetailBench complements existing benchmarks by targeting a specific combination of properties not jointly addressed in prior work: (1) long-horizon planning over multi-day episodes with day-level decisions, (2) economic optimization objectives (profit maximization under inventory and pricing constraints), (3) coupled decision spaces where pricing affects inventory turnover and vice versa, (4) stochastic dynamics from demand uncertainty, news shocks, and supply-chain delays, and (5) open-source availability for reproducible evaluation. While benchmarks such as WebArena and Mind2Web evaluate multi-step tool use, and VendingBench and OdysseyBench assess long-horizon planning, RetailBench is distinguished by its focus on economically grounded retail operations with realistic temporal dependencies and delayed rewards. Table~\ref{tab:novelty_comparison} provides a detailed comparison.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Comparison of RetailBench with related long-horizon benchmarks. Horizon length is measured in typical decision steps. Economic objective refers to explicit profit/cost optimization. Open-source indicates public simulator availability. \footnotesize{\textit{Note: Horizon categories are approximate based on cited papers; cross-domain horizons are not directly comparable due to different task structures and step definitions.}}}
+\label{tab:novelty_comparison}
+\begin{tabular}{lcccc}
+\toprule
+Benchmark & Domain & Horizon & Economic Obj. & Open Source \\
+\midrule
+WebArena~\citep{webarenarea} & Web tasks & Short ($<50$) & No & Yes \\
+Mind2Web~\citep{mind2web} & Web tasks & Medium ($50$-$200$) & No & Yes \\
+VendingBench~\citep{andonlabs2025vendingbench2} & Vending & Long ($200+$) & Limited & Yes \\
+OdysseyBench~\citep{odysseybenchevaluatesllmagents} & Games & Long ($200+$) & No & Yes \\
+\textbf{RetailBench} & \textbf{Retail Ops.} & \textbf{Long ($200+$)} & \textbf{Yes} & \textbf{Yes} \\
+\bottomrule
+\end{tabular}
+\end{table}
