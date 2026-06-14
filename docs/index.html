@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="RetailBench benchmark homepage for long-horizon retail-operation agent evaluation."
+    >
+    <title>RetailBench</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/site.css?v=20260604-networth">
+  </head>
+  <body>
+    <header class="topbar" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="RetailBench home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>RetailBench</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#benchmark">Benchmark</a>
+        <a href="#networth">Net worth</a>
+        <a href="#leaderboard">Results</a>
+        <a href="#diagnostics">Diagnostics</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <p class="kicker">Benchmark for long-horizon autonomous decision-making</p>
+          <h1 id="hero-title">RetailBench</h1>
+          <p class="paper-title">
+            RetailBench: Evaluating Long-Horizon Autonomous Decision-Making and
+            Strategy Stability of LLM Agents in Realistic Retail Environments
+          </p>
+          <p class="hero-copy">
+            A data-grounded simulator for evaluating whether tool-using LLM
+            agents can operate a supermarket across pricing, replenishment,
+            supplier choice, inventory aging, reviews, external events, and
+            cash-flow constraints.
+          </p>
+          <div class="hero-actions" aria-label="Project links">
+            <a class="action primary" href="https://arxiv.org/abs/2603.16453">Paper</a>
+            <a class="action" href="#leaderboard">Leaderboard</a>
+          </div>
+          <p class="paper-meta" id="paper-meta">arXiv:2603.16453</p>
+          <dl class="hero-facts" aria-label="Benchmark metadata">
+            <div>
+              <dt>Environment</dt>
+              <dd>hard_v2</dd>
+            </div>
+            <div>
+              <dt>Horizon</dt>
+              <dd>180 days</dd>
+            </div>
+            <div>
+              <dt>Evaluation</dt>
+              <dd>20 runs, 7 LLMs</dd>
+            </div>
+          </dl>
+        </div>
+        <figure class="hero-figure">
+          <img
+            class="hero-image"
+            src="assets/retailbench_interaction_framework.png"
+            alt="RetailBench interaction framework connecting store state, agent tools, actions, and feedback."
+          >
+          <figcaption>
+            RetailBench couples SKU assortment, suppliers, inventory, customer
+            feedback, news, finance, and agent tools in a closed-loop retail
+            operation setting.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="metric-strip" id="benchmark" aria-label="Benchmark summary">
+        <article>
+          <span class="metric-value" id="metric-models">7</span>
+          <span class="metric-label">LLM models</span>
+        </article>
+        <article>
+          <span class="metric-value" id="metric-runs">20</span>
+          <span class="metric-label">rollout runs</span>
+        </article>
+        <article>
+          <span class="metric-value" id="metric-horizon">180</span>
+          <span class="metric-label">evaluation days</span>
+        </article>
+        <article>
+          <span class="metric-value" id="metric-full">2/7</span>
+          <span class="metric-label">LLMs reach full horizon</span>
+        </article>
+      </section>
+
+      <section class="section intro-grid" aria-label="Benchmark overview">
+        <div>
+          <p class="section-label">What it measures</p>
+          <h2>Operational policy formation under delayed feedback.</h2>
+        </div>
+        <div class="overview-copy">
+          <p>
+            RetailBench is not a one-shot web task or a short tool-use test.
+            The agent repeatedly chooses what to inspect, what to buy, how much
+            to stock, when to change prices, and how to react when outcomes
+            arrive days later.
+          </p>
+          <p>
+            The current public result package uses a survival-first selection
+            rule: maximize operating days, then final net worth, then total
+            sales. A privileged quality-based heuristic is shown as an
+            oracle-style reference, not as a fair LLM-agent baseline.
+          </p>
+        </div>
+      </section>
+
+      <section class="section findings" aria-label="Headline findings">
+        <article class="finding">
+          <span class="finding-number" id="best-llm-networth">$24.4k</span>
+          <h3>Best selected LLM net worth</h3>
+          <p id="best-llm-networth-copy">GPT-5.5 is the top selected LLM by final net worth.</p>
+        </article>
+        <article class="finding">
+          <span class="finding-number" id="heuristic-networth">$131.5k</span>
+          <h3>Heuristic reference net worth</h3>
+          <p>Even full-horizon LLM runs remain far below the privileged reference policy.</p>
+        </article>
+        <article class="finding">
+          <span class="finding-number" id="top-sales">164k</span>
+          <h3>Top selected LLM sales</h3>
+          <p id="top-sales-copy">DeepSeek-V4-Pro leads selected LLMs by total unit sales.</p>
+        </article>
+      </section>
+
+      <section class="section trajectory" id="networth" aria-labelledby="networth-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">Long-horizon gap</p>
+            <h2 id="networth-title">Net worth trajectory</h2>
+          </div>
+          <p class="chart-note">
+            Solid lines show observed rollout days; dashed tails carry terminal
+            net worth to the 180-day horizon for runs that stopped early.
+          </p>
+        </div>
+        <div class="trajectory-panel">
+          <div class="chart-frame">
+            <svg
+              id="networth-chart"
+              viewBox="0 0 900 420"
+              role="img"
+              aria-label="Net worth trajectories for Oracle Policy and selected LLM runs"
+            ></svg>
+          </div>
+          <div class="chart-legend" id="networth-legend" aria-label="Net worth chart legend"></div>
+        </div>
+      </section>
+
+      <section class="section" id="leaderboard" aria-labelledby="leaderboard-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">Benchmark results</p>
+            <h2 id="leaderboard-title">Survival-first selected runs</h2>
+          </div>
+          <label class="metric-select">
+            Sort by
+            <select id="sort-select">
+              <option value="days">Days</option>
+              <option value="finalNetworth">Final net worth</option>
+              <option value="totalSales">Total sales</option>
+              <option value="returnRatioAsc">Return ratio</option>
+            </select>
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Framework</th>
+                <th>Days</th>
+                <th>Final net worth</th>
+                <th>Total sales</th>
+                <th>Sold SKUs/day</th>
+                <th>Return ratio</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body"></tbody>
+          </table>
+        </div>
+        <p class="note" id="selection-rule"></p>
+      </section>
+
+      <section class="section pipeline" id="diagnostics" aria-labelledby="diagnostics-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">Failure decomposition</p>
+            <h2 id="diagnostics-title">Four-stage operational pipeline</h2>
+          </div>
+          <div class="stage-tabs" id="stage-tabs" role="tablist" aria-label="Diagnostic stages"></div>
+        </div>
+        <div class="stage-panel">
+          <div class="stage-copy">
+            <p class="stage-label" id="stage-label">Stage 1</p>
+            <h3 id="stage-title">SKU Selection</h3>
+            <p id="stage-question"></p>
+            <dl class="stage-metrics">
+              <div>
+                <dt id="stage-metric-label">Metric</dt>
+                <dd><span id="stage-llm-mean"></span> LLM mean</dd>
+              </div>
+              <div>
+                <dt>Heuristic</dt>
+                <dd id="stage-heuristic"></dd>
+              </div>
+            </dl>
+            <p class="stage-insight" id="stage-insight"></p>
+          </div>
+          <figure class="stage-figure">
+            <img id="stage-image" alt="">
+            <figcaption id="stage-caption"></figcaption>
+          </figure>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      <p>
+        RetailBench. Data source:
+        <code>paper_submit_data/outputs</code>. Paper:
+        <a href="https://arxiv.org/abs/2603.16453">arXiv:2603.16453</a>.
+      </p>
+    </footer>
+
+    <script src="assets/benchmark_results.js?v=20260604-file"></script>
+    <script src="assets/site.js?v=20260604-file"></script>
+  </body>
+</html>

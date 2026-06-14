@@ -1,143 +1,191 @@
 # RetailBench
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Paper](https://img.shields.io/badge/arXiv-2603.16453-b31b1b.svg)](https://arxiv.org/abs/2603.16453)
+[![Code](https://img.shields.io/badge/Code-GitHub-181717.svg)](https://github.com/Ice-Moon-28/RetailBench)
 
-**RetailBench** 是一个零售经营仿真与智能体评测基准，用于评估AI智能体在复杂零售环境中的决策能力。
+RetailBench is a long-horizon benchmark for evaluating tool-using LLM agents in
+retail operations. It turns single-store supermarket management into an
+interactive decision-making problem where agents must acquire evidence, manage
+inventory, choose suppliers, set prices, and adapt to delayed business feedback
+over extended episodes.
 
-**RetailBench** is a retail operation simulation and agent evaluation benchmark for assessing AI agent decision-making in complex retail environments.
+## Links
 
----
+| Resource | Link |
+| --- | --- |
+| Paper | [arXiv:2603.16453](https://arxiv.org/abs/2603.16453) |
+| Code | [github.com/Ice-Moon-28/RetailBench](https://github.com/Ice-Moon-28/RetailBench) |
+| Benchmark homepage | [`docs/index.html`](docs/index.html) |
+| Release notes | [`RELEASE.md`](RELEASE.md) |
+| Citation metadata | [`CITATION.cff`](CITATION.cff) |
 
-## 项目简介 / Overview
+## What Is RetailBench?
 
-RetailBench 模拟真实的零售门店经营场景，智能体需要根据历史数据、市场动态、客户评价和新闻事件，做出补货、定价和库存管理决策，最终以净利润和资产增长率为评价指标。
+Most tool-use benchmarks evaluate short tasks with immediate feedback.
+RetailBench instead studies whether agents can sustain coherent operational
+policies under delayed consequences. In each episode, an agent observes the
+store through tools, decides what additional evidence to inspect, takes
+state-changing actions, and receives feedback through sales, returns, reviews,
+inventory aging, supplier dynamics, and cash-flow changes.
 
-RetailBench simulates real-world retail store operations where agents must make ordering, pricing, and inventory management decisions based on historical data, market dynamics, customer reviews, and news events, evaluated by net profit and asset growth rate.
+The benchmark is designed to expose failures that are hard to see in static
+question answering or short web tasks:
 
-### 核心特性 / Key Features
+- incomplete product-space coverage;
+- shallow or misdirected evidence acquisition;
+- invalid pricing, replenishment, or supplier actions;
+- weak follow-up after delayed operational consequences;
+- unstable long-horizon tradeoffs between sales, inventory, returns, and net
+  worth.
 
-- 🏪 **真实仿真环境** - 包含库存管理、供应商关系、客户评价、市场新闻等多维度因素
-- 🤖 **多种智能体架构** - 支持Strategy-Execution、Plan-and-Act、Reflection等多种Agent模式
-- 📊 **完整的评估体系** - 净利润、资产增长率、过期率、退货率等多指标评估
-- 🔧 **可配置难度** - 支持easy/middle/hard三种难度配置
-- 📈 **丰富的分析工具** - 内置数据分析和可视化脚本
+## Benchmark Scope
 
-- 🏪 **Realistic Simulation** - Multi-dimensional factors including inventory, suppliers, reviews, and news
-- 🤖 **Multiple Agent Architectures** - Support for Strategy-Execution, Plan-and-Act, Reflection, etc.
-- 📊 **Comprehensive Evaluation** - Multi-metric assessment: net profit, growth rate, expiration rate, return rate
-- 🔧 **Configurable Difficulty** - Three difficulty levels: easy/middle/hard
-- 📈 **Rich Analysis Tools** - Built-in data analysis and visualization scripts
+RetailBench models supermarket operation as a partially observable interactive
+process. The released benchmark includes:
 
----
+- SKU-level assortment and product demand;
+- supplier availability, lead time, quality, and cost differences;
+- inventory capacity, replenishment, spoilage, and stockouts;
+- price changes, sales, returns, funds, and net worth;
+- customer reviews and external news events;
+- tool interfaces for state inspection and business actions;
+- LLM-agent runners for ReAct, Reflection, and Plan-and-Act style scaffolds;
+- a non-LLM reference policy for contextualizing the remaining performance gap.
 
-## 快速开始 / Quick Start
+The non-LLM policy is an oracle-style reference, not a fair language-agent
+baseline. It is included to show how far current LLM agents remain from a
+privileged policy with structured access to the task.
 
-### 安装 / Installation
+## Current Results Snapshot
+
+The public result package reports a survival-first selected-run analysis over
+seven LLMs and 20 rollout runs in the `hard_v2` setting.
+
+| Item | Value |
+| --- | --- |
+| Environment | `hard_v2` |
+| Evaluation horizon | 180 days |
+| LLM models | 7 |
+| Rollout runs | 20 |
+| Agent frameworks | `react`, `reflection`, `plan_and_act` |
+| Selection rule | maximize `run_days`, then `final_networth`, then `total_sales` |
+
+The benchmark homepage visualizes the selected-run leaderboard, net-worth
+trajectories, and four-stage diagnostic results. The underlying static data is
+stored in:
+
+- [`docs/assets/benchmark_results.json`](docs/assets/benchmark_results.json)
+- [`paper_submit_data/outputs/best_framework_by_model.csv`](paper_submit_data/outputs/best_framework_by_model.csv)
+- [`paper_submit_data/outputs/four_stage_metrics.csv`](paper_submit_data/outputs/four_stage_metrics.csv)
+
+## Installation
 
 ```bash
-# 克隆仓库
 git clone https://github.com/Ice-Moon-28/RetailBench.git
 cd RetailBench
 
-# 创建虚拟环境
-python3 -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# 安装依赖
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 基础使用 / Basic Usage
+Run a short simulator check:
 
 ```bash
-# 运行非LLM基线（验证环境）
-python3 retail_environment.py --mode logic --days 7 --config-type still_middle
+python3 retail_environment.py --mode tools --config-type middle
+```
 
-# 运行LLM智能体
-python3 run_env.py \
+## Running Agents
+
+Run the non-LLM reference policy:
+
+```bash
+python3 agents/run_non_llm_simulation.py --days 30 --config-type hard_v2
+```
+
+LLM-agent runs require provider credentials. Pass credentials through
+environment variables or command-line arguments. Do not write API keys into
+source files.
+
+```bash
+python3 agents/run_react.py \
   --model qwen-plus \
-  --config_type still_middle \
+  --config_type middle \
   --max_days 30 \
-  --api_key YOUR_API_KEY \
-  --base_url YOUR_BASE_URL
+  --api_key "$OPENAI_API_KEY" \
+  --base_url "$OPENAI_BASE_URL"
 ```
 
----
+## Reproducing Paper-Facing Artifacts
 
-## 项目结构 / Project Structure
+Regenerate the main metric report and selected-run table:
 
+```bash
+python3 paper_submit_data/analyze_metrics.py \
+  --manifest paper_submit_data/manifest.json \
+  --output-dir paper_submit_data/outputs
 ```
+
+Regenerate four-stage diagnostic results:
+
+```bash
+python3 paper_submit_data/analyze_four_stage_metrics.py
+python3 paper_submit_data/render_four_stage_report.py
+```
+
+The full LLM rollout logs are large and may not be redistributed with every
+release package. The checked-in CSV/JSON outputs are sufficient to inspect the
+paper-facing tables, static homepage, and diagnostic figures.
+
+## Benchmark Homepage
+
+The static benchmark homepage is located in [`docs/`](docs/). It can be opened
+directly:
+
+```text
+docs/index.html
+```
+
+or served locally:
+
+```bash
+python3 -m http.server 8000 --directory docs
+```
+
+Then open `http://localhost:8000`.
+
+## Repository Layout
+
+```text
 RetailBench/
-├── retail_environment.py      # 核心仿真环境
-├── run_env.py                 # 主要Agent入口
-├── run_plan_and_act.py        # Plan-and-Act Agent
-├── run_reflection.py          # Reflection Agent
-├── inventory.py               # 库存管理
-├── sku.py                     # SKU模型
-├── module/                    # 业务模块
-├── model/                     # 评分模型
-├── util/                      # 工具函数
-├── data/                      # 仿真数据
-├── analysis/                  # 分析脚本
-└── paper/                     # 论文相关
+  retail_environment.py        core simulator entry point
+  module/                      retail business modules
+  agents/                      LLM and non-LLM agent runners
+  model/                       review, return-rate, and SKU models
+  util/                        configuration and logging utilities
+  paper_submit_data/           paper-facing metrics and diagnostics
+  paper/                       manuscript sources and submission package
+  release/anonymous_artifact/  curated reproducibility package
+  docs/                        static benchmark homepage
 ```
 
----
+## Citation
 
-## 配置选项 / Configuration Options
+```bibtex
+@misc{zhang2026retailbench,
+  title = {RetailBench: Evaluating Long-Horizon Autonomous Decision-Making and Strategy Stability of LLM Agents in Realistic Retail Environments},
+  author = {Zhang, Linghua and Wang, Jun and Wu, Jingtong and Zhang, Zhisong},
+  year = {2026},
+  eprint = {2603.16453},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.AI},
+  doi = {10.48550/arXiv.2603.16453},
+  url = {https://arxiv.org/abs/2603.16453}
+}
+```
 
-| 配置类型 | 说明 | Description |
-|---------|------|-------------|
-| `still_middle` | 静态中等难度 | Static medium difficulty |
-| `still_hard` | 静态高难度 | Static hard difficulty |
-| `dynamic_hard` | 动态高难度 | Dynamic hard difficulty |
+## License
 
----
-
-## 评估指标 / Evaluation Metrics
-
-- 💰 **净利润** (Net Profit)
-- 📈 **资产增长率** (Asset Growth Rate)
-- 📦 **库存周转率** (Inventory Turnover)
-- ⏰ **过期率** (Expiration Rate)
-- 🔄 **退货率** (Return Rate)
-
----
-
-## 文档 / Documentation
-
-- [中文文档](README.md) | [English Documentation](README_En.md)
-- [完整使用指南](README.md) | [Full Usage Guide](README_En.md)
-- [论文](paper/) | [Paper](paper/)
-
----
-
-## 贡献 / Contributing
-
-欢迎提交 Issue 和 Pull Request！
-
-Issues and Pull Requests are welcome!
-
----
-
-## 许可证 / License
-
-本项目采用 [MIT License](LICENSE) 开源协议。
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## 联系方式 / Contact
-
-- **项目地址**: [https://github.com/Ice-Moon-28/RetailBench](https://github.com/Ice-Moon-28/RetailBench)
-- **问题反馈**: [GitHub Issues](https://github.com/Ice-Moon-28/RetailBench/issues)
-
----
-
-## 致谢 / Acknowledgments
-
-感谢所有为本项目做出贡献的开发者和研究人员。
-
-Thanks to all developers and researchers who have contributed to this project.
+RetailBench is released under the [MIT License](LICENSE).

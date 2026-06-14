@@ -2,8 +2,30 @@
 model_run_time/
 logs/
 *.log
+/log1
+/log2
+/[ ]
 paper_dont_data/
 strategy_analysis/
+temp/
+para-search/
+ARR_Reviews/
+.skill_build/
+
+# Local databases and generated simulation data
+*.db
+*.sqlite
+data/simulate_data/
+data/still_super_easy/simulate_data/
+
+# Local/private automation and connector configs
+config.*.feishu.toml
+cc-codex.sh
+cc-connect.sh
+claude.toml
+test.py
+script/env_v3/
+script/test.py
 
 # Python bytecode and caches
 __pycache__/
@@ -28,6 +50,11 @@ dist/
 *.egg-info/
 .eggs/
 pip-wheel-metadata/
+/paper.zip
+/paper/*.zip
+/paper/latex_arr_revision.zip
+/paper/paper_arxiv_submission*.zip
+/paper/paper_arxiv_submission*/
 
 # Coverage reports
 .coverage
@@ -77,3 +104,4 @@ Thumbs.db
 
 # Claude Code settings (optional - comment out if you want to share these)
 .claude/settings.local.json
+.claude/worktrees/

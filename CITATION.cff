@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use RetailBench, please cite the arXiv paper."
+title: "RetailBench: Evaluating Long-Horizon Autonomous Decision-Making and Strategy Stability of LLM Agents in Realistic Retail Environments"
+authors:
+  - family-names: Zhang
+    given-names: Linghua
+  - family-names: Wang
+    given-names: Jun
+  - family-names: Wu
+    given-names: Jingtong
+  - family-names: Zhang
+    given-names: Zhisong
+doi: 10.48550/arXiv.2603.16453
+url: "https://arxiv.org/abs/2603.16453"
+date-released: "2026-03-17"
+license: MIT
+repository-code: "https://github.com/Ice-Moon-28/RetailBench"
