@@ -193,17 +193,45 @@ def _extract_metrics_from_env(env: Any) -> Dict[str, Any]:
     return metrics
 
 
+_WARNED_ANALYZER_IMPORT = False
+_WARNED_TOOL_CALLS_MISSING = False
+_WARNED_ANALYZER_FAILED = False
+
+
+def _warn_once(flag_name: str, message: str) -> None:
+    if globals().get(flag_name):
+        return
+    globals()[flag_name] = True
+    print(f"[WARN] {message}", file=sys.stderr)
+
+
 def _compute_cell_aggregates(cell_log_dir: Path) -> Dict[str, Any]:
     tool_calls_path = cell_log_dir / "tool_calls.jsonl"
     if not tool_calls_path.exists():
+        _warn_once(
+            "_WARNED_TOOL_CALLS_MISSING",
+            f"tool_calls.jsonl missing (first miss: {tool_calls_path}); "
+            "cell aggregates (profit/service level/etc.) will be blank. "
+            "Downstream analyzer will treat these cells as no-metrics.",
+        )
         return {}
     try:
         from analysis.analyze_experiment_data.analyze_paper_data_final import analyze_tool_calls
-    except Exception:
+    except Exception as exc:
+        _warn_once(
+            "_WARNED_ANALYZER_IMPORT",
+            f"analyze_paper_data_final not importable ({type(exc).__name__}: {exc}); "
+            "cell aggregates will be blank for every remaining cell.",
+        )
         return {}
     try:
         raw = analyze_tool_calls(str(tool_calls_path))
-    except Exception:
+    except Exception as exc:
+        _warn_once(
+            "_WARNED_ANALYZER_FAILED",
+            f"analyze_tool_calls raised {type(exc).__name__}: {exc} "
+            f"(first failure on {tool_calls_path}). Cell aggregates will be blank.",
+        )
         return {}
     if not raw:
         return {}

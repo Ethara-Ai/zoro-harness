@@ -90,18 +90,30 @@ def set_paper_style_like_reference():
 
 set_paper_style_like_reference()
 
+ACTION_REVISION_WINDOW_DAYS = 3
+NO_STOCKOUT_RECOVERY_DEFAULT_RATE = 1.0
+
+
 def _extract_sku_ids(items):
     """Normalize a list of SKU identifiers (strings, dicts, or object reprs) into a set of str IDs."""
     out = set()
-    if not items:
+    if items is None:
+        return out
+    if not isinstance(items, (list, tuple, set)):
         return out
     for it in items:
+        if it is None:
+            continue
         if isinstance(it, str):
-            out.add(it)
+            if it:
+                out.add(it)
         elif isinstance(it, dict):
             for k in ('id', 'sku_id', 'name'):
                 if k in it:
-                    out.add(str(it[k]))
+                    val = it[k]
+                    if val is None:
+                        break
+                    out.add(str(val))
                     break
             else:
                 out.add(str(it))
@@ -137,6 +149,7 @@ def analyze_tool_calls(tool_calls_path):
     tool_total = 0
     tool_errors = 0
     price_change_events = []
+    skipped_malformed_lines = 0
 
     orders_in_current_day = 0
     price_changes_in_current_day = []
@@ -232,7 +245,8 @@ def analyze_tool_calls(tool_calls_path):
                             sku_id = args.get('sku_id') or args.get('sku') or args.get('id')
                         if sku_id is not None:
                             price_changes_in_current_day.append(str(sku_id))
-                except:
+                except Exception:
+                    skipped_malformed_lines += 1
                     continue
     except Exception:
         return None
@@ -291,7 +305,7 @@ def analyze_tool_calls(tool_calls_path):
     for days_list in sku_to_days.values():
         days_list.sort()
         for i in range(1, len(days_list)):
-            if days_list[i] - days_list[i - 1] <= 3:
+            if days_list[i] - days_list[i - 1] <= ACTION_REVISION_WINDOW_DAYS:
                 revisions += 1
     action_revision_rate = revisions / len(price_change_events) if price_change_events else 0.0
 
@@ -305,7 +319,9 @@ def analyze_tool_calls(tool_calls_path):
             if sku_id not in tomorrow:
                 recoveries += 1
     failure_recovery_rate = (
-        recoveries / recovery_opportunities if recovery_opportunities > 0 else 1.0
+        recoveries / recovery_opportunities
+        if recovery_opportunities > 0
+        else NO_STOCKOUT_RECOVERY_DEFAULT_RATE
     )
 
     return {
@@ -344,6 +360,7 @@ def analyze_tool_calls(tool_calls_path):
         'failure_recovery_opportunities': recovery_opportunities,
         'failure_recoveries': recoveries,
         'failure_recovery_rate': failure_recovery_rate,
+        'skipped_malformed_lines': skipped_malformed_lines,
     }
 
 def validate_args_json(run_dir, scenario_name):

@@ -34,11 +34,12 @@ from util.default_config import (
 
 
 LOOKBACK_DAYS = 14
-LEAD_TIME_DAYS = 2
+DEFAULT_LEAD_TIME_DAYS = 2
 PRICE_GRID_STEPS = 9
 PRICE_MIN_MULT = 0.9
 PRICE_MAX_MULT = 1.8
 DEFAULT_ELASTICITY = -1.2
+DEFAULT_OVERAGE_FRACTION = 0.3
 FLOOR_QUANTITY = 1
 
 
@@ -171,11 +172,18 @@ def _all_sku_ids(env: RetailEnvironment) -> List[str]:
     return []
 
 
-def _newsvendor_quantity(mu: float, sigma: float, price: float, cost: float, horizon: int) -> int:
+def _newsvendor_quantity(
+    mu: float,
+    sigma: float,
+    price: float,
+    cost: float,
+    horizon: int,
+    overage_fraction: float = DEFAULT_OVERAGE_FRACTION,
+) -> int:
     if price <= cost or mu <= 0:
         return FLOOR_QUANTITY
     c_u = max(price - cost, 0.01)
-    c_o = max(cost * 0.3, 0.01)
+    c_o = max(cost * overage_fraction, 0.01)
     q_star = c_u / (c_u + c_o)
     lead_mu = mu * max(horizon, 1)
     lead_sigma = sigma * math.sqrt(max(horizon, 1))
@@ -184,9 +192,16 @@ def _newsvendor_quantity(mu: float, sigma: float, price: float, cost: float, hor
     return max(FLOOR_QUANTITY, int(math.ceil(qty)))
 
 
-def _best_price(mu: float, cost: float, current_price: Optional[float]) -> Optional[float]:
+def _best_price(
+    mu: float,
+    cost: float,
+    current_price: Optional[float],
+    elasticity: float = DEFAULT_ELASTICITY,
+) -> Optional[float]:
     if cost <= 0 or mu <= 0:
         return None
+    # Anchor = observed price; if the SKU has no listed price yet, fall back to a
+    # 40% cost-plus markup as a neutral starting point for the grid.
     anchor = current_price if (current_price and current_price > 0) else cost * 1.4
     lo = max(cost * 1.05, anchor * PRICE_MIN_MULT)
     hi = max(lo + 0.5, anchor * PRICE_MAX_MULT)
@@ -195,8 +210,10 @@ def _best_price(mu: float, cost: float, current_price: Optional[float]) -> Optio
     best_margin = -math.inf
     for i in range(PRICE_GRID_STEPS):
         p = lo + step * i
-        elasticity = DEFAULT_ELASTICITY
         ratio = max(p / anchor, 1e-3)
+        # Constant-elasticity demand model: d(p) = mu * (p / anchor)^elasticity.
+        # elasticity is negative, so raising the price above anchor shrinks demand
+        # multiplicatively; we pick the price whose expected margin is highest.
         try:
             demand_factor = ratio ** elasticity
         except (OverflowError, ValueError):
@@ -219,8 +236,12 @@ def run_newsvendor(
     max_days: int = 30,
     log_dir: Optional[Path] = None,
     seed: int = 0,
+    lead_time_days: int = DEFAULT_LEAD_TIME_DAYS,
+    overage_fraction: float = DEFAULT_OVERAGE_FRACTION,
+    elasticity: float = DEFAULT_ELASTICITY,
 ) -> Dict[str, Any]:
     random.seed(int(seed))
+    lead_time_days = max(1, int(lead_time_days))
 
     per_day_records: List[Dict[str, Any]] = []
     for day in range(1, max_days + 1):
@@ -273,7 +294,7 @@ def run_newsvendor(
 
             new_price = None
             if base_cost is not None and base_cost > 0:
-                new_price = _best_price(mu, base_cost, current_price)
+                new_price = _best_price(mu, base_cost, current_price, elasticity=elasticity)
                 if new_price is not None:
                     price_res = _safe_exec(env, "modify_sku_price", sku_id=sku_id,
                                            new_price=round(new_price, 2))
@@ -283,7 +304,10 @@ def run_newsvendor(
             position = int(on_hand.get(sku_id, 0)) + int(on_order.get(sku_id, 0))
             price_for_order = new_price or current_price or (base_cost * 1.4 if base_cost else 0.0)
             if base_cost is not None and mu > 0:
-                target_qty = _newsvendor_quantity(mu, sigma, price_for_order, base_cost, LEAD_TIME_DAYS)
+                target_qty = _newsvendor_quantity(
+                    mu, sigma, price_for_order, base_cost, lead_time_days,
+                    overage_fraction=overage_fraction,
+                )
                 if target_qty > position and cheapest is not None:
                     supplier_id = str(cheapest.get("supplier_id") or "")
                     order_qty = max(FLOOR_QUANTITY, target_qty - position)
@@ -334,6 +358,15 @@ def main() -> None:
                         choices=["dynamic_hard", "dynamic_middle", "still_hard", "still_middle"])
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--max_days", type=int, default=30)
+    parser.add_argument("--lead_time", type=int, default=DEFAULT_LEAD_TIME_DAYS,
+                        help=f"Supplier lead time in days for newsvendor horizon "
+                             f"(default: {DEFAULT_LEAD_TIME_DAYS})")
+    parser.add_argument("--overage_frac", type=float, default=DEFAULT_OVERAGE_FRACTION,
+                        help=f"Overage cost as a fraction of unit cost, i.e. c_o = cost * overage_frac "
+                             f"(default: {DEFAULT_OVERAGE_FRACTION})")
+    parser.add_argument("--elasticity", type=float, default=DEFAULT_ELASTICITY,
+                        help=f"Constant price elasticity of demand for the pricing grid search "
+                             f"(default: {DEFAULT_ELASTICITY})")
     parser.add_argument("--db_path", type=str, default="model_run_time")
     parser.add_argument("--log_dir", type=str, default=None)
     args = parser.parse_args()
@@ -356,7 +389,15 @@ def main() -> None:
 
     try:
         env = RetailEnvironment(config)
-        run_newsvendor(env=env, max_days=args.max_days, log_dir=log_dir, seed=args.seed)
+        run_newsvendor(
+            env=env,
+            max_days=args.max_days,
+            log_dir=log_dir,
+            seed=args.seed,
+            lead_time_days=args.lead_time,
+            overage_fraction=args.overage_frac,
+            elasticity=args.elasticity,
+        )
     except Exception as exc:
         (log_dir / "error.json").write_text(json.dumps({
             "error": f"{type(exc).__name__}: {exc}",

@@ -31,12 +31,9 @@ from util.default_config import (
 )
 
 from agents.run_step_reflection import (
-    DEFAULT_API_KEY,
-    DEFAULT_BASE_URL,
     DEFAULT_GOAL,
     DEFAULT_MODEL,
     build_goal,
-    build_log_path as _base_build_log_path,
     create_openai_client,
     format_interaction_history,
     recover_from_checkpoint,

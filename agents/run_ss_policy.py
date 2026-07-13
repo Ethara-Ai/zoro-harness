@@ -41,6 +41,7 @@ EXPIRY_MARKDOWN = 0.30
 EXPIRY_WINDOW_DAYS = 3
 LOOKBACK_DAYS = 14
 REVIEW_PERIOD_DAYS = 7
+DEFAULT_LEAD_TIME_DAYS = 2
 
 
 def _safe_exec(env: RetailEnvironment, tool: str, **kwargs) -> Dict[str, Any]:
@@ -134,6 +135,8 @@ def _on_hand_by_sku(inv_result: Dict[str, Any]) -> Dict[str, int]:
 
 
 def _shelf_life_days_for_sku(env: RetailEnvironment, sku_id: str) -> int:
+    # SKU.promotion_day is the environment's shelf-life field (days until expiry),
+    # not a marketing promotion window; treat missing/invalid as a 7-day default.
     catalog = getattr(env, "skus_category_map", {}) or {}
     for _cat, sku_list in catalog.items():
         for sku in sku_list:
@@ -167,8 +170,10 @@ def run_ss_policy(
     max_days: int = 30,
     log_dir: Optional[Path] = None,
     seed: int = 0,
+    lead_time_days: int = DEFAULT_LEAD_TIME_DAYS,
 ) -> Dict[str, Any]:
     random.seed(int(seed))
+    lead_time_days = max(1, int(lead_time_days))
 
     per_day_records: List[Dict[str, Any]] = []
     for day in range(1, max_days + 1):
@@ -213,8 +218,7 @@ def run_ss_policy(
             mu = _ewma(demand_history)
             sigma = _std(demand_history)
 
-            lead_time_mean = 2
-            reorder_point = mu * lead_time_mean + Z_SCORE_95 * sigma * math.sqrt(max(lead_time_mean, 1))
+            reorder_point = mu * lead_time_days + Z_SCORE_95 * sigma * math.sqrt(lead_time_days)
             order_up_to = reorder_point + mu * REVIEW_PERIOD_DAYS
 
             position = _inventory_position(sku_id, on_hand, on_order)
@@ -242,6 +246,9 @@ def run_ss_policy(
             base_cost = float(cheapest_price) if cheapest_price is not None else None
             if base_cost is not None and base_cost > 0:
                 new_price = base_cost * DEFAULT_MARKUP
+                # Stockout markup keys off on_hand only, ignoring pending reorders on purpose:
+                # replenishment lands after lead_time_days, so while shelves are empty today
+                # we ration demand via price regardless of whether we just placed an order.
                 if on_hand.get(sku_id, 0) == 0:
                     new_price *= (1.0 + STOCKOUT_MARKUP_BUMP)
                 shelf_life = _shelf_life_days_for_sku(env, sku_id)
@@ -286,6 +293,9 @@ def main() -> None:
                         choices=["dynamic_hard", "dynamic_middle", "still_hard", "still_middle"])
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--max_days", type=int, default=30)
+    parser.add_argument("--lead_time", type=int, default=DEFAULT_LEAD_TIME_DAYS,
+                        help=f"Supplier lead time in days for (s,S) safety stock "
+                             f"(default: {DEFAULT_LEAD_TIME_DAYS})")
     parser.add_argument("--db_path", type=str, default="model_run_time")
     parser.add_argument("--log_dir", type=str, default=None)
     args = parser.parse_args()
@@ -308,7 +318,13 @@ def main() -> None:
 
     try:
         env = RetailEnvironment(config)
-        run_ss_policy(env=env, max_days=args.max_days, log_dir=log_dir, seed=args.seed)
+        run_ss_policy(
+            env=env,
+            max_days=args.max_days,
+            log_dir=log_dir,
+            seed=args.seed,
+            lead_time_days=args.lead_time,
+        )
     except Exception as exc:
         (log_dir / "error.json").write_text(json.dumps({
             "error": f"{type(exc).__name__}: {exc}",

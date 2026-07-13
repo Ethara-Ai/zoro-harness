@@ -59,8 +59,15 @@ def _collect_paired_profits(success_df):
     per_model_profits = {}
     for model_key in sorted(success_df["model_key"].unique()):
         model_data = success_df[success_df["model_key"] == model_key].sort_values("seed")
-        per_model_profits[model_key] = model_data["avg_daily_profit"].tolist()
+        per_model_profits[model_key] = dict(
+            zip(model_data["seed"].tolist(), model_data["avg_daily_profit"].tolist())
+        )
     return per_model_profits
+
+
+def _aligned_pair(a_map, b_map):
+    shared = sorted(set(a_map.keys()) & set(b_map.keys()), key=str)
+    return shared, [a_map[s] for s in shared], [b_map[s] for s in shared]
 
 
 def _print_pairwise_table(contrasts, adjusted_pvals):
@@ -121,6 +128,18 @@ def analyze_results(results):
         print("❌ No successful runs to analyze!")
         return
 
+    required_metric_cols = ("avg_daily_profit", "days_survived", "model_key", "model", "seed")
+    missing_metric_cols = [c for c in required_metric_cols if c not in success_df.columns]
+    if missing_metric_cols:
+        print(f"❌ Successful runs are missing required columns: {missing_metric_cols}")
+        print("   Likely cause: analyze_paper_data_final not importable or "
+              "tool_calls.jsonl missing on every cell — check run_very_easy_experiment.py stderr.")
+        return
+    success_df = success_df.dropna(subset=["avg_daily_profit"])
+    if len(success_df) == 0:
+        print("❌ No successful runs with computed avg_daily_profit — nothing to analyze.")
+        return
+
     print("="*70)
     print("OVERALL SUMMARY")
     print("="*70)
@@ -140,7 +159,7 @@ def analyze_results(results):
     for model_key in sorted(success_df["model_key"].unique()):
         model_data = success_df[success_df["model_key"] == model_key].sort_values("seed")
         model_name = model_data["model"].iloc[0]
-        profits = per_model_profits[model_key]
+        profits = list(per_model_profits[model_key].values())
         days = model_data["days_survived"].tolist()
 
         print(f"\n{model_name}:")
@@ -179,11 +198,12 @@ def analyze_results(results):
         for i in range(len(model_keys)):
             for j in range(i + 1, len(model_keys)):
                 a_key, b_key = model_keys[i], model_keys[j]
-                a_vals, b_vals = per_model_profits[a_key], per_model_profits[b_key]
-                n_paired = min(len(a_vals), len(b_vals))
+                _shared, a_p, b_p = _aligned_pair(
+                    per_model_profits[a_key], per_model_profits[b_key]
+                )
+                n_paired = len(a_p)
                 if n_paired < 2:
                     continue
-                a_p, b_p = a_vals[:n_paired], b_vals[:n_paired]
                 mean_d, lo, hi = paired_bootstrap_diff_ci(a_p, b_p)
                 p_val = paired_permutation_test(a_p, b_p)
                 d = cohens_d_paired(a_p, b_p)
@@ -211,7 +231,7 @@ def analyze_results(results):
     for model_key in sorted(success_df["model_key"].unique()):
         model_data = success_df[success_df["model_key"] == model_key].sort_values("seed")
         model_name = model_data["model"].iloc[0]
-        profits = per_model_profits[model_key]
+        profits = list(per_model_profits[model_key].values())
         seed_counts.append(len(profits))
 
         if STATS_AVAILABLE and len(profits) >= 1:
@@ -266,12 +286,14 @@ def analyze_results(results):
             "pairwise_contrasts": [],
             "win_rate_matrix": {},
         }
-        for model_key, profits in per_model_profits.items():
-            if not profits:
+        for model_key, seed_map in per_model_profits.items():
+            if not seed_map:
                 continue
+            profits = list(seed_map.values())
             m, lo, hi = bootstrap_mean_ci(profits)
             stats_dump["per_model"][model_key] = {
                 "n": len(profits),
+                "seeds": [int(s) for s in seed_map.keys()],
                 "profits": profits,
                 "mean": m,
                 "ci_low": lo,

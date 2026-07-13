@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, Hashable, List, Mapping, Sequence, Tuple
 
 import numpy as np
 
@@ -113,25 +113,31 @@ def holm_correction(pvalues: Sequence[float]) -> List[float]:
 
 
 def pairwise_win_rate_matrix(
-    per_model_paired: Dict[str, Sequence[float]],
+    per_model_paired: Mapping[str, Mapping[Hashable, float]],
 ) -> Dict[str, Dict[str, float]]:
-    """Fraction of paired seeds where row-model > col-model (ties=0.5). Seed order must be aligned."""
+    """Fraction of shared seeds where row-model > col-model (ties=0.5).
+
+    per_model_paired maps model_key -> {seed: profit}. Pairs are formed by
+    intersecting seed keys, so callers do not need to pre-align list order.
+    """
     models = list(per_model_paired.keys())
-    arrays = {m: np.asarray(per_model_paired[m], dtype=float) for m in models}
     matrix: Dict[str, Dict[str, float]] = {m: {} for m in models}
     for row in models:
+        row_map = per_model_paired[row]
         for col in models:
             if row == col:
                 matrix[row][col] = float("nan")
                 continue
-            a = arrays[row]
-            b = arrays[col]
-            n = min(a.size, b.size)
+            col_map = per_model_paired[col]
+            shared_seeds = sorted(set(row_map.keys()) & set(col_map.keys()), key=str)
+            n = len(shared_seeds)
             if n == 0:
                 matrix[row][col] = float("nan")
                 continue
-            wins = float((a[:n] > b[:n]).sum())
-            ties = float((a[:n] == b[:n]).sum())
+            a = np.asarray([row_map[s] for s in shared_seeds], dtype=float)
+            b = np.asarray([col_map[s] for s in shared_seeds], dtype=float)
+            wins = float((a > b).sum())
+            ties = float((a == b).sum())
             matrix[row][col] = (wins + 0.5 * ties) / n
     return matrix
 

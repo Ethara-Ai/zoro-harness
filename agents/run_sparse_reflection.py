@@ -30,8 +30,6 @@ from util.default_config import (
 )
 
 from agents.run_step_reflection import (
-    DEFAULT_API_KEY,
-    DEFAULT_BASE_URL,
     DEFAULT_GOAL,
     DEFAULT_MODEL,
     build_goal,
