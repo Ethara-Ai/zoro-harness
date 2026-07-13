@@ -90,18 +90,61 @@ def set_paper_style_like_reference():
 
 set_paper_style_like_reference()
 
+def _extract_sku_ids(items):
+    """Normalize a list of SKU identifiers (strings, dicts, or object reprs) into a set of str IDs."""
+    out = set()
+    if not items:
+        return out
+    for it in items:
+        if isinstance(it, str):
+            out.add(it)
+        elif isinstance(it, dict):
+            for k in ('id', 'sku_id', 'name'):
+                if k in it:
+                    out.add(str(it[k]))
+                    break
+            else:
+                out.add(str(it))
+        else:
+            out.add(str(it))
+    return out
+
+
+def _record_has_error(record):
+    result_wrap = record.get('result', {}) if isinstance(record, dict) else {}
+    if not isinstance(result_wrap, dict):
+        return False
+    if result_wrap.get('error'):
+        return True
+    inner = result_wrap.get('result', {})
+    if isinstance(inner, dict) and inner.get('error'):
+        return True
+    return False
+
+
 def analyze_tool_calls(tool_calls_path):
-    """分析单个 tool_calls.jsonl 文件"""
     daily_data = []
     total_expired = 0
     total_ordered = 0
     total_returns = 0
     total_sold = 0
     networth_history = []
-    
+
+    per_day_stockouts = []
+    per_day_active_skus = []
+    per_day_on_hand = []
+    per_day_order_events = []
+    tool_total = 0
+    tool_errors = 0
+    price_change_events = []
+
+    orders_in_current_day = 0
+    price_changes_in_current_day = []
+    current_day_index = 0
+
     if not os.path.exists(tool_calls_path):
         return None
-    
+
     try:
         with open(tool_calls_path, 'r', encoding='utf-8') as f:
             for line in f:
@@ -111,63 +154,96 @@ def analyze_tool_calls(tool_calls_path):
                 try:
                     record = json.loads(line)
                     tool = record.get('tool', '')
-                    
-                    if tool == 'end_today':
-                        result = record.get('result', {})
-                        if isinstance(result, dict):
-                            result_data = result.get('result', {})
-                            if isinstance(result_data, dict):
-                                current_date = result_data.get('current_date')
-                                money_earned = result_data.get('money_earned', 0.0)
-                                sales_by_sku = result_data.get('sales_by_sku', {})
-                                expired_discount_by_sku = result_data.get('expired_discount_by_sku', {})
-                                returns_by_sku = result_data.get('returns_by_sku', {})
-                                net_worth = result_data.get('net_worth', 0.0)
-                                
-                                total_sales = sum(sales_by_sku.values()) if isinstance(sales_by_sku, dict) else 0
-                                expired_count = sum(expired_discount_by_sku.values()) if isinstance(expired_discount_by_sku, dict) else 0
-                                return_count = sum(returns_by_sku.values()) if isinstance(returns_by_sku, dict) else 0
-                                
-                                total_expired += expired_count
-                                total_returns += return_count
-                                total_sold += total_sales
-                                
-                                daily_data.append({
-                                    'date': current_date,
-                                    'money_earned': float(money_earned) if money_earned else 0.0,
-                                    'total_sales': int(total_sales),
-                                    'expired_count': int(expired_count),
-                                    'return_count': int(return_count),
-                                    'net_worth': float(net_worth) if net_worth else 0.0
-                                })
-                                
-                                networth_history.append({
-                                    'date': current_date,
-                                    'net_worth': float(net_worth) if net_worth else 0.0
-                                })
-                    
+                    tool_total += 1
+                    if _record_has_error(record):
+                        tool_errors += 1
+
+                    result = record.get('result', {})
+                    result_data = result.get('result', {}) if isinstance(result, dict) else {}
+
+                    if tool == 'end_today' and isinstance(result_data, dict):
+                        current_date = result_data.get('current_date')
+                        money_earned = result_data.get('money_earned', 0.0)
+                        sales_by_sku = result_data.get('sales_by_sku', {}) or {}
+                        expired_discount_by_sku = result_data.get('expired_discount_by_sku', {}) or {}
+                        returns_by_sku = result_data.get('returns_by_sku', {}) or {}
+                        insufficient = result_data.get('insufficient_skus', []) or []
+                        inventory_map = result_data.get('inventory', {}) or {}
+                        net_worth = result_data.get('net_worth', 0.0)
+
+                        total_sales = sum(sales_by_sku.values()) if isinstance(sales_by_sku, dict) else 0
+                        expired_count = sum(expired_discount_by_sku.values()) if isinstance(expired_discount_by_sku, dict) else 0
+                        return_count = sum(returns_by_sku.values()) if isinstance(returns_by_sku, dict) else 0
+
+                        total_expired += expired_count
+                        total_returns += return_count
+                        total_sold += total_sales
+
+                        daily_data.append({
+                            'date': current_date,
+                            'money_earned': float(money_earned) if money_earned else 0.0,
+                            'total_sales': int(total_sales),
+                            'expired_count': int(expired_count),
+                            'return_count': int(return_count),
+                            'net_worth': float(net_worth) if net_worth else 0.0
+                        })
+                        networth_history.append({
+                            'date': current_date,
+                            'net_worth': float(net_worth) if net_worth else 0.0
+                        })
+
+                        stockout_ids = _extract_sku_ids(insufficient)
+                        per_day_stockouts.append(stockout_ids)
+
+                        active = {str(k) for k in sales_by_sku.keys()} | stockout_ids
+                        inv_by_sku = {}
+                        if isinstance(inventory_map, dict):
+                            inv_by_sku = inventory_map.get('inventory', {}) or {}
+                        if isinstance(inv_by_sku, dict):
+                            active |= {str(k) for k in inv_by_sku.keys()}
+                        per_day_active_skus.append(active)
+
+                        on_hand = 0
+                        if isinstance(inventory_map, dict):
+                            on_hand = int(inventory_map.get('total_items', 0) or 0)
+                        per_day_on_hand.append(on_hand)
+
+                        per_day_order_events.append(orders_in_current_day)
+                        for sku_id in price_changes_in_current_day:
+                            price_change_events.append((current_day_index, sku_id))
+
+                        orders_in_current_day = 0
+                        price_changes_in_current_day = []
+                        current_day_index += 1
+
                     elif tool == 'place_order':
-                        result = record.get('result', {})
-                        if isinstance(result, dict):
-                            result_data = result.get('result', {})
-                            if isinstance(result_data, dict) and 'lines' in result_data:
-                                for line_item in result_data['lines']:
-                                    if isinstance(line_item, dict):
-                                        quantity = line_item.get('quantity', 0)
-                                        if isinstance(quantity, (int, float)):
-                                            total_ordered += int(quantity)
+                        if isinstance(result_data, dict) and 'lines' in result_data:
+                            for line_item in result_data['lines']:
+                                if isinstance(line_item, dict):
+                                    quantity = line_item.get('quantity', 0)
+                                    if isinstance(quantity, (int, float)):
+                                        total_ordered += int(quantity)
+                        orders_in_current_day += 1
+
+                    elif tool == 'modify_sku_price':
+                        args = record.get('args', {}) or {}
+                        sku_id = None
+                        if isinstance(args, dict):
+                            sku_id = args.get('sku_id') or args.get('sku') or args.get('id')
+                        if sku_id is not None:
+                            price_changes_in_current_day.append(str(sku_id))
                 except:
                     continue
-    except Exception as e:
+    except Exception:
         return None
-    
+
     if not daily_data:
         return None
-    
+
     dates = [d['date'] for d in daily_data if d['date']]
     if not dates:
         return None
-    
+
     dates.sort()
     run_days = len(set(dates))
 
@@ -176,14 +252,62 @@ def analyze_tool_calls(tool_calls_path):
         category_number = 5
     else:
         category_number = 20
-    
+
     avg_daily_sales = sum(d['total_sales'] for d in daily_data) / len(daily_data) if daily_data else 0
     avg_daily_profit = sum(d['money_earned'] for d in daily_data) / len(daily_data) if daily_data else 0
     avg_daily_sales_per_category = avg_daily_sales / category_number
     avg_daily_profit_per_category = avg_daily_profit / category_number
     expired_ratio = total_expired / total_ordered if total_ordered > 0 else 0
     return_ratio = total_returns / total_sold if total_sold > 0 else 0
-    
+
+    n_days = len(per_day_stockouts)
+    days_with_stockout = sum(1 for s in per_day_stockouts if s)
+    stockout_days_rate = days_with_stockout / n_days if n_days > 0 else 0.0
+    stockout_sku_days = sum(len(s) for s in per_day_stockouts)
+
+    service_level_daily = []
+    for stockouts, active in zip(per_day_stockouts, per_day_active_skus):
+        if not active:
+            continue
+        service_level_daily.append(1.0 - len(stockouts & active) / len(active))
+    mean_service_level = (
+        sum(service_level_daily) / len(service_level_daily) if service_level_daily else 1.0
+    )
+
+    mean_on_hand = sum(per_day_on_hand) / n_days if n_days > 0 else 0.0
+    holding_days = sum(per_day_on_hand)
+    holding_units_days = holding_days
+    inventory_turnover = total_sold / mean_on_hand if mean_on_hand > 0 else 0.0
+
+    total_order_events = sum(per_day_order_events)
+    orders_per_day = total_order_events / n_days if n_days > 0 else 0.0
+
+    tool_error_rate = tool_errors / tool_total if tool_total > 0 else 0.0
+
+    revisions = 0
+    sku_to_days = {}
+    for day_idx, sku_id in price_change_events:
+        sku_to_days.setdefault(sku_id, []).append(day_idx)
+    for days_list in sku_to_days.values():
+        days_list.sort()
+        for i in range(1, len(days_list)):
+            if days_list[i] - days_list[i - 1] <= 3:
+                revisions += 1
+    action_revision_rate = revisions / len(price_change_events) if price_change_events else 0.0
+
+    recovery_opportunities = 0
+    recoveries = 0
+    for i in range(len(per_day_stockouts) - 1):
+        today = per_day_stockouts[i]
+        tomorrow = per_day_stockouts[i + 1]
+        for sku_id in today:
+            recovery_opportunities += 1
+            if sku_id not in tomorrow:
+                recoveries += 1
+    failure_recovery_rate = (
+        recoveries / recovery_opportunities if recovery_opportunities > 0 else 1.0
+    )
+
     return {
         'run_days': run_days,
         'avg_daily_sales': avg_daily_sales,
@@ -198,7 +322,28 @@ def analyze_tool_calls(tool_calls_path):
         'total_sold': total_sold,
         'all_daily_sales': [d['total_sales'] for d in daily_data],
         'all_daily_profit': [d['money_earned'] for d in daily_data],
-        'networth_history': networth_history
+        'networth_history': networth_history,
+        'stockout_days_rate': stockout_days_rate,
+        'stockout_sku_days': stockout_sku_days,
+        'mean_service_level': mean_service_level,
+        'service_level_daily': service_level_daily,
+        'mean_on_hand': mean_on_hand,
+        'holding_days': holding_days,
+        'holding_units_days': holding_units_days,
+        'inventory_turnover': inventory_turnover,
+        'per_day_on_hand': per_day_on_hand,
+        'total_order_events': total_order_events,
+        'orders_per_day': orders_per_day,
+        'per_day_order_events': per_day_order_events,
+        'total_tool_calls': tool_total,
+        'tool_error_count': tool_errors,
+        'tool_error_rate': tool_error_rate,
+        'price_change_events_count': len(price_change_events),
+        'action_revision_count': revisions,
+        'action_revision_rate': action_revision_rate,
+        'failure_recovery_opportunities': recovery_opportunities,
+        'failure_recoveries': recoveries,
+        'failure_recovery_rate': failure_recovery_rate,
     }
 
 def validate_args_json(run_dir, scenario_name):
@@ -407,7 +552,33 @@ def calculate_statistics(scenario_data):
             return_ratio = total_returns / total_sold if total_sold > 0 else 0
             
             longest_run = max(runs, key=lambda x: x['run_days']) if runs else None
-            
+
+            def _run_vals(key, default=0.0):
+                return [r.get(key, default) for r in runs]
+
+            def _mean(vals):
+                vals = [v for v in vals if v is not None]
+                return sum(vals) / len(vals) if vals else 0.0
+
+            stockout_days_rates = _run_vals('stockout_days_rate')
+            stockout_sku_days_list = _run_vals('stockout_sku_days')
+            mean_service_levels = _run_vals('mean_service_level', default=1.0)
+            mean_on_hand_list = _run_vals('mean_on_hand')
+            holding_days_list = _run_vals('holding_days')
+            holding_units_days_list = _run_vals('holding_units_days')
+            inventory_turnover_list = _run_vals('inventory_turnover')
+            orders_per_day_list = _run_vals('orders_per_day')
+            total_order_events_list = _run_vals('total_order_events')
+            tool_error_rates = _run_vals('tool_error_rate')
+            total_tool_calls_list = _run_vals('total_tool_calls')
+            tool_error_counts = _run_vals('tool_error_count')
+            action_revision_rates = _run_vals('action_revision_rate')
+            price_change_counts = _run_vals('price_change_events_count')
+            action_revision_counts = _run_vals('action_revision_count')
+            failure_recovery_rates = _run_vals('failure_recovery_rate', default=1.0)
+            failure_recovery_opps = _run_vals('failure_recovery_opportunities')
+            failure_recoveries_list = _run_vals('failure_recoveries')
+
             stats[model_name] = {
                 'avg_run_days': avg_run_days,
                 'avg_daily_sales': avg_daily_sales,
@@ -423,7 +594,32 @@ def calculate_statistics(scenario_data):
                 'all_run_days': run_days_list,
                 'all_daily_sales': all_daily_sales,
                 'all_daily_profit': all_daily_profit,
-                'longest_run': longest_run
+                'longest_run': longest_run,
+                'mean_stockout_days_rate': _mean(stockout_days_rates),
+                'mean_stockout_sku_days': _mean(stockout_sku_days_list),
+                'mean_service_level': _mean(mean_service_levels),
+                'mean_on_hand': _mean(mean_on_hand_list),
+                'mean_holding_days': _mean(holding_days_list),
+                'mean_holding_units_days': _mean(holding_units_days_list),
+                'mean_inventory_turnover': _mean(inventory_turnover_list),
+                'mean_orders_per_day': _mean(orders_per_day_list),
+                'total_order_events': sum(total_order_events_list),
+                'mean_tool_error_rate': _mean(tool_error_rates),
+                'total_tool_calls': sum(total_tool_calls_list),
+                'total_tool_errors': sum(tool_error_counts),
+                'mean_action_revision_rate': _mean(action_revision_rates),
+                'total_price_changes': sum(price_change_counts),
+                'total_action_revisions': sum(action_revision_counts),
+                'mean_failure_recovery_rate': _mean(failure_recovery_rates),
+                'total_failure_recovery_opportunities': sum(failure_recovery_opps),
+                'total_failure_recoveries': sum(failure_recoveries_list),
+                'all_stockout_days_rate': stockout_days_rates,
+                'all_service_level': mean_service_levels,
+                'all_mean_on_hand': mean_on_hand_list,
+                'all_orders_per_day': orders_per_day_list,
+                'all_tool_error_rate': tool_error_rates,
+                'all_action_revision_rate': action_revision_rates,
+                'all_failure_recovery_rate': failure_recovery_rates,
             }
         
         all_stats[scenario] = stats
@@ -568,6 +764,42 @@ def print_statistics(all_stats):
             else:
                 print(format_table_manually(headers, [avg_row]))
         
+        print(f"\n{'='*100}")
+        print(f"扩展运营指标 (Extended Operational Metrics):")
+        print(f"{'='*100}\n")
+
+        ops_headers = [
+            "模型",
+            "缺货天数比例",
+            "服务水平",
+            "平均在库",
+            "库存周转",
+            "持仓单位·天",
+            "订单/天",
+            "工具错误率",
+            "动作修正率",
+            "次日恢复率",
+        ]
+        ops_rows = []
+        for model_name, data in sorted(stats.items()):
+            ops_rows.append([
+                model_name,
+                f"{data.get('mean_stockout_days_rate', 0.0):.4f}",
+                f"{data.get('mean_service_level', 1.0):.4f}",
+                f"{data.get('mean_on_hand', 0.0):.2f}",
+                f"{data.get('mean_inventory_turnover', 0.0):.3f}",
+                f"{data.get('mean_holding_units_days', 0.0):.1f}",
+                f"{data.get('mean_orders_per_day', 0.0):.3f}",
+                f"{data.get('mean_tool_error_rate', 0.0):.4f}",
+                f"{data.get('mean_action_revision_rate', 0.0):.4f}",
+                f"{data.get('mean_failure_recovery_rate', 1.0):.4f}",
+            ])
+
+        if HAS_TABULATE:
+            print(tabulate(ops_rows, headers=ops_headers, tablefmt="grid", stralign="left"))
+        else:
+            print(format_table_manually(ops_headers, ops_rows))
+
         # 打印详细信息（运行天数列表）
         print(f"\n详细运行天数:")
         for model_name, data in sorted(stats.items()):
@@ -602,6 +834,31 @@ def save_statistics(all_stats, output_dir='paper_data_analysis'):
                 'all_run_days': [int(d) for d in data['all_run_days']],
                 'all_daily_sales': [float(s) for s in data['all_daily_sales']],
                 'all_daily_profit': [float(p) for p in data['all_daily_profit']],
+                'mean_stockout_days_rate': float(data.get('mean_stockout_days_rate', 0.0)),
+                'mean_stockout_sku_days': float(data.get('mean_stockout_sku_days', 0.0)),
+                'mean_service_level': float(data.get('mean_service_level', 1.0)),
+                'mean_on_hand': float(data.get('mean_on_hand', 0.0)),
+                'mean_holding_days': float(data.get('mean_holding_days', 0.0)),
+                'mean_holding_units_days': float(data.get('mean_holding_units_days', 0.0)),
+                'mean_inventory_turnover': float(data.get('mean_inventory_turnover', 0.0)),
+                'mean_orders_per_day': float(data.get('mean_orders_per_day', 0.0)),
+                'total_order_events': int(data.get('total_order_events', 0)),
+                'mean_tool_error_rate': float(data.get('mean_tool_error_rate', 0.0)),
+                'total_tool_calls': int(data.get('total_tool_calls', 0)),
+                'total_tool_errors': int(data.get('total_tool_errors', 0)),
+                'mean_action_revision_rate': float(data.get('mean_action_revision_rate', 0.0)),
+                'total_price_changes': int(data.get('total_price_changes', 0)),
+                'total_action_revisions': int(data.get('total_action_revisions', 0)),
+                'mean_failure_recovery_rate': float(data.get('mean_failure_recovery_rate', 1.0)),
+                'total_failure_recovery_opportunities': int(data.get('total_failure_recovery_opportunities', 0)),
+                'total_failure_recoveries': int(data.get('total_failure_recoveries', 0)),
+                'all_stockout_days_rate': [float(v) for v in data.get('all_stockout_days_rate', [])],
+                'all_service_level': [float(v) for v in data.get('all_service_level', [])],
+                'all_mean_on_hand': [float(v) for v in data.get('all_mean_on_hand', [])],
+                'all_orders_per_day': [float(v) for v in data.get('all_orders_per_day', [])],
+                'all_tool_error_rate': [float(v) for v in data.get('all_tool_error_rate', [])],
+                'all_action_revision_rate': [float(v) for v in data.get('all_action_revision_rate', [])],
+                'all_failure_recovery_rate': [float(v) for v in data.get('all_failure_recovery_rate', [])],
             }
             if data['longest_run']:
                 output_data[scenario][model_name]['longest_run_id'] = data['longest_run']['run_id']

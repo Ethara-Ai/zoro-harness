@@ -329,6 +329,8 @@ def run_step_reflection_loop(
     max_days: int = 30,
     max_steps_per_day: int = 20,
     client: Optional[OpenAI] = None,
+    generate_reflection_fn: Optional[Any] = None,
+    reflection_gate: Optional[Any] = None,
 ) -> None:
     all_tools = build_openai_tools(env)
 
@@ -586,20 +588,35 @@ def run_step_reflection_loop(
             if checkpoint_dir is not None and global_turn % checkpoint_interval == 0:
                 save_checkpoint(checkpoint_dir, global_turn, execution_messages, env)
 
-            # --- Reflect ---
-            # Use full execution history as reflection context.
             step_interaction_messages = execution_messages
             previous_reflection = reflection_memory[-1] if reflection_memory else None
 
-            reflection_text, reflection_usage = generate_step_reflection(
-                client=client,
-                model=model,
-                day=day,
-                step=step,
-                goal=goal,
-                interaction_history=step_interaction_messages,
-                previous_reflection=previous_reflection,
-            )
+            _reflection_active = True
+            if reflection_gate is not None:
+                try:
+                    _reflection_active = bool(reflection_gate(
+                        day=day,
+                        step=step,
+                        execution_phase_complete=execution_phase_complete,
+                    ))
+                except Exception as gate_exc:
+                    print(f"[WARN] reflection_gate raised {type(gate_exc).__name__}: {gate_exc}; defaulting to active")
+                    _reflection_active = True
+
+            if _reflection_active:
+                _reflection_fn = generate_reflection_fn or generate_step_reflection
+                reflection_text, reflection_usage = _reflection_fn(
+                    client=client,
+                    model=model,
+                    day=day,
+                    step=step,
+                    goal=goal,
+                    interaction_history=step_interaction_messages,
+                    previous_reflection=previous_reflection,
+                )
+            else:
+                reflection_text = "[reflection skipped by gate]"
+                reflection_usage = {}
 
             print(f"[Day {day} Step {step}] Reflection:\n{reflection_text}\n")
             truncated_tool_responses = [truncate_text(r, 500) for r in step_tool_responses]
