@@ -1303,31 +1303,57 @@ def main() -> None:
     parser.add_argument("--db_path", type=str, default=None, help="Database path for order records (default: 'model_run_time')")
     parser.add_argument("--config_type", type=str, choices=["dynamic_hard", "dynamic_middle", "still_hard", "still_middle"], default="dynamic_hard", help="Configuration type: 'dynamic_hard', 'dynamic_middle', 'still_hard', or 'still_middle' (default: 'dynamic_hard')")
     parser.add_argument("--max_input_tokens", type=int, default=50000, help="Maximum input tokens for context window (default: 60000)")
-    parser.add_argument("--max_days", type=int, default=180, help="Maximum number of days to simulate (default: 30)")
+    parser.add_argument("--max_days", type=int, default=None, help="Maximum number of days to simulate (default: 180, or taken from dataset.json when --dataset is used)")
     parser.add_argument("--max_strategy_turns", type=int, default=10, help="Maximum turns per day in strategy phase (default: 10)")
     parser.add_argument("--max_execution_turns", type=int, default=20, help="Maximum turns per day in execution phase (default: 20)")
     parser.add_argument("--api_key", type=str, default=None, help=f"OpenAI API key ")
     parser.add_argument("--base_url", type=str, default=None, help=f"OpenAI API base URL")
+    parser.add_argument("--dataset", type=str, default=None,
+        help="Path to dataset.json (UUID5-named task). Mutually exclusive with --config_type.")
+    parser.add_argument("--out_dir", type=str, default=None,
+        help="Output directory for tool_calls.jsonl and artifacts. Required when --dataset is used.")
+    parser.add_argument("--framework", type=str, default="react",
+        choices=["react", "plan_and_act"],
+        help="Agent framework to use (default: react)")
+    parser.add_argument("--goal", type=str,
+        default="Maximize net worth over the simulation horizon.",
+        help="Goal string for plan_and_act framework. Ignored by react.")
     args = parser.parse_args()
     
-    # Load config based on config_type
-    if args.config_type == "dynamic_hard":
-        config = create_dynamic_hard_config()
-    elif args.config_type == "dynamic_middle":
-        config = create_dynamic_middle_config()
-    elif args.config_type == "still_hard":
-        config = create_still_hard_config()
-    elif args.config_type == "still_middle":
-        config = create_still_middle_config()
-    else:
-        # Default fallback
-        config = create_dynamic_hard_config()
-    
-    # Use db_path if provided, otherwise use default
-    config["order_record_dir"] = args.db_path if args.db_path is not None else 'model_run_time'
-    log_path, env_log_path = build_log_path()  # 🚀自动生成日志路径
+    # -- Config loading: dataset.json path OR legacy --config_type path --
+    if args.dataset:
+        if not args.out_dir:
+            raise ValueError("--out_dir is required when --dataset is provided")
+        ds = json.load(open(args.dataset))
+        out = Path(args.out_dir)
+        out.mkdir(parents=True, exist_ok=True)
 
-    config['log_dir'] = env_log_path
+        config = dict(ds)                          # flat schema: ds IS the env_config
+        config["log_dir"]          = str(out)        # MUST be set before RetailEnvironment(config)
+        config["order_record_dir"] = str(out / "order_records")
+
+        (out / "dataset.json").write_text(json.dumps(ds, indent=2))
+        (out / "config.json").write_text(json.dumps(config, indent=2))
+
+        args.max_days = args.max_days or 180
+        env_log_path = str(out)
+        log_path = out / "run_env.json"
+    else:
+        # existing --config_type path — COMPLETELY UNCHANGED
+        if args.config_type == "dynamic_hard":
+            config = create_dynamic_hard_config()
+        elif args.config_type == "dynamic_middle":
+            config = create_dynamic_middle_config()
+        elif args.config_type == "still_hard":
+            config = create_still_hard_config()
+        elif args.config_type == "still_middle":
+            config = create_still_middle_config()
+        else:
+            config = create_dynamic_hard_config()
+        config["order_record_dir"] = args.db_path if args.db_path is not None else 'model_run_time'
+        log_path, env_log_path = build_log_path()
+        config['log_dir'] = env_log_path
+        args.max_days = args.max_days or 180  # apply default for legacy path
 
     # 把运行时使用的 config 复制到日志目录，便于复现
     try:
@@ -1348,6 +1374,10 @@ def main() -> None:
             "max_turns": args.max_turns,
             "db_path": args.db_path,
             "config_type": args.config_type,
+            "dataset": args.dataset,
+            "out_dir": args.out_dir,
+            "framework": args.framework,
+            "goal": args.goal,
             "max_input_tokens": args.max_input_tokens,
             "api_key": "***" if args.api_key else None,  # Don't save actual API key
             "base_url": args.base_url,
@@ -1385,6 +1415,12 @@ def main() -> None:
         start_turn = args.recover_turn
     else:
         env = RetailEnvironment(config)
+
+    if args.framework != "react":
+        raise NotImplementedError(
+            f"Framework {args.framework!r} is not yet wired up in this runner. "
+            "Use --framework react, or invoke run_plan_and_act.py directly."
+        )
 
     run_react_loop(
         env=env,
