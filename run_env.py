@@ -1331,7 +1331,7 @@ def main() -> None:
         out = Path(args.out_dir)
         out.mkdir(parents=True, exist_ok=True)
 
-        config = dict(ds)                          # flat schema: ds IS the env_config
+        config = dict(ds)                            # flat schema — dataset IS the env_config
         config["log_dir"]          = str(out)        # MUST be set before RetailEnvironment(config)
         config["order_record_dir"] = str(out / "order_records")
 

@@ -342,15 +342,23 @@ def main() -> None:
 
     for path in task_files:
         try:
-            ds = json.loads(path.read_text())
+            raw = json.loads(path.read_text())
         except Exception as exc:
             all_errors[path.name] = [f"JSON parse error: {exc}"]
             n_failed += 1
             continue
 
-        errs = validate_dataset(ds, paper_run_ids, task_id=path.stem)
+        # Support wrapped schema {task_id, env_config, ...} and legacy flat dicts
+        if "env_config" in raw:
+            ds = raw["env_config"]
+            task_id = raw.get("task_id", path.stem)
+        else:
+            ds = raw
+            task_id = path.stem
+
+        errs = validate_dataset(ds, paper_run_ids, task_id=task_id)
         if errs:
-            all_errors[path.stem] = errs
+            all_errors[task_id] = errs
             n_failed += 1
 
     if all_errors:

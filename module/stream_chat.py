@@ -51,10 +51,7 @@ def stream_chat(
             extra_body={"enable_thinking": True},
             stream=True,
             stream_options={"include_usage": True},
-            top_p=0.95,
-            temperature=0.6,
             max_tokens=10000,
-            presence_penalty=1.1,
             timeout=60000,
         )
 
