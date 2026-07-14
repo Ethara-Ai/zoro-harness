@@ -2,6 +2,7 @@ from __future__ import annotations
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 import random
+import numpy as np
 from typing import Any, Dict, List, Optional
 import json
 import time
@@ -46,13 +47,25 @@ class RetailEnvironment:
         self.config = config
 
         # 可选：锁定全局随机种子，保证同一配置下运行可复现
+        #
+        # NOTE: numpy MUST be seeded here too, not just stdlib random. The demand simulation
+        # draws from numpy's GLOBAL RNG — module/sku.py:87 (np.random.normal, demand noise) and
+        # module/sku.py:149 (np.random.binomial, the daily sales draw itself). numpy's global RNG
+        # is independent of random.seed(); left unseeded it initialises from OS entropy, so two
+        # runs of the same config produced materially different results (observed: final net worth
+        # swinging ~37% across identical oracle runs). Seeding only `random` made
+        # global_random_seed a false promise.
         seed = self.config.get("global_random_seed", None)
         if seed is not None:
             try:
-                random.seed(int(seed))
-            except Exception:
-                # 如果配置不合法，忽略种子设置，继续运行
-                pass
+                seed_int = int(seed)
+            except (TypeError, ValueError) as e:
+                raise ValueError(
+                    f"global_random_seed must be an integer or int-castable, "
+                    f"got {seed!r}"
+                ) from e
+            random.seed(seed_int)
+            np.random.seed(seed_int)
 
         self.debug = bool(self.config.get("debug", False))
 
@@ -3634,28 +3647,19 @@ def simulate_news_aware_environment(days: int = 7, sample_size: int = 3, db_path
         pass
 
 
-def simulate_quality_based_environment(days: int = 7, sample_size: int = 3, db_path: str = 'data/simulate_data/15/records_no_review/', config_type: str = "dynamic_hard"):
-    """
-    基于 simulate_news_aware_environment，但每次订货时直接选择 quality_score 最高的供应商。
-    
-    主要特点：
-    1. 每次订货时，获取所有供应商的 quality_score
-    2. 选择 quality_score 最高的供应商进行订货
-    3. 如果多个供应商 quality_score 相同，选择价格更低的作为 tie-breaker
-    4. 保持新闻影响的需求预测逻辑
-    
-    Args:
-        days: 模拟天数
-        sample_size: 每个品类选择的 SKU 数量
-        db_path: 数据库路径
-        config_type: 配置类型 ("dynamic_hard", "dynamic_middle", "still_hard", "still_middle")
-    """
-
-    print(
-        "========================simulate_quality_based_environment =========================="
-    )
-    # 根据 config_type 选择配置
-    if config_type == "dynamic_hard":
+def simulate_quality_based_environment(
+    days: int = 7,
+    sample_size: int = 3,
+    db_path: str = 'data/simulate_data/15/records_no_review/',
+    config_type: str = "dynamic_hard",
+    env_config: Optional[Dict[str, Any]] = None,
+    log_dir: Optional[str] = None,
+    bulk_qty_multiplier: int = 4,
+):
+    # 根据 config_type 选择配置 (env_config, when given, wins outright)
+    if env_config is not None:
+        config = dict(env_config)     # all task keys, verbatim
+    elif config_type == "dynamic_hard":
         config = create_default_config()
     elif config_type == "dynamic_middle":
         config = create_default_middle_config()
@@ -3665,14 +3669,20 @@ def simulate_quality_based_environment(days: int = 7, sample_size: int = 3, db_p
         config = create_default_still_middle_config()
     else:
         config = create_default_config()  # 默认使用 dynamic_hard
-    
-    # 设置 order_record_dir
-    config["order_record_dir"] = db_path if db_path else 'model_run_time'
+
+    # 设置 log_dir / order_record_dir
+    if log_dir is not None:
+        config["log_dir"] = str(log_dir)
+        config["order_record_dir"] = str(Path(log_dir) / "order_records")
+    else:
+        config["order_record_dir"] = db_path if db_path else 'model_run_time'
+
     env = RetailEnvironment(config)
 
-    # 订货相关参数
-    bulk_qty_multiplier = 4       # 大量订货：预计销量的倍数
-    
+    # 运行结果追踪（返回值用）
+    final_net_worth: float = 0.0
+    days_completed: int = 0
+
     # 追踪新闻影响倍数：用于统计整个模拟过程中的比例
     multiplier_tracking: Dict[int, Dict[str, Dict[str, float]]] = {}
 
@@ -4007,6 +4017,11 @@ def simulate_quality_based_environment(days: int = 7, sample_size: int = 3, db_p
             env.log_debug("step 结果：")
             env.log_debug(step_res.get("formatted", ""))
 
+            # 追踪最终净资产 / 完成天数，供调用方直接使用（无需重新解析轨迹）
+            if isinstance(step_payload, dict) and step_payload.get("net_worth") is not None:
+                final_net_worth = float(step_payload["net_worth"])
+            days_completed = day
+
             end_time = time.time()
             env.log_info(
                 f"第 {day} 天模拟结束，耗时 {end_time - start_time:.4f} 秒"
@@ -4015,13 +4030,21 @@ def simulate_quality_based_environment(days: int = 7, sample_size: int = 3, db_p
         env.log_debug("\n====== 模拟结束 ======")
         env.log_debug("最终资金 & 日期：" + env.exec_tools("view_funds_and_date")['formatted'])
         ratings = env.get_sku_rating_report()
-        
+
         final_inv = env.exec_tools("view_inventory")
         final_total_skus = final_inv.get("result", {}).get("total_skus")
         env.log_debug(f"最终总 SKU 数：{final_total_skus}")
     finally:
         # 结束时清理容器
         pass
+
+    return {
+        "log_dir": config.get("log_dir"),
+        "final_net_worth": final_net_worth,
+        "days_completed": days_completed,
+        "sample_size": sample_size,
+        "bulk_qty_multiplier": bulk_qty_multiplier,
+    }
 
 
 if __name__ == "__main__":

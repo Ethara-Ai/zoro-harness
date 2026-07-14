@@ -102,7 +102,9 @@ class SKU:
         self.today_attribute_attraction = self.get_attribute_attraction(date, external_attraction_rate)
 
         if self.today_attribute_attraction is None:
-            import pdb; pdb.set_trace()
+            raise RuntimeError(
+                f"get_attribute_attraction returned None for SKU {self.sku_id} on {date}"
+            )
         return self.today_attribute_attraction
     
     def compute_attraction(self, currnet_market_skus_ids: List[str]) -> float:
@@ -143,15 +145,18 @@ class SKU:
         prob = logit_prob / (1 + logit_prob)
 
         if not customer_count:
-            import pdb; pdb.set_trace()
+            raise RuntimeError(
+                f"customer_count is falsy (={customer_count!r}) for SKU {self.sku_id}; "
+                "cannot draw sales. Check CustomerManager output for this date."
+            )
 
         try:
             expected_sales = int(np.random.binomial(customer_count, prob))
         except Exception as e:
-            import traceback
-            traceback.print_exc()
-            import pdb; pdb.set_trace()
-            print(e)
+            raise RuntimeError(
+                f"np.random.binomial failed for SKU {self.sku_id} "
+                f"(customer_count={customer_count}, prob={prob}): {e}"
+            ) from e
 
         if total_exp_cateogory_effect == 0:
             raw_sales = 0
@@ -167,10 +172,10 @@ class SKU:
 
                 self.sales = base + (1 if random.random() < fraction else 0)
         except Exception as e:
-            import traceback
-            traceback.print_exc()
-            import pdb; pdb.set_trace()
-            print(e)
+            raise RuntimeError(
+                f"sales quantisation failed for SKU {self.sku_id} "
+                f"(raw_sales={raw_sales!r}): {e}"
+            ) from e
 
         
             
