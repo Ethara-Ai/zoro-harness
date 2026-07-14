@@ -6,7 +6,6 @@ Usage:
         --archetype {dynamic_hard|dynamic_middle|still_hard|still_middle|all} \
         --n 10000 \
         --out zoro/harness/dataset/ \
-        --max_days 60 \
         --seed 0
 """
 
@@ -14,7 +13,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
 import random
 import sys
 from pathlib import Path
@@ -55,19 +53,6 @@ ARCHETYPE_ALLOCATION: dict[str, int] = {
 }
 
 _PAPER_DATA_DIR = Path(__file__).resolve().parent.parent / "paper_data"
-
-# ---------------------------------------------------------------------------
-# Acceptance calibration
-# ---------------------------------------------------------------------------
-
-def compute_acceptance(initial_funds: float, everyday_rent: float, max_days: int) -> dict:
-    survival_fraction = 0.75
-    surviving_days = survival_fraction * max_days
-    pass_threshold = initial_funds + (everyday_rent * surviving_days * 0.20)
-    return {
-        "survival_fraction": survival_fraction,
-        "pass_threshold": int(pass_threshold),
-    }
 
 # ---------------------------------------------------------------------------
 # Variable key sampler
@@ -150,7 +135,6 @@ def generate(
     archetype: str,
     n: int,
     out: Path,
-    max_days: int,
     rng_seed: int,
     paper_data_dir: Path,
 ) -> list[dict]:
@@ -211,19 +195,10 @@ def generate(
                 f"archetype={archetype}, task_id={task_id}"
             )
 
-        # Write wrapped schema: {task_id, schema_version, max_days, acceptance, env_config}
-        dataset = {
-            "task_id":        task_id,
-            "schema_version": "1.0",
-            "max_days":       max_days,
-            "acceptance":     compute_acceptance(
-                var["initial_funds"], var["everyday_rent"], max_days
-            ),
-            "env_config":     env_config,
-        }
+        # Flat schema: file IS env_config (m1151/m1182)
 
         out_path = out / f"{task_id}.json"
-        out_path.write_text(json.dumps(dataset, indent=2))
+        out_path.write_text(json.dumps(env_config, indent=2))
         known_ids.add(task_id)
         manifest_entries.append({"task_id": task_id, "archetype": archetype})
         generated += 1
@@ -249,8 +224,6 @@ def main() -> None:
                     help="Total tasks to generate (split per ARCHETYPE_ALLOCATION when --archetype all)")
     ap.add_argument("--out", default="zoro/harness/dataset/",
                     help="Output directory for {task_id}.json files")
-    ap.add_argument("--max_days", type=int, default=60,
-                    help="Simulation horizon written into each task's max_days field (default: 60)")
     ap.add_argument("--seed", type=int, default=0,
                     help="RNG seed for the generator (not task global_random_seed)")
     ap.add_argument("--paper_data_dir", default=None,
@@ -285,7 +258,6 @@ def main() -> None:
                 archetype=arch,
                 n=count,
                 out=out,
-                max_days=args.max_days,
                 rng_seed=args.seed + offset,   # distinct seed per archetype run
                 paper_data_dir=paper_data_dir,
             )
@@ -296,7 +268,6 @@ def main() -> None:
             archetype=args.archetype,
             n=args.n,
             out=out,
-            max_days=args.max_days,
             rng_seed=args.seed,
             paper_data_dir=paper_data_dir,
         )
