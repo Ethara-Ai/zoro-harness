@@ -115,6 +115,20 @@ MODELS: Dict[str, Dict[str, Optional[str]]] = {
         "base_url_env": "KIMI_BASE_URL",
         "default_base_url": "https://api.moonshot.cn/v1",
     },
+    "claude-sonnet-cc": {
+        "model": "sonnet",
+        "display": "Claude Sonnet (Code)",
+        "api_key_env": "ZORO_CC_BRIDGE_SECRET",
+        "base_url_env": "ZORO_CC_BRIDGE_URL",
+        "default_base_url": "http://127.0.0.1:8787/v1",
+    },
+    "claude-opus-cc": {
+        "model": "opus",
+        "display": "Claude Opus (Code)",
+        "api_key_env": "ZORO_CC_BRIDGE_SECRET",
+        "base_url_env": "ZORO_CC_BRIDGE_URL",
+        "default_base_url": "http://127.0.0.1:8787/v1",
+    },
 }
 
 

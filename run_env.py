@@ -423,6 +423,9 @@ def save_turn_calls_to_json(
     print(f"[Turn {turn_index}] Saved turn data to {filepath}")
 
 # Default OpenAI client configuration (can be overridden by command line arguments or environment variables)
+DEFAULT_API_KEY: Optional[str] = os.environ.get("OPENAI_API_KEY") or os.environ.get("ZORO_DEFAULT_API_KEY")
+DEFAULT_BASE_URL: Optional[str] = os.environ.get("OPENAI_BASE_URL") or os.environ.get("ZORO_DEFAULT_BASE_URL")
+
 
 def create_openai_client(api_key: Optional[str] = None, base_url: Optional[str] = None) -> OpenAI:
     """

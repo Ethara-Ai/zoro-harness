@@ -5,7 +5,7 @@ import json
 import random
 from uuid import uuid4
 
-from sku import SKU, Merchandise
+from module.sku import SKU, Merchandise
 from model.review_star import ReviewStarSmoothModel
 from module.record_manager import RecordManager, ReviewRecord
 

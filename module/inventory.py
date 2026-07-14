@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional
 from model.return_rate_model import ReturnRateModel
 from module.news_manager import NewsManager
 from module.review_manager import ReviewManager
-from sku import SKU, Merchandise
+from module.sku import SKU, Merchandise
 from module.record_manager import ReturnRateRecord, ReturnRecord, SaleRecord, RecordManager
 from util.logger import get_logger
 
