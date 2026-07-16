@@ -236,7 +236,7 @@ class Inventory:
                 for merchandise in self.items_by_sku[sku_id]:
                     if merchandise.judge_expired(current_date):
                         # Sell expired items at 0.6x buy price
-                        money_earned += merchandise.buy_price * 0
+                        money_earned += merchandise.buy_price * 0.6
                         items_to_remove.append(merchandise)
                         expired_discount_by_sku[sku_id] = expired_discount_by_sku.get(sku_id, 0) + 1
                 
@@ -249,7 +249,7 @@ class Inventory:
             for merchandise in list(self.waiting_items):
                 if merchandise.judge_expired(current_date):
                         # Sell expired items at 0.6x buy price
-                        money_earned += merchandise.buy_price * 0
+                        money_earned += merchandise.buy_price * 0.6
                         self.waiting_items.remove(merchandise)
                         expired_discount_by_sku[sku_id] = expired_discount_by_sku.get(sku_id, 0) + 1
 
