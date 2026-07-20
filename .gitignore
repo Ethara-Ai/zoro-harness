@@ -105,3 +105,6 @@ Thumbs.db
 # Claude Code settings (optional - comment out if you want to share these)
 .claude/settings.local.json
 .claude/worktrees/
+
+# Generated task datasets (reproducible via generator/generate_datasets.py --mode hardest)
+dataset/

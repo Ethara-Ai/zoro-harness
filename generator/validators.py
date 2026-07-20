@@ -70,6 +70,14 @@ ELASTICITY_PROFILES: dict[str, dict[str, float]] = {
         "Oatmeal": -0.10,
     },
     "all_elastic": {c: -0.35 for c in ALL_CATEGORIES},
+    "uniform_025": {c: -0.25 for c in ALL_CATEGORIES},
+    "uniform_030": {c: -0.30 for c in ALL_CATEGORIES},
+    "uniform_040": {c: -0.40 for c in ALL_CATEGORIES},
+    # Intermediate uniform rungs — finer |c| granularity for the grid-mode |c| ladders
+    # (used by still_hard, whose lower margin needs closer-spaced rungs; general for spread too).
+    "uniform_0225": {c: -0.225 for c in ALL_CATEGORIES},
+    "uniform_0275": {c: -0.275 for c in ALL_CATEGORIES},
+    "uniform_0325": {c: -0.325 for c in ALL_CATEGORIES},
 }
 
 ECONOMIC_TIERS: dict[str, dict[str, int]] = {
@@ -170,9 +178,9 @@ def load_known_ids(dataset_dir: Path, paper_data_dir: Path) -> set[str]:
     """Return all known task IDs: previously generated tasks + all paper-run fingerprints."""
     known: set[str] = set()
 
-    # Previously generated tasks (filename == task_id)
+    # Previously generated tasks (filename == task_id); skip manifest + verification sidecars
     for f in dataset_dir.glob("*.json"):
-        if f.name != "manifest.json":
+        if f.name != "manifest.json" and not f.name.endswith(".verification.json"):
             known.add(f.stem)
 
     # Live scan of paper_data config.json files
@@ -331,7 +339,10 @@ def main() -> None:
     else:
         print(f"Warning: paper_data_dir not found ({paper_data_dir}) — Gate 4 skipped")
 
-    task_files = sorted(p for p in datasets_dir.glob("*.json") if p.name != "manifest.json")
+    task_files = sorted(
+        p for p in datasets_dir.glob("*.json")
+        if p.name != "manifest.json" and not p.name.endswith(".verification.json")
+    )
     if not task_files:
         print("No dataset files found.")
         sys.exit(0)

@@ -30,7 +30,7 @@ DYNAMIC_HARD = {
 
 DYNAMIC_MIDDLE = {
     **DYNAMIC_HARD,
-    "enable_review": False,
+    "enable_review": True,
     "enable_new": False,
 }
 
