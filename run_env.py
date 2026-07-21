@@ -411,7 +411,11 @@ def _resolve_model_short(model: str) -> str:
 
 
 def _pick_next_run_dir(model_dir: Path) -> Path:
-    """Return <model_dir>/run_<N> where N is the next unused positive integer."""
+    """Atomically claim and create the next <model_dir>/run_<N> directory.
+
+    Uses `mkdir(exist_ok=False)` in a retry loop so concurrent workers cannot
+    collide on the same run_N. On FileExistsError, advances to the next N.
+    """
     model_dir.mkdir(parents=True, exist_ok=True)
     used: list[int] = []
     for child in model_dir.iterdir():
@@ -424,7 +428,13 @@ def _pick_next_run_dir(model_dir: Path) -> Path:
         if suffix.isdigit():
             used.append(int(suffix))
     next_n = (max(used) + 1) if used else 1
-    return model_dir / f"run_{next_n}"
+    while True:
+        candidate = model_dir / f"run_{next_n}"
+        try:
+            candidate.mkdir(exist_ok=False)
+            return candidate
+        except FileExistsError:
+            next_n += 1
 
 
 def _route_bridge(model: str) -> Optional[tuple[str, str, str]]:
@@ -1385,14 +1395,11 @@ def main() -> None:
 
         task_id = ds.get("task_id")
         if not task_id:
-            raise ValueError(
-                f"dataset {args.dataset} is missing required 'task_id' field"
-            )
+            task_id = Path(args.dataset).stem
         model_short = _resolve_model_short(args.model)
 
         model_dir = Path(args.out_dir) / str(task_id) / model_short
         out = _pick_next_run_dir(model_dir)
-        out.mkdir(parents=True, exist_ok=True)
 
         config = dict(ds)                            # flat schema — dataset IS the env_config
         config["log_dir"]          = str(out)        # MUST be set before RetailEnvironment(config)
