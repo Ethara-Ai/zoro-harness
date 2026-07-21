@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import os
 import logging
 from pathlib import Path
@@ -372,6 +373,58 @@ _BRIDGE_ROUTES: list[tuple[tuple[str, ...], str, str, str]] = [
         "codex_bridge",
     ),
 ]
+
+
+_MODEL_SHORT_MAP: dict[str, str] = {
+    # Claude family
+    "opus":                            "claude-opus-4.8",
+    "claude-opus-4-8":                 "claude-opus-4.8",
+    "claude-opus-4.8":                 "claude-opus-4.8",
+    "sonnet":                          "claude-sonnet-4.5",
+    "claude-sonnet-4-5-20250929":      "claude-sonnet-4.5",
+    "claude-sonnet-4.5":               "claude-sonnet-4.5",
+    "haiku":                           "claude-haiku-4.5",
+    "claude-haiku-4-5-20251001":       "claude-haiku-4.5",
+    "claude-haiku-4.5":                "claude-haiku-4.5",
+    # GPT / Codex family
+    "sol":                             "gpt-5.6",
+    "terra":                           "gpt-5.6",
+    "luna":                            "gpt-5.6",
+    "gpt-5":                           "gpt-5.6",
+    "gpt5":                            "gpt-5.6",
+    "gpt-5.6":                         "gpt-5.6",
+    "gpt-5.6-sol":                     "gpt-5.6",
+    "codex":                           "gpt-5.6",
+    "codex-cc":                        "gpt-5.6",
+    "codex-mini":                      "gpt-5.6",
+    "gpt5-codex-cc":                   "gpt-5.6",
+}
+
+
+def _resolve_model_short(model: str) -> str:
+    """Return canonical short-name for output-directory nesting."""
+    key = (model or "").strip().lower()
+    if key in _MODEL_SHORT_MAP:
+        return _MODEL_SHORT_MAP[key]
+    safe = re.sub(r"[^A-Za-z0-9._\-]+", "_", key)
+    return safe or "unknown-model"
+
+
+def _pick_next_run_dir(model_dir: Path) -> Path:
+    """Return <model_dir>/run_<N> where N is the next unused positive integer."""
+    model_dir.mkdir(parents=True, exist_ok=True)
+    used: list[int] = []
+    for child in model_dir.iterdir():
+        if not child.is_dir():
+            continue
+        name = child.name
+        if not name.startswith("run_"):
+            continue
+        suffix = name[len("run_"):]
+        if suffix.isdigit():
+            used.append(int(suffix))
+    next_n = (max(used) + 1) if used else 1
+    return model_dir / f"run_{next_n}"
 
 
 def _route_bridge(model: str) -> Optional[tuple[str, str, str]]:
@@ -1329,7 +1382,16 @@ def main() -> None:
             raise ValueError("--out_dir is required when --dataset is provided")
         with open(args.dataset, encoding="utf-8") as _f:
             ds = json.load(_f)
-        out = Path(args.out_dir)
+
+        task_id = ds.get("task_id")
+        if not task_id:
+            raise ValueError(
+                f"dataset {args.dataset} is missing required 'task_id' field"
+            )
+        model_short = _resolve_model_short(args.model)
+
+        model_dir = Path(args.out_dir) / str(task_id) / model_short
+        out = _pick_next_run_dir(model_dir)
         out.mkdir(parents=True, exist_ok=True)
 
         config = dict(ds)                            # flat schema — dataset IS the env_config
