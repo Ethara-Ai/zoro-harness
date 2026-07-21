@@ -426,24 +426,63 @@ def save_turn_calls_to_json(
 DEFAULT_API_KEY: Optional[str] = os.environ.get("OPENAI_API_KEY") or os.environ.get("ZORO_DEFAULT_API_KEY")
 DEFAULT_BASE_URL: Optional[str] = os.environ.get("OPENAI_BASE_URL") or os.environ.get("ZORO_DEFAULT_BASE_URL")
 
+_BRIDGE_ROUTES: list[tuple[tuple[str, ...], str, str, str]] = [
+    (
+        ("opus", "sonnet", "haiku", "claude"),
+        "http://127.0.0.1:8738/v1",
+        "ZORO_CC_BRIDGE_SECRET",
+        "claude_bridge",
+    ),
+    (
+        (
+            "sol", "terra", "luna",
+            "gpt-5", "gpt5",
+            "codex", "codex-cc", "gpt5-codex-cc",
+        ),
+        "http://127.0.0.1:8398/v1",
+        "ZORO_CX_BRIDGE_SECRET",
+        "codex_bridge",
+    ),
+]
 
-def create_openai_client(api_key: Optional[str] = None, base_url: Optional[str] = None) -> OpenAI:
-    """
-    Create OpenAI client with configurable API key and base URL.
-    
-    Args:
-        api_key: OpenAI API key. If None, uses DEFAULT_API_KEY.
-        base_url: Base URL for API. If None, uses DEFAULT_BASE_URL.
-    
-    Returns:
-        Configured OpenAI client instance.
-    """
-    # Use provided values or defaults (no environment variable fallback)
+
+def _route_bridge(model: str) -> Optional[tuple[str, str, str]]:
+    m = (model or "").strip().lower()
+    if not m:
+        return None
+    for prefixes, base_url, env_var, name in _BRIDGE_ROUTES:
+        if any(m == p or m.startswith(p) for p in prefixes):
+            return base_url, env_var, name
+    return None
+
+
+def create_openai_client(
+    api_key: Optional[str] = None,
+    base_url: Optional[str] = None,
+    model: Optional[str] = None,
+) -> OpenAI:
+    if api_key is not None and base_url is not None:
+        return OpenAI(api_key=api_key, base_url=base_url)
+
+    route = _route_bridge(model) if model else None
+    if route is not None:
+        routed_base_url, env_var, name = route
+        if base_url is None:
+            base_url = routed_base_url
+        if api_key is None:
+            api_key = os.environ.get(env_var)
+            if not api_key:
+                raise RuntimeError(
+                    f"model {model!r} routes to {name} at {routed_base_url}, "
+                    f"but {env_var} is not set. Export it in this shell "
+                    f"(same value as the bridge was started with), or pass --api_key."
+                )
+        return OpenAI(api_key=api_key, base_url=base_url)
+
     if api_key is None:
         api_key = DEFAULT_API_KEY
     if base_url is None:
         base_url = DEFAULT_BASE_URL
-    
     return OpenAI(api_key=api_key, base_url=base_url)
 
 def print_env_status(env: RetailEnvironment, prefix: str = "") -> None:
@@ -1396,7 +1435,7 @@ def main() -> None:
     checkpoint_dir = Path(args.checkpoint_dir) if args.checkpoint_dir else Path(env_log_path) / "checkpoints"
     
     # 创建 OpenAI client
-    client = create_openai_client(api_key=args.api_key, base_url=args.base_url)
+    client = create_openai_client(api_key=args.api_key, base_url=args.base_url, model=args.model)
     
     # 如果指定了恢复 day，则从 day checkpoint 恢复（优先级高于 recover_turn）
     initial_messages = None

@@ -81,6 +81,12 @@ class OAuthCredentials:
     def from_codex_payload(cls, payload: dict) -> "OAuthCredentials":
         if not isinstance(payload, dict):
             raise CredentialsError("Codex auth payload must be a JSON object")
+        if "claudeAiOauth" in payload:
+            raise CredentialsError(
+                "This looks like a Claude Code credentials file (has 'claudeAiOauth' "
+                "field), not a Codex file. Move it to creds/cc/ and use the Claude "
+                "bridge (script/start_claude_bridge.sh) instead."
+            )
         auth_mode = payload.get("auth_mode")
         if auth_mode and auth_mode != "chatgpt":
             raise CredentialsError(
@@ -798,11 +804,65 @@ def load_account_pool(spec: str) -> Optional[MultiAccountCredentialProvider]:
     return MultiAccountCredentialProvider(slots, state_path=state_path)
 
 
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parent.parent
+
+
+def _default_creds_dir() -> Path:
+    override = os.environ.get("ZORO_CX_CREDS_DIR", "").strip()
+    if override:
+        return Path(override).expanduser()
+    return _repo_root() / "creds" / "cx"
+
+
+def _discover_creds_files() -> list[Path]:
+    d = _default_creds_dir()
+    if not d.is_dir():
+        return []
+    return sorted(p for p in d.glob("*.json") if p.is_file())
+
+
+def _build_pool_from_files(files: list[Path]) -> Optional[MultiAccountCredentialProvider]:
+    if not files:
+        return None
+    slots = [
+        _AccountSlot(
+            provider=_FileCredentialProvider(f),
+            label=f"file:{f}",
+        )
+        for f in files
+    ]
+    env_path = os.environ.get("ZORO_CX_POOL_STATE_PATH")
+    state_path = Path(env_path) if env_path else (_CACHE_DIR / "codex_pool_state.json")
+    return MultiAccountCredentialProvider(slots, state_path=state_path)
+
+
 def resolve_provider() -> CredentialProvider | MultiAccountCredentialProvider:
     pool_spec = os.environ.get("ZORO_CX_ACCOUNT_POOL", "").strip()
     if pool_spec:
         pool = load_account_pool(pool_spec)
         if pool is not None:
-            _LOG.info("Using multi-account pool with %d slots", len(pool.snapshot()))
+            _LOG.info(
+                "Codex bridge: using pool from ZORO_CX_ACCOUNT_POOL (%d slots)",
+                len(pool.snapshot()),
+            )
             return pool
+
+    discovered = _discover_creds_files()
+    if discovered:
+        pool = _build_pool_from_files(discovered)
+        if pool is not None:
+            _LOG.info(
+                "Codex bridge: auto-discovered pool from %s (%d slots): %s",
+                _default_creds_dir(),
+                len(pool.snapshot()),
+                ", ".join(p.name for p in discovered),
+            )
+            return pool
+
+    _LOG.info(
+        "Codex bridge: no pool configured; falling back to single-account "
+        "provider (env / %s / macOS keychain / cache)",
+        _codex_home() / "auth.json",
+    )
     return CredentialProvider()

@@ -1,17 +1,20 @@
 # Claude Code Bridge — Setup Guide
 
 The bridge is a small local server that looks like OpenAI but actually talks to
-Claude using your Claude Code subscription. You point `run_env.py` at it instead
-of a real API.
+Claude using your Claude Code subscription. You point `run_env.py` at it
+instead of a real API.
 
-This guide focuses on the **multi-account** setup (a "pool"), so the bridge can
-rotate between several Claude logins and keep going when one hits its rate limit.
+This guide covers **the bridge itself** — how to start it, how it finds
+credentials, how to tune it, and how to debug it. For the credentials
+workflow (which files go where, how to generate them, how the two-bridge
+setup avoids intermixing) see [`../credential-setup.md`](../credential-setup.md).
 
 ---
 
-## 1. What you need
+## 1. Prerequisites
 
-- You are logged into at least one Claude account via the `claude` CLI.
+- Credentials are already in place in `creds/cc/` (see
+  [`../credential-setup.md`](../credential-setup.md) sections 2–4).
 - You run everything from the `zoro-harness` folder with the venv active:
   ```
   cd /Users/apple/Sources/office/zoro-main/zoro-harness
@@ -20,72 +23,83 @@ rotate between several Claude logins and keep going when one hits its rate limit
 
 ---
 
-## 2. Understand the two "keys" (don't mix them up)
+## 2. The two "keys" (don't mix them up)
 
 | Thing | What it is | Where it lives |
 |---|---|---|
-| **Bridge secret** | A password *you make up*. Both the bridge and `run_env` must use the same one. | An env var you set |
-| **Credentials** | Your real Claude login (an OAuth token blob — **not** email/password) | A JSON file per account |
+| **Bridge secret** | A password *you make up*. Both the bridge and `run_env` must use the same one. | `ZORO_CC_BRIDGE_SECRET` env var |
+| **Credentials** | Your real Claude login (an OAuth token blob — **not** email/password) | JSON files under `creds/cc/` |
+
+Full creds setup is in [`../credential-setup.md`](../credential-setup.md).
+The bridge's own knobs are below.
 
 ---
 
-## 3. Create a credentials file per account
+## 3. Start the bridge (terminal #1)
 
-Each account is **one JSON file** holding that account's OAuth tokens. You never
-type these by hand — you copy them out of the Mac Keychain.
-
-**Account #1** (your current login):
-```
-security find-generic-password -s "Claude Code-credentials" -w > creds1.json
-```
-
-**Account #2, #3, …**: log into each other Claude account with the `claude` CLI
-(on this or another Mac), then run the same command there and copy the file over.
-Name them `creds2.json`, `creds3.json`, etc.
-
-Each file must look like this (this is what the `security` command already gives you):
-```json
-{
-  "claudeAiOauth": {
-    "accessToken": "sk-ant-oat01-xxxxx",
-    "refreshToken": "sk-ant-ort01-xxxxx",
-    "expiresAt": 1760000000000,
-    "scopes": ["user:inference", "user:profile"],
-    "subscriptionType": "max"
-  }
-}
-```
-
-> One account = no rate-limit benefit. The pool only helps if you have 2+ real
-> Claude accounts.
-
----
-
-## 4. Start the bridge (terminal #1)
-
-Set the variables **before** launching — the bridge reads them once at startup.
-List every credentials file in `ZORO_CC_ACCOUNT_POOL`, separated by colons `:`.
+Set the bridge secret **before** launching. This is the password you picked
+in the credential-setup step.
 
 ```
 export ZORO_CC_BRIDGE_SECRET="pick-any-random-string"
-export ZORO_CC_ACCOUNT_POOL="/Users/apple/Sources/office/zoro-main/zoro-harness/creds1.json:/Users/apple/Sources/office/zoro-main/zoro-harness/creds2.json"
 export ZORO_CC_WRITE_BACK_KEYCHAIN=1
-python -m claude_bridge --host 127.0.0.1 --port 8738
+./script/start_claude_bridge.sh start
 ```
 
 - `ZORO_CC_BRIDGE_SECRET` → the made-up password.
-- `ZORO_CC_ACCOUNT_POOL` → full paths to your creds files, joined with `:`.
 - `ZORO_CC_WRITE_BACK_KEYCHAIN=1` → keeps refreshed tokens in sync so your
   `claude` CLI doesn't get logged out.
 
-**It worked if** the log says `Using multi-account pool with N slots`.
+**It worked if** the log says
+`Claude bridge: auto-discovered pool from …/creds/cc (N slots): creds1.json, …`.
 
-> Use file paths in the pool (like above). Don't use `keychain:...` entries there
-> — the colon separator breaks that form.
+Stop it later with:
+```
+./script/start_claude_bridge.sh stop
+```
+
+There is no `restart` subcommand — `stop` then `start`.
+
+### Health check
+
+```
+curl -s http://127.0.0.1:8738/healthz
+```
+
+### Logs
+
+- `logs/claude_bridge.log` — the bridge process itself
+- `logs/claude_bridge_monitor.log` — the supervisor that restarts it if it dies
+
+PID files (safe to ignore; git-ignored):
+- `.claude_bridge.pid`
+- `.claude_bridge_monitor.pid`
 
 ---
 
-## 5. Run run_env against the bridge (terminal #2)
+## 4. Bridge-specific tuning
+
+### Custom creds directory
+```
+export ZORO_CC_CREDS_DIR=/some/other/path
+```
+The bridge will auto-discover `*.json` files there instead of `creds/cc/`.
+
+### Explicit pool list (wins over auto-discovery)
+```
+export ZORO_CC_ACCOUNT_POOL="/some/other/path/a.json:/some/other/path/b.json"
+```
+
+### Custom port
+```
+export ZORO_CC_BRIDGE_PORT=8888
+```
+If you change this, `run_env.py`'s auto-routing still assumes `8738`, so
+you'll also need to pass `--base_url http://127.0.0.1:8888/v1` explicitly.
+
+---
+
+## 5. Point `run_env.py` at it (terminal #2)
 
 Open a **second** terminal (the bridge keeps running in the first).
 
@@ -93,34 +107,42 @@ Open a **second** terminal (the bridge keeps running in the first).
 cd /Users/apple/Sources/office/zoro-main/zoro-harness
 source .venv/bin/activate
 
+export ZORO_CC_BRIDGE_SECRET="pick-any-random-string"   # same as step 3
+
 python run_env.py \
   --model sonnet \
-  --base_url http://127.0.0.1:8738/v1 \
-  --api_key pick-any-random-string \
   --max_days 7 \
   --max_strategy_turns 2 \
   --max_execution_turns 3 \
   --max_input_tokens 20000
 ```
 
-- `--base_url` → the bridge (keep the `/v1`).
-- `--api_key` → the **same** string as `ZORO_CC_BRIDGE_SECRET`.
-- `--model` → only `sonnet`, `opus`, or `haiku` are understood.
+- No `--base_url` or `--api_key` needed. `--model opus`, `sonnet`, `haiku`,
+  or any `claude-…` name auto-routes to the Claude bridge and reads
+  `ZORO_CC_BRIDGE_SECRET` from the environment.
 - The `--max_*` flags keep this a small, cheap test run.
 
 **It worked if** you see real `Token usage: prompt=… completion=…` numbers each
 day (not `stream_chat failed`).
 
+For the full routing table and how bridges avoid intermixing, see
+[`../credential-setup.md`](../credential-setup.md) section 6.
+
 ---
 
-## 6. If something breaks
+## 6. Bridge-specific troubleshooting
+
+Credential-file mix-ups and general "did I export the secret" issues are
+covered in [`../credential-setup.md`](../credential-setup.md) section 7.
+The table below is for bridge-runtime issues.
 
 | Message | Meaning | Fix |
 |---|---|---|
-| `401 invalid bridge secret` | `--api_key` ≠ `ZORO_CC_BRIDGE_SECRET` | Make them match |
-| `no usable accounts in pool` | a creds file is missing/empty/bad | Re-run the `security … > credsN.json` step |
-| `all N accounts exhausted` | every account is rate-limited | Wait, or add another account file |
-| `ModuleNotFoundError: sku` | unrelated import bug | Already fixed in the repo |
+| `no usable accounts in pool` | Every `creds/cc/*.json` is malformed or empty | Re-run the credential-setup step for at least one account |
+| `all N accounts exhausted` | Every Claude account is rate-limited | Wait, or drop another `creds/cc/creds*.json` in and restart the bridge |
+| `Address already in use` on start | Something else already holds port `8738` (maybe an old bridge) | `./script/start_claude_bridge.sh stop`, then `start` |
+| `ModuleNotFoundError` on start | venv isn't active | `source .venv/bin/activate` |
+| Bridge dies silently | Check `logs/claude_bridge.log`; the monitor should relaunch it | Look at monitor log too: `logs/claude_bridge_monitor.log` |
 
 ---
 
@@ -129,12 +151,13 @@ day (not `stream_chat failed`).
 ```
 # terminal 1 — bridge
 export ZORO_CC_BRIDGE_SECRET="pick-any-random-string"
-export ZORO_CC_ACCOUNT_POOL="$PWD/creds1.json:$PWD/creds2.json"
 export ZORO_CC_WRITE_BACK_KEYCHAIN=1
-python -m claude_bridge --host 127.0.0.1 --port 8738
+./script/start_claude_bridge.sh start
 
 # terminal 2 — run
+export ZORO_CC_BRIDGE_SECRET="pick-any-random-string"
 python run_env.py --model sonnet \
-  --base_url http://127.0.0.1:8738/v1 --api_key pick-any-random-string \
   --max_days 7 --max_strategy_turns 2 --max_execution_turns 3
 ```
+
+For credentials, see [`../credential-setup.md`](../credential-setup.md).

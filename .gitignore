@@ -102,6 +102,15 @@ Thumbs.db
 *.backup
 121212
 
+# Bridge credential files — never commit OAuth tokens.
+# Covers legacy files at repo root AND the new creds/cc/ + creds/cx/ layout.
+creds*.json
+creds/**/*.json
+# Keep the READMEs tracked so the setup instructions survive.
+!creds/README.md
+!creds/cc/README.md
+!creds/cx/README.md
+
 # Claude Code settings (optional - comment out if you want to share these)
 .claude/settings.local.json
 .claude/worktrees/
