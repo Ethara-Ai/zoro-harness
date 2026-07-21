@@ -11,8 +11,8 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import logging
 from pathlib import Path
-import re
 from typing import Any, Dict, List, Optional
 from datetime import datetime
 
@@ -32,60 +32,7 @@ from module.strategy_manager import (
 )
 
 from module.stream_chat import stream_chat
-
-def parse_tool_calls(text: str) -> tuple[List[Dict[str, Any]], str]:
-    """
-    Parse tool calls from text. Returns (tool_calls_list, parse_method_tag).
-    
-    Supports two formats:
-    1. XML format: <tool_call>{"name": "...", "arguments": {...}}</tool_call> (tag: "xml")
-    2. Direct JSON format: {"name": "...", "arguments": {...}} (tag: "json")
-    
-    Returns:
-        tuple: (list of tool calls, parse method tag)
-    """
-    tool_calls = []
-    parse_method = "none"
-    
-    # First, try XML format parsing
-    pattern = r"<tool_call>\s*(\{.*?\})\s*</tool_call>"
-    matches = re.findall(pattern, text, flags=re.DOTALL)
-
-    for json_str in matches:
-        try:
-            tool_calls.append(json.loads(json_str))
-            parse_method = "xml"
-        except json.JSONDecodeError:
-            continue
-    
-    # If XML parsing found results, return them
-    if tool_calls:
-        return tool_calls, parse_method
-    
-    # Fallback: try to find standalone JSON objects (non-standard format)
-    brace_count = 0
-    start_idx = -1
-    for i, char in enumerate(text):
-        if char == '{':
-            if brace_count == 0:
-                start_idx = i
-            brace_count += 1
-        elif char == '}':
-            brace_count -= 1
-            if brace_count == 0 and start_idx != -1:
-                # Found a complete JSON object
-                json_str = text[start_idx:i+1]
-                try:
-                    parsed = json.loads(json_str)
-                    # Validate it has the expected structure for a tool call
-                    if isinstance(parsed, dict) and "name" in parsed and "arguments" in parsed:
-                        tool_calls.append(parsed)
-                        parse_method = "json"
-                except (json.JSONDecodeError, KeyError):
-                    pass
-                start_idx = -1
-    
-    return tool_calls, parse_method
+from util.tool_call_parser import parse_tool_args, parse_tool_calls
 
 DEFAULT_MODEL = 'qwen3-235b-a22b-thinking-2507'
 
@@ -258,13 +205,6 @@ DEFAULT_CONFIG_PATH: Path | None = None  # Use default config loader
 DEFAULT_MAX_TURNS = 10000
 
 
-def load_config(path: str | Path | None) -> Dict[str, Any]:
-    if path is None:
-        return create_default_config()
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
-
-
 def build_openai_tools(env: RetailEnvironment, exclude_tools: Optional[List[str]] = None) -> List[Dict[str, Any]]:
     """Convert RetailEnvironment.get_tools() to OpenAI tool schema."""
     if exclude_tools is None:
@@ -368,18 +308,6 @@ def safe_dump(obj: Any) -> str:
 
 
 
-def parse_tool_args(raw: Any) -> Dict[str, Any]:
-    """Safely parse tool arguments coming from the model."""
-    if raw is None:
-        return {}
-    if isinstance(raw, dict):
-        return raw
-    if isinstance(raw, str):
-        try:
-            return json.loads(raw)
-        except Exception:
-            return {}
-    return {}
 
 
 
@@ -423,13 +351,13 @@ def save_turn_calls_to_json(
     print(f"[Turn {turn_index}] Saved turn data to {filepath}")
 
 # Default OpenAI client configuration (can be overridden by command line arguments or environment variables)
-DEFAULT_API_KEY: Optional[str] = os.environ.get("OPENAI_API_KEY") or os.environ.get("ZORO_DEFAULT_API_KEY")
-DEFAULT_BASE_URL: Optional[str] = os.environ.get("OPENAI_BASE_URL") or os.environ.get("ZORO_DEFAULT_BASE_URL")
+DEFAULT_API_KEY: str = os.environ.get("OPENAI_API_KEY") or os.environ.get("ZORO_DEFAULT_API_KEY") or ""
+DEFAULT_BASE_URL: str = os.environ.get("OPENAI_BASE_URL") or os.environ.get("ZORO_DEFAULT_BASE_URL") or "https://dashscope.aliyuncs.com/compatible-mode/v1"
 
 _BRIDGE_ROUTES: list[tuple[tuple[str, ...], str, str, str]] = [
     (
         ("opus", "sonnet", "haiku", "claude"),
-        "http://127.0.0.1:8738/v1",
+        "http://127.0.0.1:8399/v1",
         "ZORO_CC_BRIDGE_SECRET",
         "claude_bridge",
     ),
@@ -653,16 +581,44 @@ def recover_from_day_checkpoint(
     print(f"  - Current Date: {checkpoint_metadata.get('current_date', 'unknown')}")
     print(f"  - Strategy Turns: {checkpoint_metadata.get('strategy_turns', 0)}")
     print(f"  - Execution Turns: {checkpoint_metadata.get('execution_turns', 0)}")
-    print(f"  - Messages: cleared (new day will start fresh)")
+    print("  - Messages: cleared (new day will start fresh)")
     print_env_status(env, prefix="  ")
     
     return env, messages, strategy, start_day, start_turn
 
 
-def run_react_loop(
+def _check_negative_funds_and_maybe_terminate(
+    env,
+    consecutive_negative_days: int,
+    previous_day_end_today_result: Optional[Dict[str, Any]],
+    end_today_result: Dict[str, Any],
+    day: int,
+    run_log: list,
+    log_path,
+) -> tuple[bool, int, Optional[Dict[str, Any]]]:
+    """Check funds after end_today and update consecutive_negative_days.
+
+    ALWAYS sets previous_day_end_today_result before any return path — D7 fix.
+    Returns (should_terminate, updated_consecutive_negative_days, updated_previous_day_end_today_result).
+    """
+    previous_day_end_today_result = end_today_result.copy() if isinstance(end_today_result, dict) else end_today_result
+    result_data = end_today_result.get("result", {}) if isinstance(end_today_result, dict) else {}
+    funds = result_data.get("funds", env.funds) if isinstance(result_data, dict) else env.funds
+    if funds < 0:
+        consecutive_negative_days += 1
+        if consecutive_negative_days >= 5:
+            print(f"[运营失败] 连续 {consecutive_negative_days} 天资金为负数")
+            log_message(run_log, {"role": "system", "day": day, "message": f"运营失败：连续 {consecutive_negative_days} 天资金为负数", "funds": funds})
+            write_log_json_array(log_path, run_log)
+            return True, consecutive_negative_days, previous_day_end_today_result
+    else:
+        consecutive_negative_days = 0
+    return False, consecutive_negative_days, previous_day_end_today_result
+
+
+def run_strategy_execute_loop(
     env: RetailEnvironment,
     model: str = DEFAULT_MODEL,
-    max_turns: int = 10,
     log_path: Path = Path("logs/run_env_history.json"),
     max_input_tokens: int = 60000,
     checkpoint_dir: Optional[Path] = None,
@@ -716,7 +672,7 @@ def run_react_loop(
     # 创建策略管理器，如果提供了初始策略则使用它
     if initial_strategy is not None:
         strategy_manager = StrategyManager(initial_strategy=initial_strategy)
-        print(f"[Checkpoint] Restored strategy from checkpoint")
+        print("[Checkpoint] Restored strategy from checkpoint")
     else:
         strategy_manager = StrategyManager()
     
@@ -750,6 +706,8 @@ def run_react_loop(
         strategy_phase_complete = False
         strategy_turns = 0
         consecutive_no_valid_tool_calls = 0  # 连续没有合规工具调用的次数
+        strategy_phase_failed = False
+        strategy_default_leak = False
         
         # 切换到策略阶段的系统提示
         strategy_system_msg = {
@@ -930,6 +888,11 @@ def run_react_loop(
                 if consecutive_no_valid_tool_calls >= 5:
                     print(f"[Day {day}] Strategy phase ended: 5 consecutive turns with no valid tool calls")
                     strategy_phase_complete = True
+                    logging.warning(
+                        f"[Day {day}] Strategy phase timed out on 5 consecutive no-tool-call "
+                        "turns — execution will run with stale/default strategy."
+                    )
+                    strategy_phase_failed = True
                     break
 
                 if tool_calls_list and user_message:
@@ -955,6 +918,16 @@ def run_react_loop(
 
         print("\nFinal strategy after strategy phase:")
         print(format_strategy_dict(strategy_manager.strategy_store))
+        # T9: detect if strategy still equals the initial default placeholder
+        strategy_default_leak = False
+        if strategy_manager.strategy_store.get("macro_strategy") == [
+            "Focus on maintaining inventory levels and competitive pricing"
+        ]:
+            logging.warning(
+                f"[Day {day}] Strategy phase produced default placeholder — indicates silent "
+                "strategy failure. Execution will run on stale/default strategy."
+            )
+            strategy_default_leak = True
 
         # ========== 执行阶段 ==========
         print(f"\n[Day {day}] === EXECUTION PHASE ===")
@@ -1100,18 +1073,14 @@ def run_react_loop(
                         execution_phase_complete = True
                         print(f"[Day {day}] Execution phase complete - end_today called")
                         # 保存 end_today 的结果，供下一天使用
-                        previous_day_end_today_result = result.copy()
-                        result_data = result.get("result", {})
-                        funds = result_data.get('funds', env.funds) if isinstance(result_data, dict) else env.funds
-                        if funds < 0:
-                            consecutive_negative_days += 1
-                            if consecutive_negative_days >= 5:
-                                print(f"[运营失败] 连续 {consecutive_negative_days} 天资金为负数")
-                                log_message(run_log, {"role": "system", "day": day, "message": f"运营失败：连续 {consecutive_negative_days} 天资金为负数", "funds": funds})
-                                write_log_json_array(log_path, run_log)
-                                return
-                        else:
-                            consecutive_negative_days = 0
+                        _exit, consecutive_negative_days, previous_day_end_today_result = (
+                            _check_negative_funds_and_maybe_terminate(
+                                env, consecutive_negative_days, previous_day_end_today_result,
+                                result, day, run_log, log_path,
+                            )
+                        )
+                        if _exit:
+                            return
                     
                     if tool_executed_successfully:
                         valid_tool_calls_count += 1
@@ -1132,18 +1101,14 @@ def run_react_loop(
                     try:
                         end_today_result = env.exec_tools("end_today")
                         execution_phase_complete = True
-                        result_data = end_today_result.get("result", {})
-                        funds = result_data.get('funds', env.funds) if isinstance(result_data, dict) else env.funds
-                        if funds < 0:
-                            consecutive_negative_days += 1
-                            if consecutive_negative_days >= 5:
-                                print(f"[运营失败] 连续 {consecutive_negative_days} 天资金为负数")
-                                log_message(run_log, {"role": "system", "day": day, "message": f"运营失败：连续 {consecutive_negative_days} 天资金为负数", "funds": funds})
-                                write_log_json_array(log_path, run_log)
-                                return
-                        else:
-                            consecutive_negative_days = 0
-                        previous_day_end_today_result = end_today_result
+                        _exit, consecutive_negative_days, previous_day_end_today_result = (
+                            _check_negative_funds_and_maybe_terminate(
+                                env, consecutive_negative_days, previous_day_end_today_result,
+                                end_today_result, day, run_log, log_path,
+                            )
+                        )
+                        if _exit:
+                            return
                         log_message(run_log, {"role": "tool", "day": day, "phase": "execution", "turn": execution_turns, "name": "end_today", "content": end_today_result.get("formatted", safe_dump(end_today_result)), "raw": end_today_result.get("result", safe_dump(end_today_result))})
                     except Exception as end_today_exc:
                         import traceback
@@ -1177,11 +1142,11 @@ def run_react_loop(
                 write_log_json_array(log_path, run_log)
                 
                 if isinstance(exc, KeyError) and 'arguments' in str(exc):
-                    print(f"[警告] 工具调用格式错误，但尝试继续执行...")
+                    print("[警告] 工具调用格式错误，但尝试继续执行...")
                     execution_messages.append({"role": "user", "content": f"Previous tool call had format error: {err_msg}. Please retry with correct format."})
                     continue
                 else:
-                    print(f"[停止] 遇到严重错误，停止执行")
+                    print("[停止] 遇到严重错误，停止执行")
                     return
 
         if not execution_phase_complete:
@@ -1190,20 +1155,14 @@ def run_react_loop(
                 end_today_result = env.exec_tools("end_today")
                 execution_phase_complete = True
                 # 保存 end_today 的结果，供下一天使用
-                if isinstance(end_today_result, dict):
-                    previous_day_end_today_result = end_today_result.copy()
-                    # 检查资金是否为负数
-                    result_data = end_today_result.get("result", {})
-                    funds = result_data.get('funds', env.funds) if isinstance(result_data, dict) else env.funds
-                    if funds < 0:
-                        consecutive_negative_days += 1
-                        if consecutive_negative_days >= 5:
-                            print(f"[运营失败] 连续 {consecutive_negative_days} 天资金为负数")
-                            log_message(run_log, {"role": "system", "day": day, "message": f"运营失败：连续 {consecutive_negative_days} 天资金为负数", "funds": funds})
-                            write_log_json_array(log_path, run_log)
-                            return
-                    else:
-                        consecutive_negative_days = 0
+                _exit, consecutive_negative_days, previous_day_end_today_result = (
+                    _check_negative_funds_and_maybe_terminate(
+                        env, consecutive_negative_days, previous_day_end_today_result,
+                        end_today_result, day, run_log, log_path,
+                    )
+                )
+                if _exit:
+                    return
                 log_message(run_log, {"role": "system", "day": day, "message": "Forced end_today"})
             except Exception as e:
                 print(f"[错误] Failed to force end_today: {e}")
@@ -1217,6 +1176,8 @@ def run_react_loop(
                     "day": day,
                     "current_date": str(env.current_date),
                     "strategy": json.loads(json.dumps(strategy_manager.strategy_store, default=str)),
+                    "strategy_phase_failed": strategy_phase_failed,
+                    "strategy_default_leak": strategy_default_leak,
                 }
                 with day_strategy_path.open("w", encoding="utf-8") as f:
                     json.dump(day_strategy_data, f, ensure_ascii=False, indent=2, default=str)
@@ -1348,15 +1309,15 @@ def main() -> None:
     parser.add_argument("--max_days", type=int, default=None, help="Maximum number of days to simulate (default: 180, or taken from dataset.json when --dataset is used)")
     parser.add_argument("--max_strategy_turns", type=int, default=10, help="Maximum turns per day in strategy phase (default: 10)")
     parser.add_argument("--max_execution_turns", type=int, default=20, help="Maximum turns per day in execution phase (default: 20)")
-    parser.add_argument("--api_key", type=str, default=None, help=f"OpenAI API key ")
-    parser.add_argument("--base_url", type=str, default=None, help=f"OpenAI API base URL")
+    parser.add_argument("--api_key", type=str, default=None, help="OpenAI API key ")
+    parser.add_argument("--base_url", type=str, default=None, help="OpenAI API base URL")
     parser.add_argument("--dataset", type=str, default=None,
         help="Path to dataset.json (UUID5-named task). Mutually exclusive with --config_type.")
     parser.add_argument("--out_dir", type=str, default=None,
         help="Output directory for tool_calls.jsonl and artifacts. Required when --dataset is used.")
-    parser.add_argument("--framework", type=str, default="react",
-        choices=["react", "plan_and_act"],
-        help="Agent framework to use (default: react)")
+    parser.add_argument("--framework", type=str, default="strategy_execute",
+        choices=["react", "reflection", "strategy_execute"],
+        help="Agent framework to use (default: strategy_execute)")
     parser.add_argument("--goal", type=str,
         default="Maximize net worth over the simulation horizon.",
         help="Goal string for plan_and_act framework. Ignored by react.")
@@ -1366,7 +1327,8 @@ def main() -> None:
     if args.dataset:
         if not args.out_dir:
             raise ValueError("--out_dir is required when --dataset is provided")
-        ds = json.load(open(args.dataset))
+        with open(args.dataset, encoding="utf-8") as _f:
+            ds = json.load(_f)
         out = Path(args.out_dir)
         out.mkdir(parents=True, exist_ok=True)
 
@@ -1458,16 +1420,9 @@ def main() -> None:
     else:
         env = RetailEnvironment(config)
 
-    if args.framework != "react":
-        raise NotImplementedError(
-            f"Framework {args.framework!r} is not yet wired up in this runner. "
-            "Use --framework react, or invoke run_plan_and_act.py directly."
-        )
-
-    run_react_loop(
+    run_strategy_execute_loop(
         env=env,
         model=args.model,
-        max_turns=args.max_turns,
         log_path=log_path,
         max_input_tokens=args.max_input_tokens,
         checkpoint_dir=checkpoint_dir,

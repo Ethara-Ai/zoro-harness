@@ -13,6 +13,9 @@ def stream_chat(
     retry_base_delay: float = 2.0,
     retry_max_delay: float = 10.0,
     retry_jitter: float = 0.3,
+    enable_thinking: bool = True,
+    max_tokens: int = 10000,
+    timeout: float = 600,
 ) -> tuple[str, str, str, Optional[Dict[str, Any]]]:
     """
     Stream a chat completion with automatic retry.
@@ -44,16 +47,17 @@ def stream_chat(
         return any(marker in err_text for marker in retry_markers)
 
     def _run_once() -> tuple[str, str, str, Optional[Dict[str, Any]]]:
-        stream = client.chat.completions.create(
-            model=model,
-            messages=messages,
-            # stop=["\n<tool_response>", "<tool_response>"],
-            extra_body={"enable_thinking": True},
-            stream=True,
-            stream_options={"include_usage": True},
-            max_tokens=10000,
-            timeout=60000,
-        )
+        create_kwargs: Dict[str, Any] = {
+            "model": model,
+            "messages": messages,
+            "stream": True,
+            "stream_options": {"include_usage": True},
+            "max_tokens": max_tokens,
+            "timeout": timeout,
+        }
+        if enable_thinking:
+            create_kwargs["extra_body"] = {"enable_thinking": True}
+        stream = client.chat.completions.create(**create_kwargs)
 
         content_parts: List[str] = []
         reasoning_content = ""

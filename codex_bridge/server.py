@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from typing import Any, AsyncIterator, Literal, Union
 
 import httpx
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from codex_bridge.credentials import (
@@ -198,7 +198,7 @@ def translate_openai_to_responses(body: dict[str, Any]) -> dict[str, Any]:
         out["instructions"] = instructions
 
     if body.get("max_tokens") is not None:
-        _LOG.debug(
+        _LOG.warning(
             "dropping max_tokens=%r; wham /responses rejects max_output_tokens",
             body.get("max_tokens"),
         )
@@ -238,8 +238,9 @@ def translate_openai_to_responses(body: dict[str, Any]) -> dict[str, Any]:
             out["top_p"] = body["top_p"]
 
     if body.get("tools") or body.get("tool_choice"):
-        _LOG.warning(
-            "tools/tool_choice present but tool translation is out of scope for v1; dropping",
+        raise HTTPException(
+            status_code=422,
+            detail="tools/tool_choice not supported by codex_bridge",
         )
 
     dropped = [k for k in _OPENAI_CHAT_ONLY_KEYS if k in body and body[k] is not None]
