@@ -437,6 +437,33 @@ def _pick_next_run_dir(model_dir: Path) -> Path:
             next_n += 1
 
 
+def _latest_run_dir(model_dir: Path) -> Optional[Path]:
+    """Return highest-numbered existing <model_dir>/run_<N> directory, or None if none exist.
+
+    Used for --recover_day / --recover_turn in dataset mode so that continuation
+    writes back into the SAME run_N directory whose checkpoints we're resuming from,
+    rather than allocating a fresh run_(N+1) via _pick_next_run_dir.
+    """
+    if not model_dir.is_dir():
+        return None
+    best: Optional[int] = None
+    for child in model_dir.iterdir():
+        if not child.is_dir():
+            continue
+        name = child.name
+        if not name.startswith("run_"):
+            continue
+        suffix = name[len("run_"):]
+        if not suffix.isdigit():
+            continue
+        n = int(suffix)
+        if best is None or n > best:
+            best = n
+    if best is None:
+        return None
+    return model_dir / f"run_{best}"
+
+
 def _route_bridge(model: str) -> Optional[tuple[str, str, str]]:
     m = (model or "").strip().lower()
     if not m:
@@ -1399,7 +1426,14 @@ def main() -> None:
         model_short = _resolve_model_short(args.model)
 
         model_dir = Path(args.out_dir) / str(task_id) / model_short
-        out = _pick_next_run_dir(model_dir)
+        if args.recover_day is not None or args.recover_turn is not None:
+            out = _latest_run_dir(model_dir)
+            if out is None:
+                raise FileNotFoundError(
+                    f"Recovery requested but no existing run_N directory found under {model_dir}"
+                )
+        else:
+            out = _pick_next_run_dir(model_dir)
 
         config = dict(ds)                            # flat schema — dataset IS the env_config
         config["log_dir"]          = str(out)        # MUST be set before RetailEnvironment(config)
