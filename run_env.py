@@ -847,10 +847,11 @@ def run_strategy_execute_loop(
                 request_messages = [strategy_system_msg] + [strategy_user_msg] + strategy_messages
                 
                 try:
-                    full_content, final_content, reasoning_content, usage = stream_chat(
+                    full_content, final_content, reasoning_content, aggregated_calls, usage = stream_chat(
                         client=client,
                         model=model,
                         messages=request_messages,
+                        tools=strategy_tools,
                     )
 
                 except Exception as stream_exc:
@@ -864,9 +865,20 @@ def run_strategy_execute_loop(
 
                 # 解析工具调用
                 parse_method_tag = "none"
+                tool_calls_list: List[Dict[str, Any]] = []
+                native_tool_calls: List[Dict[str, Any]] = []
                 try:
-                    parse_source = final_content or full_content or ''
-                    tool_calls_list, parse_method_tag = parse_tool_calls(parse_source)
+                    if aggregated_calls:
+                        for tc in aggregated_calls.values():
+                            fn_name = (tc.get("function") or {}).get("name", "")
+                            fn_args_raw = (tc.get("function") or {}).get("arguments", "")
+                            if fn_name:
+                                tool_calls_list.append({"name": fn_name, "arguments": fn_args_raw, "_tc_id": tc["id"]})
+                                native_tool_calls.append(tc)
+                        parse_method_tag = "native"
+                    else:
+                        parse_source = final_content or full_content or ''
+                        tool_calls_list, parse_method_tag = parse_tool_calls(parse_source)
                 except Exception as parse_exc:
                     err_msg = f"Failed to parse tool calls on day {day} strategy turn {strategy_turns}: {type(parse_exc).__name__}: {parse_exc}"
                     print(f"[错误] {err_msg}")
@@ -911,10 +923,17 @@ def run_strategy_execute_loop(
                 print(f"[Day {day} Strategy Turn {strategy_turns}] tokens: prompt={usage.get('prompt_tokens') if usage else None}, completion={usage.get('completion_tokens') if usage else None}")
                 log_message(run_log, {"role": "assistant", "day": day, "phase": "strategy", "turn": strategy_turns, "content": full_content, "full_content": full_content, "final_content": final_content, "reasoning": reasoning_content, "tool_calls": tool_calls_list})
 
-                strategy_messages.append({
-                    "role": "assistant",
-                    "content": full_content,
-                })
+                if parse_method_tag == "native" and native_tool_calls:
+                    strategy_messages.append({
+                        "role": "assistant",
+                        "content": full_content or None,
+                        "tool_calls": native_tool_calls,
+                    })
+                else:
+                    strategy_messages.append({
+                        "role": "assistant",
+                        "content": full_content,
+                    })
 
                 if "END" in (final_content or "") and len(tool_calls_list) == 0:
                     strategy_phase_complete = True
@@ -922,6 +941,7 @@ def run_strategy_execute_loop(
                     break
 
                 user_message = ''
+                tool_result_messages: List[Dict[str, Any]] = []
                 valid_tool_calls_count = 0  # 本次循环中合规工具调用的数量
                 for call in tool_calls_list:
                     if not isinstance(call, dict) or not call.get("name"):
@@ -932,6 +952,7 @@ def run_strategy_execute_loop(
                         continue
 
                     name, args = call.get("name"), parse_tool_args(call.get("arguments"))
+                    tc_id = call.get("_tc_id")
                     tool_executed_successfully = False
                     try:
                         if name == "set_macro_strategy":
@@ -956,7 +977,8 @@ def run_strategy_execute_loop(
                             env.logger.error(f"{err_msg}\n{traceback.format_exc()}")
                         result = {"formatted": err_msg, "result": {"error": str(exc), "error_type": type(exc).__name__}}
 
-                    log_message(run_log, {"role": "tool", "day": day, "phase": "strategy", "turn": strategy_turns, "name": name, "args": args, "content": result.get("formatted", safe_dump(result)), "raw": result.get("result", safe_dump(result))})
+                    result_text = result.get("formatted", safe_dump(result))
+                    log_message(run_log, {"role": "tool", "day": day, "phase": "strategy", "turn": strategy_turns, "name": name, "args": args, "content": result_text, "raw": result.get("result", safe_dump(result))})
                 
                     if name in ("set_macro_strategy", "set_execute_strategy", "set_action"):
                         print(f"[Day {day}] Strategy set: {name}")
@@ -964,8 +986,14 @@ def run_strategy_execute_loop(
                     
                     if tool_executed_successfully:
                         valid_tool_calls_count += 1
-                    
-                    user_message += f"<tool_response>{result.get('formatted', safe_dump(result))}</tool_response>\n"
+
+                    if parse_method_tag == "native":
+                        effective_tc_id = tc_id or f"call_synth_{len(tool_result_messages)}"
+                        if not tc_id:
+                            print(f"[警告] Native tool call missing id; synthesized {effective_tc_id}")
+                        tool_result_messages.append({"role": "tool", "tool_call_id": effective_tc_id, "content": result_text})
+                    else:
+                        user_message += f"<tool_response>{result_text}</tool_response>\n"
 
                 # 检查是否有合规工具调用
                 if valid_tool_calls_count > 0:
@@ -985,9 +1013,15 @@ def run_strategy_execute_loop(
                     strategy_phase_failed = True
                     break
 
-                if tool_calls_list and user_message:
-                    strategy_messages.append({"role": "user", "content": user_message})
-                    log_message(run_log, {"role": "user", "day": day, "phase": "strategy", "turn": strategy_turns, "content": user_message, "parse_method": parse_method_tag})
+                if tool_calls_list:
+                    if parse_method_tag == "native":
+                        strategy_messages.extend(tool_result_messages)
+                        log_message(run_log, {"role": "user", "day": day, "phase": "strategy", "turn": strategy_turns, "content": safe_dump(tool_result_messages), "parse_method": parse_method_tag})
+                    elif user_message:
+                        strategy_messages.append({"role": "user", "content": user_message})
+                        log_message(run_log, {"role": "user", "day": day, "phase": "strategy", "turn": strategy_turns, "content": user_message, "parse_method": parse_method_tag})
+                    else:
+                        strategy_messages.append({"role": "user", "content": "No valid tool call detected. Continue analysis."})
                 else:
                     strategy_messages.append({"role": "user", "content": "No valid tool call detected. Continue analysis."})
 
@@ -1065,10 +1099,11 @@ def run_strategy_execute_loop(
                 request_messages = [execution_system_msg] + [execution_user_msg] + execution_messages
                 
                 try:
-                    full_content, final_content, reasoning_content, usage = stream_chat(
+                    full_content, final_content, reasoning_content, aggregated_calls, usage = stream_chat(
                         client=client,
                         model=model,
                         messages=request_messages,
+                        tools=all_tools,
                     )
                 except Exception as stream_exc:
                     import traceback
@@ -1080,9 +1115,20 @@ def run_strategy_execute_loop(
                     continue
 
                 parse_method_tag = "none"
+                tool_calls_list: List[Dict[str, Any]] = []
+                native_tool_calls: List[Dict[str, Any]] = []
                 try:
-                    parse_source = final_content or full_content or ''
-                    tool_calls_list, parse_method_tag = parse_tool_calls(parse_source)
+                    if aggregated_calls:
+                        for tc in aggregated_calls.values():
+                            fn_name = (tc.get("function") or {}).get("name", "")
+                            fn_args_raw = (tc.get("function") or {}).get("arguments", "")
+                            if fn_name:
+                                tool_calls_list.append({"name": fn_name, "arguments": fn_args_raw, "_tc_id": tc["id"]})
+                                native_tool_calls.append(tc)
+                        parse_method_tag = "native"
+                    else:
+                        parse_source = final_content or full_content or ''
+                        tool_calls_list, parse_method_tag = parse_tool_calls(parse_source)
                 except Exception as parse_exc:
                     err_msg = f"Failed to parse tool calls on day {day} execution turn {execution_turns}: {type(parse_exc).__name__}: {parse_exc}"
                     print(f"[错误] {err_msg}")
@@ -1127,12 +1173,20 @@ def run_strategy_execute_loop(
                 print(f"[Day {day} Execution Turn {execution_turns}] tokens: prompt={usage.get('prompt_tokens') if usage else None}, completion={usage.get('completion_tokens') if usage else None}")
                 log_message(run_log, {"role": "assistant", "day": day, "phase": "execution", "turn": execution_turns, "content": full_content, "full_content": full_content, "final_content": final_content, "reasoning": reasoning_content, "tool_calls": tool_calls_list})
 
-                execution_messages.append({
-                    "role": "assistant",
-                    "content": full_content,
-                })
+                if parse_method_tag == "native" and native_tool_calls:
+                    execution_messages.append({
+                        "role": "assistant",
+                        "content": full_content or None,
+                        "tool_calls": native_tool_calls,
+                    })
+                else:
+                    execution_messages.append({
+                        "role": "assistant",
+                        "content": full_content,
+                    })
 
                 user_message = ''
+                tool_result_messages: List[Dict[str, Any]] = []
                 valid_tool_calls_count = 0  # 本次循环中合规工具调用的数量
                 for call in tool_calls_list:
                     if not isinstance(call, dict) or not call.get("name"):
@@ -1143,6 +1197,7 @@ def run_strategy_execute_loop(
                         continue
 
                     name, args = call.get("name"), parse_tool_args(call.get("arguments"))
+                    tc_id = call.get("_tc_id")
                     tool_executed_successfully = False
                     try:
                         result = env.exec_tools(name, **args)
@@ -1157,7 +1212,8 @@ def run_strategy_execute_loop(
                             env.logger.error(f"{err_msg}\n{traceback.format_exc()}")
                         result = {"formatted": err_msg, "result": {"error": str(exc), "error_type": type(exc).__name__}}
 
-                    log_message(run_log, {"role": "tool", "day": day, "phase": "execution", "turn": execution_turns, "name": name, "args": args, "content": result.get("formatted", safe_dump(result)), "raw": result.get("result", safe_dump(result))})
+                    result_text = result.get("formatted", safe_dump(result))
+                    log_message(run_log, {"role": "tool", "day": day, "phase": "execution", "turn": execution_turns, "name": name, "args": args, "content": result_text, "raw": result.get("result", safe_dump(result))})
                     
                     if name == 'end_today':
                         execution_phase_complete = True
@@ -1174,8 +1230,14 @@ def run_strategy_execute_loop(
                     
                     if tool_executed_successfully:
                         valid_tool_calls_count += 1
-                    
-                    user_message += f"<tool_response>{result.get('formatted', safe_dump(result))}</tool_response>\n"
+
+                    if parse_method_tag == "native":
+                        effective_tc_id = tc_id or f"call_synth_{len(tool_result_messages)}"
+                        if not tc_id:
+                            print(f"[警告] Native tool call missing id; synthesized {effective_tc_id}")
+                        tool_result_messages.append({"role": "tool", "tool_call_id": effective_tc_id, "content": result_text})
+                    else:
+                        user_message += f"<tool_response>{result_text}</tool_response>\n"
 
                 # 检查是否有合规工具调用
                 if valid_tool_calls_count > 0:
@@ -1207,12 +1269,20 @@ def run_strategy_execute_loop(
                         log_message(run_log, {"role": "error", "day": day, "phase": "execution", "turn": execution_turns, "message": err_msg, "error_type": type(end_today_exc).__name__})
                     break
 
-                if tool_calls_list and user_message:
-                    execution_messages.append({"role": "user", "content": user_message})
-                    if not execution_phase_complete:
-                        note = '[Note: Use <tool_call> tags] ' if parse_method_tag == "json" else ''
-                        execution_messages.append({"role": "user", "content": f"{note}Continue operations. Call end_today when done."})
-                    log_message(run_log, {"role": "user", "day": day, "phase": "execution", "turn": execution_turns, "content": user_message, "parse_method": parse_method_tag})
+                if tool_calls_list:
+                    if parse_method_tag == "native":
+                        execution_messages.extend(tool_result_messages)
+                        if not execution_phase_complete:
+                            execution_messages.append({"role": "user", "content": "Continue operations. Call end_today when done."})
+                        log_message(run_log, {"role": "user", "day": day, "phase": "execution", "turn": execution_turns, "content": safe_dump(tool_result_messages), "parse_method": parse_method_tag})
+                    elif user_message:
+                        execution_messages.append({"role": "user", "content": user_message})
+                        if not execution_phase_complete:
+                            note = '[Note: Use <tool_call> tags] ' if parse_method_tag == "json" else ''
+                            execution_messages.append({"role": "user", "content": f"{note}Continue operations. Call end_today when done."})
+                        log_message(run_log, {"role": "user", "day": day, "phase": "execution", "turn": execution_turns, "content": user_message, "parse_method": parse_method_tag})
+                    else:
+                        execution_messages.append({"role": "user", "content": "No valid tool call detected. Continue or call end_today."})
                 else:
                     execution_messages.append({"role": "user", "content": "No valid tool call detected. Continue or call end_today."})
 

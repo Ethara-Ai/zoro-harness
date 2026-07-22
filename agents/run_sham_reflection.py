@@ -84,7 +84,7 @@ Keep it to 3-6 sentences.
         {"role": "system", "content": SHAM_REFLECTION_SYSTEM_PROMPT},
         {"role": "user", "content": prompt},
     ]
-    full_content, final_content, reasoning_content, usage = stream_chat(client, model, messages)
+    full_content, final_content, reasoning_content, _aggregated_calls, usage = stream_chat(client, model, messages)
     text = (final_content or "").strip() or (full_content or "").strip()
     if not text:
         text = "No sham restatement recorded for this step."

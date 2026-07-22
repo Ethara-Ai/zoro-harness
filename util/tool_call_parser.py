@@ -16,10 +16,14 @@ def parse_tool_args(raw: Any) -> Dict[str, Any]:
     if isinstance(raw, dict):
         return raw
     if isinstance(raw, str):
+        if not raw.strip():
+            return {}
         try:
             parsed = json.loads(raw)
             return parsed if isinstance(parsed, dict) else {}
         except Exception:
+            import logging
+            logging.getLogger(__name__).warning("parse_tool_args: JSON parse failed, dropping args. raw=%r", raw)
             return {}
     return {}
 
@@ -127,9 +131,5 @@ def parse_tool_calls(text: str) -> Tuple[List[Dict[str, Any]], str]:
     xml_calls = _parse_xml_tool_calls(text)
     if xml_calls:
         return dedupe_end_today_calls(xml_calls), "xml"
-
-    json_calls = _parse_standalone_json_tool_calls(text)
-    if json_calls:
-        return dedupe_end_today_calls(json_calls), "json"
 
     return [], "none"

@@ -76,7 +76,7 @@ _BRIDGE_INSTALLATION_ID = _get_installation_id()
 _OPENAI_CHAT_ONLY_KEYS = {
     "n", "logprobs", "top_logprobs", "logit_bias", "presence_penalty",
     "frequency_penalty", "seed", "response_format", "user", "functions",
-    "function_call", "parallel_tool_calls", "service_tier",
+    "function_call", "service_tier",
 }
 
 ProviderLike = Union[CredentialProvider, MultiAccountCredentialProvider]
@@ -161,30 +161,149 @@ def _string_content(content: Any) -> str:
     return ""
 
 
+def _translate_tools_to_responses(chat_tools: Any) -> list[dict[str, Any]] | None:
+    if not isinstance(chat_tools, list) or not chat_tools:
+        return None
+    out: list[dict[str, Any]] = []
+    for t in chat_tools:
+        if not isinstance(t, dict) or t.get("type") != "function":
+            continue
+        fn = t.get("function")
+        if not isinstance(fn, dict):
+            continue
+        name = fn.get("name")
+        if not isinstance(name, str) or not name:
+            continue
+        entry: dict[str, Any] = {"type": "function", "name": name}
+        desc = fn.get("description")
+        if isinstance(desc, str) and desc:
+            entry["description"] = desc
+        params = fn.get("parameters")
+        entry["parameters"] = params if isinstance(params, dict) else {"type": "object", "properties": {}}
+        entry["strict"] = bool(fn.get("strict"))
+        out.append(entry)
+    return out or None
+
+
+def _translate_tool_choice_to_responses(tc: Any) -> Any:
+    if tc is None:
+        return None
+    if isinstance(tc, str):
+        return tc
+    if isinstance(tc, dict) and tc.get("type") == "function":
+        fn = tc.get("function")
+        if isinstance(fn, dict):
+            name = fn.get("name")
+            if isinstance(name, str) and name:
+                return {"type": "function", "name": name}
+        name = tc.get("name")
+        if isinstance(name, str) and name:
+            return {"type": "function", "name": name}
+    return None
+
+
+def _extract_tool_calls(response: dict[str, Any]) -> list[dict[str, Any]]:
+    tool_calls: list[dict[str, Any]] = []
+    for item in response.get("output") or []:
+        if not isinstance(item, dict) or item.get("type") != "function_call":
+            continue
+        call_id = item.get("call_id") or item.get("id")
+        name = item.get("name")
+        if not isinstance(call_id, str) or not isinstance(name, str) or not call_id or not name:
+            continue
+        args = item.get("arguments")
+        if isinstance(args, str):
+            args_str = args
+        elif args is None:
+            args_str = "{}"
+        else:
+            try:
+                args_str = json.dumps(args, ensure_ascii=False)
+            except (TypeError, ValueError):
+                args_str = "{}"
+        tool_calls.append({
+            "id": call_id,
+            "type": "function",
+            "function": {"name": name, "arguments": args_str},
+        })
+    return tool_calls
+
+
 def _extract_instructions_and_input(
     openai_messages: list[dict[str, Any]],
 ) -> tuple[str, list[dict[str, Any]]]:
     instruction_parts: list[str] = []
     input_items: list[dict[str, Any]] = []
+    emitted_call_ids: set[str] = set()
     for m in openai_messages or []:
         if not isinstance(m, dict):
             continue
         role = m.get("role")
-        text = _string_content(m.get("content", ""))
         if role == "system":
+            text = _string_content(m.get("content", ""))
             if text:
                 instruction_parts.append(text)
             continue
         if role == "assistant":
+            text = _string_content(m.get("content", ""))
+            if text:
+                input_items.append({
+                    "role": "assistant",
+                    "content": [{"type": "output_text", "text": text}],
+                })
+            tool_calls = m.get("tool_calls")
+            if isinstance(tool_calls, list):
+                for tc in tool_calls:
+                    if not isinstance(tc, dict) or tc.get("type") not in (None, "function"):
+                        continue
+                    fn = tc.get("function")
+                    if not isinstance(fn, dict):
+                        continue
+                    name = fn.get("name")
+                    if not isinstance(name, str) or not name:
+                        continue
+                    raw_args = fn.get("arguments")
+                    if raw_args is None:
+                        args_str = ""
+                    elif isinstance(raw_args, str):
+                        args_str = raw_args
+                    else:
+                        try:
+                            args_str = json.dumps(raw_args, ensure_ascii=False)
+                        except (TypeError, ValueError):
+                            args_str = ""
+                    call_id = tc.get("id")
+                    if not isinstance(call_id, str) or not call_id:
+                        call_id = f"call_{uuid.uuid4().hex[:16]}"
+                    emitted_call_ids.add(call_id)
+                    input_items.append({
+                        "type": "function_call",
+                        "call_id": call_id,
+                        "name": name,
+                        "arguments": args_str,
+                    })
+            continue
+        if role == "tool":
+            call_id = m.get("tool_call_id")
+            if not isinstance(call_id, str) or not call_id:
+                _LOG.warning("dropping role=tool message without tool_call_id")
+                continue
+            if call_id not in emitted_call_ids:
+                _LOG.warning(
+                    "dropping orphan role=tool message (tool_call_id=%s has no matching prior assistant tool_call)",
+                    call_id,
+                )
+                continue
             input_items.append({
-                "role": "assistant",
-                "content": [{"type": "output_text", "text": text}],
+                "type": "function_call_output",
+                "call_id": call_id,
+                "output": _string_content(m.get("content", "")),
             })
             continue
-        if role in ("user", "tool", "function"):
+        if role in ("user", "function"):
             input_items.append({
                 "role": "user",
-                "content": [{"type": "input_text", "text": text}],
+                "content": [{"type": "input_text", "text": _string_content(m.get("content", ""))}],
             })
     return "\n\n".join(p for p in instruction_parts if p), input_items
 
@@ -241,11 +360,14 @@ def translate_openai_to_responses(body: dict[str, Any]) -> dict[str, Any]:
         if body.get("top_p") is not None:
             out["top_p"] = body["top_p"]
 
-    if body.get("tools") or body.get("tool_choice"):
-        raise HTTPException(
-            status_code=422,
-            detail="tools/tool_choice not supported by codex_bridge",
-        )
+    translated_tools = _translate_tools_to_responses(body.get("tools"))
+    if translated_tools:
+        out["tools"] = translated_tools
+    translated_tool_choice = _translate_tool_choice_to_responses(body.get("tool_choice"))
+    if translated_tool_choice is not None and translated_tools:
+        out["tool_choice"] = translated_tool_choice
+    if body.get("parallel_tool_calls") is not None and translated_tools:
+        out["parallel_tool_calls"] = bool(body.get("parallel_tool_calls"))
 
     dropped = [k for k in _OPENAI_CHAT_ONLY_KEYS if k in body and body[k] is not None]
     if dropped:
@@ -310,18 +432,25 @@ def _responses_to_openai_nonstream(
         response = {}
 
     text, reasoning = _extract_text_and_reasoning(response)
+    tool_calls = _extract_tool_calls(response)
 
     usage = response.get("usage") or {}
     input_tokens = int(usage.get("input_tokens") or 0)
     output_tokens = int(usage.get("output_tokens") or 0)
     total_tokens = int(usage.get("total_tokens") or (input_tokens + output_tokens))
 
+    stripped_text = text.strip() if isinstance(text, str) else ""
     message: dict[str, Any] = {
         "role": "assistant",
-        "content": text,
+        "content": text if stripped_text else (None if tool_calls else ""),
     }
     if reasoning:
         message["reasoning_content"] = reasoning
+    if tool_calls:
+        message["tool_calls"] = tool_calls
+        finish_reason = "tool_calls"
+    else:
+        finish_reason = _map_finish_reason(response)
 
     return {
         "id": f"chatcmpl-{uuid.uuid4().hex}",
@@ -332,7 +461,7 @@ def _responses_to_openai_nonstream(
             {
                 "index": 0,
                 "message": message,
-                "finish_reason": _map_finish_reason(response),
+                "finish_reason": finish_reason,
             }
         ],
         "usage": {
@@ -427,6 +556,22 @@ async def _translate_stream(
     finish_reason: str | None = None
     final_usage: dict[str, int] | None = None
     saw_completed = False
+    tool_call_index: dict[str, int] = {}
+    tool_call_seeded: set[str] = set()
+    tool_call_completed: set[str] = set()
+    saw_tool_call = False
+
+    def _emit_role_if_needed() -> bytes | None:
+        nonlocal sent_role
+        if sent_role:
+            return None
+        sent_role = True
+        payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
+        payload["choices"] = [{"index": 0, "delta": {"role": "assistant"}, "finish_reason": None}]
+        return _sse_chunk(payload)
+
+    def _tool_calls_incomplete() -> bool:
+        return bool(tool_call_seeded) and not tool_call_seeded.issubset(tool_call_completed)
 
     async for block in _iter_sse_blocks(byte_iter, prebuffered=prebuffered):
         event_name, data = _parse_sse_event(block)
@@ -476,10 +621,104 @@ async def _translate_stream(
                 payload["choices"] = [{"index": 0, "delta": {"reasoning_content": text}, "finish_reason": None}]
                 yield _sse_chunk(payload)
 
+        elif t == "response.output_item.added":
+            item = data.get("item") or {}
+            if isinstance(item, dict) and item.get("type") == "function_call":
+                item_id = item.get("id")
+                if isinstance(item_id, str) and item_id and item_id not in tool_call_index:
+                    idx = len(tool_call_index)
+                    tool_call_index[item_id] = idx
+                    call_id = item.get("call_id") or item_id
+                    name = item.get("name") or ""
+                    raw_args = item.get("arguments") or ""
+                    if not isinstance(raw_args, str):
+                        try:
+                            raw_args = json.dumps(raw_args, ensure_ascii=False)
+                        except (TypeError, ValueError):
+                            raw_args = ""
+                    tool_call_seeded.add(item_id)
+                    saw_tool_call = True
+                    role_chunk = _emit_role_if_needed()
+                    if role_chunk is not None:
+                        yield role_chunk
+                    payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
+                    payload["choices"] = [{
+                        "index": 0,
+                        "delta": {"tool_calls": [{
+                            "index": idx,
+                            "id": call_id,
+                            "type": "function",
+                            "function": {"name": name, "arguments": raw_args},
+                        }]},
+                        "finish_reason": None,
+                    }]
+                    yield _sse_chunk(payload)
+            continue
+
+        elif t == "response.function_call_arguments.delta":
+            item_id = data.get("item_id")
+            delta_text = data.get("delta") or ""
+            if not delta_text or not isinstance(item_id, str) or item_id not in tool_call_index:
+                continue
+            idx = tool_call_index[item_id]
+            saw_tool_call = True
+            payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
+            payload["choices"] = [{
+                "index": 0,
+                "delta": {"tool_calls": [{
+                    "index": idx,
+                    "function": {"arguments": delta_text},
+                }]},
+                "finish_reason": None,
+            }]
+            yield _sse_chunk(payload)
+
+        elif t == "response.output_item.done":
+            item = data.get("item") or {}
+            if isinstance(item, dict) and item.get("type") == "function_call":
+                item_id = item.get("id")
+                if isinstance(item_id, str) and item_id:
+                    tool_call_completed.add(item_id)
+                    if item_id not in tool_call_seeded:
+                        idx = tool_call_index.get(item_id)
+                        if idx is None:
+                            idx = len(tool_call_index)
+                            tool_call_index[item_id] = idx
+                        call_id = item.get("call_id") or item_id
+                        name = item.get("name") or ""
+                        raw_args = item.get("arguments") or ""
+                        if not isinstance(raw_args, str):
+                            try:
+                                raw_args = json.dumps(raw_args, ensure_ascii=False)
+                            except (TypeError, ValueError):
+                                raw_args = ""
+                        tool_call_seeded.add(item_id)
+                        saw_tool_call = True
+                        role_chunk = _emit_role_if_needed()
+                        if role_chunk is not None:
+                            yield role_chunk
+                        payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
+                        payload["choices"] = [{
+                            "index": 0,
+                            "delta": {"tool_calls": [{
+                                "index": idx,
+                                "id": call_id,
+                                "type": "function",
+                                "function": {"name": name, "arguments": raw_args},
+                            }]},
+                            "finish_reason": None,
+                        }]
+                        yield _sse_chunk(payload)
+            continue
+
+        elif t == "response.function_call_arguments.done":
+            item_id = data.get("item_id")
+            if isinstance(item_id, str) and item_id:
+                tool_call_completed.add(item_id)
+            continue
+
         elif t in (
             "response.in_progress",
-            "response.output_item.added",
-            "response.output_item.done",
             "response.content_part.added",
             "response.content_part.done",
             "response.output_text.done",
@@ -507,7 +746,8 @@ async def _translate_stream(
             }]
             yield _sse_chunk(payload)
             payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
-            payload["choices"] = [{"index": 0, "delta": {}, "finish_reason": "stop"}]
+            fail_finish = "tool_calls" if (saw_tool_call and not _tool_calls_incomplete()) else "stop"
+            payload["choices"] = [{"index": 0, "delta": {}, "finish_reason": fail_finish}]
             yield _sse_chunk(payload)
             yield b"data: [DONE]\n\n"
             return
@@ -515,7 +755,13 @@ async def _translate_stream(
         elif t == "response.completed":
             saw_completed = True
             response = data.get("response") or {}
-            finish_reason = _map_finish_reason(response)
+            mapped_finish = _map_finish_reason(response)
+            if saw_tool_call and mapped_finish == "length":
+                finish_reason = "length"
+            elif saw_tool_call:
+                finish_reason = "tool_calls"
+            else:
+                finish_reason = mapped_finish
             usage = response.get("usage") or {}
             input_tokens = int(usage.get("input_tokens") or 0)
             output_tokens = int(usage.get("output_tokens") or 0)
@@ -554,8 +800,9 @@ async def _translate_stream(
         payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
         payload["choices"] = [{"index": 0, "delta": {"role": "assistant"}, "finish_reason": None}]
         yield _sse_chunk(payload)
+    trailing_finish = "tool_calls" if (saw_tool_call and not _tool_calls_incomplete()) else "stop"
     payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
-    payload["choices"] = [{"index": 0, "delta": {}, "finish_reason": "stop"}]
+    payload["choices"] = [{"index": 0, "delta": {}, "finish_reason": trailing_finish}]
     yield _sse_chunk(payload)
     yield b"data: [DONE]\n\n"
 
@@ -750,6 +997,7 @@ async def _handle_nonstream(
             return _openai_error_response(502, f"upstream network error: {e}", "server_error")
 
         final_response: dict[str, Any] | None = None
+        accumulated_output: list[dict[str, Any]] = []
         cls: Classification | None = None
         try:
             if 200 <= upstream.status_code < 300:
@@ -758,8 +1006,17 @@ async def _handle_nonstream(
                     if data is None:
                         continue
                     t = data.get("type") or event_name
+                    if t == "response.output_item.done":
+                        item = data.get("item")
+                        if isinstance(item, dict):
+                            accumulated_output.append(item)
+                        continue
                     if t == "response.completed":
                         final_response = data.get("response") or {}
+                        if isinstance(final_response, dict):
+                            existing = final_response.get("output") or []
+                            if not existing and accumulated_output:
+                                final_response = {**final_response, "output": accumulated_output}
                         break
                     if t == "error":
                         cls = _classify_sse_error_event(data)

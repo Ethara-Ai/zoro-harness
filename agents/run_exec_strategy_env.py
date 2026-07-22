@@ -54,33 +54,6 @@ def parse_tool_calls(text: str) -> tuple[List[Dict[str, Any]], str]:
         except json.JSONDecodeError:
             continue
     
-    # If XML parsing found results, return them
-    if tool_calls:
-        return tool_calls, parse_method
-    
-    # Fallback: try to find standalone JSON objects (non-standard format)
-    brace_count = 0
-    start_idx = -1
-    for i, char in enumerate(text):
-        if char == '{':
-            if brace_count == 0:
-                start_idx = i
-            brace_count += 1
-        elif char == '}':
-            brace_count -= 1
-            if brace_count == 0 and start_idx != -1:
-                # Found a complete JSON object
-                json_str = text[start_idx:i+1]
-                try:
-                    parsed = json.loads(json_str)
-                    # Validate it has the expected structure for a tool call
-                    if isinstance(parsed, dict) and "name" in parsed and "arguments" in parsed:
-                        tool_calls.append(parsed)
-                        parse_method = "json"
-                except (json.JSONDecodeError, KeyError):
-                    pass
-                start_idx = -1
-    
     return tool_calls, parse_method
 
 DEFAULT_MODEL = 'qwen3-235b-a22b-thinking-2507'
@@ -214,9 +187,12 @@ def parse_tool_args(raw: Any) -> Dict[str, Any]:
     if isinstance(raw, dict):
         return raw
     if isinstance(raw, str):
+        if not raw.strip():
+            return {}
         try:
             return json.loads(raw)
         except Exception:
+            print(f"[警告] parse_tool_args: JSON parse failed, using empty dict. raw={raw!r}")
             return {}
     return {}
 
@@ -225,26 +201,31 @@ def stream_chat(
     client: OpenAI,
     model: str,
     messages: List[Dict[str, Any]],
+    tools: Optional[List[Dict[str, Any]]] = None,
 ) -> tuple[str, str, Dict[str, Dict[str, Any]], Optional[Dict[str, Any]]]:
     """
     Stream a chat completion with tools; returns (final_content, reasoning_content, tool_calls_by_id, usage_dict).
     """
-    stream = client.chat.completions.create(
-        model=model,
-        messages=messages,
-        stop=["\n<tool_response>", "<tool_response>"],
-        extra_body={"enable_thinking": True},
-        stream=True,
-        stream_options={"include_usage": True},
-        top_p=0.95,
-        temperature=0.6,
-        max_tokens=10000,
-        presence_penalty=1.1,
-    )
+    create_kwargs: Dict[str, Any] = {
+        "model": model,
+        "messages": messages,
+        "stop": ["\n<tool_response>", "<tool_response>"],
+        "extra_body": {"enable_thinking": True},
+        "stream": True,
+        "stream_options": {"include_usage": True},
+        "top_p": 0.95,
+        "temperature": 0.6,
+        "max_tokens": 10000,
+        "presence_penalty": 1.1,
+    }
+    if tools:
+        create_kwargs["tools"] = tools
+    stream = client.chat.completions.create(**create_kwargs)
 
     content_parts: List[str] = []
     reasoning_content = ""
     aggregated_calls: Dict[str, Dict[str, Any]] = {}
+    index_to_id: Dict[int, str] = {}
     usage: Optional[Dict[str, Any]] = None
 
     for chunk in stream:
@@ -273,7 +254,18 @@ def stream_chat(
                     content_parts.append(str(delta_content))
 
             for tc in getattr(delta, "tool_calls", []) or []:
-                tc_id = getattr(tc, "id", None) or f"call_{len(aggregated_calls)}"
+                raw_id = getattr(tc, "id", None)
+                idx = getattr(tc, "index", None)
+                if idx is not None and idx in index_to_id:
+                    tc_id = index_to_id[idx]
+                elif raw_id:
+                    tc_id = raw_id
+                    if idx is not None:
+                        index_to_id[idx] = tc_id
+                else:
+                    tc_id = f"call_{idx if idx is not None else len(aggregated_calls)}"
+                    if idx is not None:
+                        index_to_id[idx] = tc_id
                 fn = getattr(tc, "function", None) or {}
                 fn_name = getattr(fn, "name", "") if hasattr(fn, "name") else fn.get("name", "")
                 fn_args = getattr(fn, "arguments", None) if hasattr(fn, "arguments") else fn.get("arguments")
@@ -283,7 +275,7 @@ def stream_chat(
                     {
                         "id": tc_id,
                         "type": "function",
-                        "function": {"name": fn_name, "arguments": ""},
+                        "function": {"name": "", "arguments": ""},
                     },
                 )
                 if fn_name:
@@ -540,10 +532,11 @@ def run_react_loop(
                 request_messages = [execution_system_msg] + [execution_user_msg] + execution_messages
                 
                 try:
-                    full_content, reasoning_content, aggregated_calls, usage = stream_chat(
+                    final_content, reasoning_content, aggregated_calls, usage = stream_chat(
                         client=client,
                         model=model,
                         messages=request_messages,
+                        tools=all_tools,
                     )
                 except Exception as stream_exc:
                     import traceback
@@ -554,12 +547,23 @@ def run_react_loop(
                     execution_messages.append({"role": "user", "content": f"System error: {err_msg}. Continue."})
                     continue
 
-                think_content = (reasoning_content or '') + (full_content or '')
+                think_content = (reasoning_content or '') + (final_content or '')
 
                 # 解析工具调用
                 parse_method_tag = "none"
+                tool_calls_list: List[Dict[str, Any]] = []
+                native_tool_calls: List[Dict[str, Any]] = []
                 try:
-                    tool_calls_list, parse_method_tag = parse_tool_calls(full_content or '')
+                    if aggregated_calls:
+                        for tc in aggregated_calls.values():
+                            fn_name = (tc.get("function") or {}).get("name", "")
+                            fn_args_raw = (tc.get("function") or {}).get("arguments", "")
+                            if fn_name:
+                                tool_calls_list.append({"name": fn_name, "arguments": fn_args_raw, "_tc_id": tc["id"]})
+                                native_tool_calls.append(tc)
+                        parse_method_tag = "native"
+                    else:
+                        tool_calls_list, parse_method_tag = parse_tool_calls(final_content or '')
                 except Exception as parse_exc:
                     err_msg = f"Failed to parse tool calls on day {day} execution turn {execution_turns}: {type(parse_exc).__name__}: {parse_exc}"
                     print(f"[错误] {err_msg}")
@@ -600,14 +604,22 @@ def run_react_loop(
                     day_completion_tokens += completion_tokens
                     day_tokens += tokens
                 print(f"[Day {day} Execution Turn {execution_turns}] tokens: prompt={usage.get('prompt_tokens') if usage else None}, completion={usage.get('completion_tokens') if usage else None}")
-                log_message(run_log, {"role": "assistant", "day": day, "phase": "execution", "turn": execution_turns, "content": think_content, "full_content": full_content, "reasoning": reasoning_content, "tool_calls": tool_calls_list})
+                log_message(run_log, {"role": "assistant", "day": day, "phase": "execution", "turn": execution_turns, "content": think_content, "full_content": final_content, "reasoning": reasoning_content, "tool_calls": tool_calls_list})
 
-                execution_messages.append({
-                    "role": "assistant",
-                    "content": think_content,
-                })
+                if parse_method_tag == "native" and native_tool_calls:
+                    execution_messages.append({
+                        "role": "assistant",
+                        "content": think_content or None,
+                        "tool_calls": native_tool_calls,
+                    })
+                else:
+                    execution_messages.append({
+                        "role": "assistant",
+                        "content": think_content,
+                    })
 
                 user_message = ''
+                tool_result_messages: List[Dict[str, Any]] = []
                 for call in tool_calls_list:
                     if not isinstance(call, dict) or not call.get("name"):
                         err_msg = f"Invalid tool call: {call}"
@@ -617,6 +629,7 @@ def run_react_loop(
                         continue
 
                     name, args = call.get("name"), parse_tool_args(call.get("arguments"))
+                    tc_id = call.get("_tc_id")
                     try:
                         result = env.exec_tools(name, **args)
                         if not isinstance(result, dict) or "formatted" not in result:
@@ -629,8 +642,9 @@ def run_react_loop(
                             env.logger.error(f"{err_msg}\n{traceback.format_exc()}")
                         result = {"formatted": err_msg, "result": {"error": str(exc), "error_type": type(exc).__name__}}
 
-                    log_message(run_log, {"role": "tool", "day": day, "phase": "execution", "turn": execution_turns, "name": name, "args": args, "content": result.get("formatted", safe_dump(result)), "raw": result.get("result", safe_dump(result))})
-                    
+                    result_text = result.get("formatted", safe_dump(result))
+                    log_message(run_log, {"role": "tool", "day": day, "phase": "execution", "turn": execution_turns, "name": name, "args": args, "content": result_text, "raw": result.get("result", safe_dump(result))})
+
                     if name == 'end_today':
                         execution_phase_complete = True
                         print(f"[Day {day}] Execution phase complete - end_today called")
@@ -645,15 +659,28 @@ def run_react_loop(
                                 return
                         else:
                             consecutive_negative_days = 0
-                    
-                    user_message += f"<tool_response>{result.get('formatted', safe_dump(result))}</tool_response>\n"
 
-                if tool_calls_list and user_message:
-                    execution_messages.append({"role": "user", "content": user_message})
-                    if not execution_phase_complete:
-                        note = '[Note: Use <tool_call> tags] ' if parse_method_tag == "json" else ''
-                        execution_messages.append({"role": "user", "content": f"{note}Continue operations. Call end_today when done."})
-                    log_message(run_log, {"role": "user", "day": day, "phase": "execution", "turn": execution_turns, "content": user_message, "parse_method": parse_method_tag})
+                    if parse_method_tag == "native":
+                        effective_tc_id = tc_id or f"call_synth_{len(tool_result_messages)}"
+                        if not tc_id:
+                            print(f"[警告] Native tool call missing id; synthesized {effective_tc_id}")
+                        tool_result_messages.append({"role": "tool", "tool_call_id": effective_tc_id, "content": result_text})
+                    else:
+                        user_message += f"<tool_response>{result_text}</tool_response>\n"
+
+                if tool_calls_list:
+                    if parse_method_tag == "native":
+                        execution_messages.extend(tool_result_messages)
+                        if not execution_phase_complete:
+                            execution_messages.append({"role": "user", "content": "Continue operations. Call end_today when done."})
+                        log_message(run_log, {"role": "user", "day": day, "phase": "execution", "turn": execution_turns, "content": safe_dump(tool_result_messages), "parse_method": parse_method_tag})
+                    else:
+                        if user_message:
+                            execution_messages.append({"role": "user", "content": user_message})
+                        if not execution_phase_complete:
+                            note = '[Note: Use <tool_call> tags] ' if parse_method_tag == "json" else ''
+                            execution_messages.append({"role": "user", "content": f"{note}Continue operations. Call end_today when done."})
+                        log_message(run_log, {"role": "user", "day": day, "phase": "execution", "turn": execution_turns, "content": user_message, "parse_method": parse_method_tag})
                 else:
                     execution_messages.append({"role": "user", "content": "No valid tool call detected. Continue or call end_today."})
 

@@ -59,7 +59,7 @@ MODEL_ALIASES = {
 _OPENAI_ONLY_KEYS = {
     "n", "logprobs", "top_logprobs", "logit_bias", "presence_penalty",
     "frequency_penalty", "seed", "response_format", "user", "functions",
-    "function_call", "parallel_tool_calls", "service_tier",
+    "function_call", "service_tier",
 }
 
 ProviderLike = Union[CredentialProvider, MultiAccountCredentialProvider]
@@ -110,27 +110,202 @@ def _map_finish_reason(stop_reason: str | None) -> str:
     }.get(stop_reason or "", "stop")
 
 
+def _string_content(content: Any) -> str:
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        parts: list[str] = []
+        for blk in content:
+            if isinstance(blk, str):
+                parts.append(blk)
+            elif isinstance(blk, dict) and isinstance(blk.get("text"), str):
+                parts.append(blk["text"])
+        return "\n".join(parts)
+    return ""
+
+
+def _translate_tools_to_anthropic(chat_tools: Any) -> list[dict[str, Any]] | None:
+    if not isinstance(chat_tools, list) or not chat_tools:
+        return None
+    out: list[dict[str, Any]] = []
+    for t in chat_tools:
+        if not isinstance(t, dict) or t.get("type") != "function":
+            continue
+        fn = t.get("function")
+        if not isinstance(fn, dict):
+            continue
+        name = fn.get("name")
+        if not isinstance(name, str) or not name:
+            continue
+        entry: dict[str, Any] = {"name": name}
+        desc = fn.get("description")
+        if isinstance(desc, str) and desc:
+            entry["description"] = desc
+        params = fn.get("parameters")
+        if isinstance(params, dict):
+            schema = dict(params)
+            if schema.get("type") != "object":
+                schema["type"] = "object"
+            entry["input_schema"] = schema
+        else:
+            entry["input_schema"] = {"type": "object", "properties": {}}
+        out.append(entry)
+    return out or None
+
+
+def _translate_tool_choice_to_anthropic(tc: Any, has_tools: bool) -> dict[str, Any] | None:
+    if tc is None or not has_tools:
+        return None
+    if isinstance(tc, str):
+        if tc == "auto":
+            return {"type": "auto"}
+        if tc == "required":
+            return {"type": "any"}
+        if tc == "none":
+            return {"type": "none"}
+        return None
+    if isinstance(tc, dict) and tc.get("type") == "function":
+        fn = tc.get("function")
+        if isinstance(fn, dict):
+            name = fn.get("name")
+            if isinstance(name, str) and name:
+                return {"type": "tool", "name": name}
+    return None
+
+
 def _extract_system_and_messages(
     openai_messages: list[dict[str, Any]],
 ) -> tuple[str, list[dict[str, Any]]]:
     system_parts: list[str] = []
     out: list[dict[str, Any]] = []
+    emitted_tool_use_ids: set[str] = set()
+
+    def _last_user_content() -> list[dict[str, Any]] | None:
+        if out and out[-1].get("role") == "user" and isinstance(out[-1].get("content"), list):
+            return out[-1]["content"]
+        return None
+
+    def _last_assistant_content() -> list[dict[str, Any]] | None:
+        if out and out[-1].get("role") == "assistant" and isinstance(out[-1].get("content"), list):
+            return out[-1]["content"]
+        return None
+
     for m in openai_messages or []:
         if not isinstance(m, dict):
             continue
         role = m.get("role")
         content = m.get("content", "")
+
         if role == "system":
-            if isinstance(content, str):
-                system_parts.append(content)
-            elif isinstance(content, list):
-                for blk in content:
-                    if isinstance(blk, dict) and isinstance(blk.get("text"), str):
-                        system_parts.append(blk["text"])
-                    elif isinstance(blk, str):
-                        system_parts.append(blk)
-        else:
-            out.append({"role": role, "content": content})
+            text = _string_content(content)
+            if text:
+                system_parts.append(text)
+            continue
+
+        if role == "assistant":
+            blocks: list[dict[str, Any]] = []
+            text = _string_content(content)
+            if text:
+                blocks.append({"type": "text", "text": text})
+            tool_calls = m.get("tool_calls")
+            if isinstance(tool_calls, list):
+                for tc in tool_calls:
+                    if not isinstance(tc, dict) or tc.get("type") not in (None, "function"):
+                        continue
+                    fn = tc.get("function")
+                    if not isinstance(fn, dict):
+                        continue
+                    name = fn.get("name")
+                    if not isinstance(name, str) or not name:
+                        continue
+                    call_id = tc.get("id")
+                    if not isinstance(call_id, str) or not call_id:
+                        _LOG.warning(
+                            "dropping assistant tool_call with missing/empty id (name=%s)",
+                            name,
+                        )
+                        continue
+                    raw_args = fn.get("arguments")
+                    parsed_input: Any
+                    if raw_args is None or raw_args == "":
+                        parsed_input = {}
+                    elif isinstance(raw_args, str):
+                        try:
+                            parsed_input = json.loads(raw_args)
+                        except (ValueError, TypeError):
+                            parsed_input = {}
+                    elif isinstance(raw_args, dict):
+                        parsed_input = raw_args
+                    else:
+                        parsed_input = {}
+                    if not isinstance(parsed_input, dict):
+                        _LOG.warning(
+                            "assistant tool_call arguments not JSON-object; coercing to {} (name=%s)",
+                            name,
+                        )
+                        parsed_input = {}
+                    emitted_tool_use_ids.add(call_id)
+                    blocks.append({
+                        "type": "tool_use",
+                        "id": call_id,
+                        "name": name,
+                        "input": parsed_input,
+                    })
+            if blocks:
+                last_assistant = _last_assistant_content()
+                if last_assistant is not None:
+                    last_assistant.extend(blocks)
+                else:
+                    out.append({"role": "assistant", "content": blocks})
+            elif isinstance(tool_calls, list) and tool_calls:
+                _LOG.warning(
+                    "dropping assistant message: all %d tool_calls were malformed",
+                    len(tool_calls),
+                )
+            continue
+
+        if role == "tool":
+            call_id = m.get("tool_call_id")
+            if not isinstance(call_id, str) or not call_id:
+                _LOG.warning("dropping role=tool message without tool_call_id")
+                continue
+            if call_id not in emitted_tool_use_ids:
+                _LOG.warning(
+                    "dropping orphan role=tool message (tool_call_id=%s has no matching prior assistant tool_use)",
+                    call_id,
+                )
+                continue
+            result_text = _string_content(content)
+            tool_result_block: dict[str, Any] = {
+                "type": "tool_result",
+                "tool_use_id": call_id,
+                "content": result_text,
+            }
+            last_content = _last_user_content()
+            if last_content is not None:
+                insert_pos = 0
+                for i, blk in enumerate(last_content):
+                    if isinstance(blk, dict) and blk.get("type") == "tool_result":
+                        insert_pos = i + 1
+                    else:
+                        break
+                last_content.insert(insert_pos, tool_result_block)
+            else:
+                out.append({"role": "user", "content": [tool_result_block]})
+            continue
+
+        if role in ("user", "function"):
+            text = _string_content(content)
+            if not text:
+                continue
+            text_block = {"type": "text", "text": text}
+            last_content = _last_user_content()
+            if last_content is not None:
+                last_content.append(text_block)
+            else:
+                out.append({"role": "user", "content": [text_block]})
+            continue
+
     return "\n\n".join(p for p in system_parts if p), out
 
 
@@ -200,8 +375,25 @@ def translate_openai_to_anthropic(body: dict[str, Any]) -> dict[str, Any]:
         elif body.get("top_p") is not None:
             ant["top_p"] = body["top_p"]
 
-    if body.get("tools") or body.get("tool_choice"):
-        _LOG.warning("tools/tool_choice present but tool translation is out of scope for v1; dropping")
+    translated_tools = _translate_tools_to_anthropic(body.get("tools"))
+    if translated_tools:
+        ant["tools"] = translated_tools
+        translated_tool_choice: dict[str, Any] | None = _translate_tool_choice_to_anthropic(
+            body.get("tool_choice"), has_tools=True,
+        )
+        parallel = body.get("parallel_tool_calls")
+        if translated_tool_choice is None and parallel is False:
+            translated_tool_choice = {"type": "auto"}
+        if translated_tool_choice is not None:
+            if "thinking" in ant and translated_tool_choice.get("type") in ("any", "tool"):
+                _LOG.warning(
+                    "tool_choice=%s incompatible with extended thinking; demoting to auto",
+                    translated_tool_choice.get("type"),
+                )
+                translated_tool_choice = {"type": "auto"}
+            if parallel is False and translated_tool_choice["type"] in ("auto", "any", "tool"):
+                translated_tool_choice["disable_parallel_tool_use"] = True
+            ant["tool_choice"] = translated_tool_choice
 
     dropped = [k for k in _OPENAI_ONLY_KEYS if k in body and body[k] is not None]
     if dropped:
@@ -226,6 +418,7 @@ def _anthropic_to_openai_nonstream(
 ) -> dict[str, Any]:
     text_parts: list[str] = []
     thinking_parts: list[str] = []
+    tool_calls: list[dict[str, Any]] = []
     for blk in ant_body.get("content") or []:
         if not isinstance(blk, dict):
             continue
@@ -234,6 +427,28 @@ def _anthropic_to_openai_nonstream(
             text_parts.append(blk["text"])
         elif t == "thinking" and isinstance(blk.get("thinking"), str):
             thinking_parts.append(blk["thinking"])
+        elif t == "tool_use":
+            call_id = blk.get("id")
+            name = blk.get("name")
+            if not isinstance(call_id, str) or not call_id:
+                continue
+            if not isinstance(name, str) or not name:
+                continue
+            raw_input = blk.get("input")
+            if raw_input is None:
+                args_str = "{}"
+            elif isinstance(raw_input, str):
+                args_str = raw_input
+            else:
+                try:
+                    args_str = json.dumps(raw_input, ensure_ascii=False)
+                except (TypeError, ValueError):
+                    args_str = "{}"
+            tool_calls.append({
+                "id": call_id,
+                "type": "function",
+                "function": {"name": name, "arguments": args_str},
+            })
 
     usage = ant_body.get("usage") or {}
     input_tokens = int(usage.get("input_tokens") or 0)
@@ -243,12 +458,26 @@ def _anthropic_to_openai_nonstream(
     prompt_tokens = input_tokens + cache_read + cache_creation
     completion_tokens = output_tokens
 
+    text = "".join(text_parts)
+    stripped_text = text.strip()
     message: dict[str, Any] = {
         "role": "assistant",
-        "content": "".join(text_parts),
+        "content": text if stripped_text else (None if tool_calls else ""),
     }
     if thinking_parts:
         message["reasoning_content"] = "".join(thinking_parts)
+    if tool_calls:
+        message["tool_calls"] = tool_calls
+
+    stop_reason = ant_body.get("stop_reason")
+    if tool_calls and stop_reason == "max_tokens":
+        finish_reason = "length"
+    elif tool_calls:
+        finish_reason = "tool_calls"
+    elif stop_reason == "tool_use":
+        finish_reason = "stop"
+    else:
+        finish_reason = _map_finish_reason(stop_reason)
 
     return {
         "id": f"chatcmpl-{uuid.uuid4().hex}",
@@ -259,7 +488,7 @@ def _anthropic_to_openai_nonstream(
             {
                 "index": 0,
                 "message": message,
-                "finish_reason": _map_finish_reason(ant_body.get("stop_reason")),
+                "finish_reason": finish_reason,
             }
         ],
         "usage": {
@@ -352,6 +581,18 @@ async def _translate_stream(
     initial_usage: dict[str, int] = {"input_tokens": 0, "cache_read_input_tokens": 0, "cache_creation_input_tokens": 0}
     sent_role = False
     active_block_types: dict[int, str] = {}
+    tool_call_index_map: dict[int, int] = {}
+    tool_call_completed: set[int] = set()
+    tool_call_saw_delta: set[int] = set()
+    saw_tool_call = False
+
+    def _emit_role_chunk() -> bytes:
+        payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
+        payload["choices"] = [{"index": 0, "delta": {"role": "assistant"}, "finish_reason": None}]
+        return _sse_chunk(payload)
+
+    def _tool_calls_incomplete() -> bool:
+        return bool(tool_call_index_map) and not set(tool_call_index_map.keys()).issubset(tool_call_completed)
 
     async for block in _iter_sse_blocks(byte_iter, prebuffered=prebuffered):
         event_name, data = _parse_sse_event(block)
@@ -367,6 +608,9 @@ async def _translate_stream(
             )
             if provider is not None:
                 await _apply_classification(provider, cls)
+            if not sent_role:
+                yield _emit_role_chunk()
+                sent_role = True
             payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
             payload["choices"] = [{
                 "index": 0,
@@ -374,8 +618,14 @@ async def _translate_stream(
                 "finish_reason": None,
             }]
             yield _sse_chunk(payload)
+            if saw_tool_call and stop_reason == "max_tokens":
+                err_fr = "length"
+            elif saw_tool_call and not _tool_calls_incomplete():
+                err_fr = "tool_calls"
+            else:
+                err_fr = "stop"
             payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
-            payload["choices"] = [{"index": 0, "delta": {}, "finish_reason": "length"}]
+            payload["choices"] = [{"index": 0, "delta": {}, "finish_reason": err_fr}]
             yield _sse_chunk(payload)
             yield b"data: [DONE]\n\n"
             return
@@ -397,7 +647,33 @@ async def _translate_stream(
         elif t == "content_block_start":
             idx = int(data.get("index", 0))
             blk = data.get("content_block") or {}
-            active_block_types[idx] = blk.get("type", "")
+            blk_type = blk.get("type", "")
+            active_block_types[idx] = blk_type
+            if blk_type == "tool_use":
+                tc_idx = len(tool_call_index_map)
+                tool_call_index_map[idx] = tc_idx
+                saw_tool_call = True
+                if not sent_role:
+                    yield _emit_role_chunk()
+                    sent_role = True
+                call_id = blk.get("id")
+                if not isinstance(call_id, str) or not call_id:
+                    call_id = f"toolu_{uuid.uuid4().hex[:24]}"
+                name = blk.get("name")
+                if not isinstance(name, str):
+                    name = ""
+                payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
+                payload["choices"] = [{
+                    "index": 0,
+                    "delta": {"tool_calls": [{
+                        "index": tc_idx,
+                        "id": call_id,
+                        "type": "function",
+                        "function": {"name": name, "arguments": ""},
+                    }]},
+                    "finish_reason": None,
+                }]
+                yield _sse_chunk(payload)
 
         elif t == "content_block_delta":
             idx = int(data.get("index", 0))
@@ -415,9 +691,40 @@ async def _translate_stream(
                     payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
                     payload["choices"] = [{"index": 0, "delta": {"reasoning_content": text}, "finish_reason": None}]
                     yield _sse_chunk(payload)
+            elif dt == "input_json_delta":
+                partial = delta.get("partial_json", "")
+                if idx in tool_call_index_map and isinstance(partial, str) and partial:
+                    tool_call_saw_delta.add(idx)
+                    tc_idx = tool_call_index_map[idx]
+                    saw_tool_call = True
+                    payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
+                    payload["choices"] = [{
+                        "index": 0,
+                        "delta": {"tool_calls": [{
+                            "index": tc_idx,
+                            "function": {"arguments": partial},
+                        }]},
+                        "finish_reason": None,
+                    }]
+                    yield _sse_chunk(payload)
 
         elif t == "content_block_stop":
-            active_block_types.pop(int(data.get("index", 0)), None)
+            idx = int(data.get("index", 0))
+            if idx in tool_call_index_map:
+                if idx not in tool_call_saw_delta:
+                    tc_idx = tool_call_index_map[idx]
+                    payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
+                    payload["choices"] = [{
+                        "index": 0,
+                        "delta": {"tool_calls": [{
+                            "index": tc_idx,
+                            "function": {"arguments": "{}"},
+                        }]},
+                        "finish_reason": None,
+                    }]
+                    yield _sse_chunk(payload)
+                tool_call_completed.add(idx)
+            active_block_types.pop(idx, None)
 
         elif t == "message_delta":
             delta = data.get("delta") or {}
@@ -437,8 +744,14 @@ async def _translate_stream(
             }
 
         elif t == "message_stop":
+            if saw_tool_call and stop_reason == "max_tokens":
+                fr = "length"
+            elif saw_tool_call and not _tool_calls_incomplete():
+                fr = "tool_calls"
+            else:
+                fr = _map_finish_reason(stop_reason)
             payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
-            payload["choices"] = [{"index": 0, "delta": {}, "finish_reason": _map_finish_reason(stop_reason)}]
+            payload["choices"] = [{"index": 0, "delta": {}, "finish_reason": fr}]
             yield _sse_chunk(payload)
             if final_usage is not None:
                 payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
@@ -459,13 +772,26 @@ async def _translate_stream(
         payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
         payload["choices"] = [{"index": 0, "delta": {"role": "assistant"}, "finish_reason": None}]
         yield _sse_chunk(payload)
+    if saw_tool_call and stop_reason == "max_tokens":
+        trailing_finish = "length"
+    elif saw_tool_call and not _tool_calls_incomplete():
+        trailing_finish = "tool_calls"
+    elif stop_reason is None:
+        trailing_finish = "length"
+    else:
+        trailing_finish = _map_finish_reason(stop_reason)
     payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
     payload["choices"] = [{
         "index": 0,
         "delta": {},
-        "finish_reason": "length" if stop_reason is None else _map_finish_reason(stop_reason),
+        "finish_reason": trailing_finish,
     }]
     yield _sse_chunk(payload)
+    if final_usage is not None:
+        payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
+        payload["choices"] = []
+        payload["usage"] = final_usage
+        yield _sse_chunk(payload)
     yield b"data: [DONE]\n\n"
 
 

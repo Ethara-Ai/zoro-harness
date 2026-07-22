@@ -16,7 +16,8 @@ def stream_chat(
     enable_thinking: bool = True,
     max_tokens: int = 10000,
     timeout: float = 600,
-) -> tuple[str, str, str, Optional[Dict[str, Any]]]:
+    tools: Optional[List[Dict[str, Any]]] = None,
+) -> tuple[str, str, str, Dict[str, Any], Optional[Dict[str, Any]]]:
     """
     Stream a chat completion with automatic retry.
 
@@ -46,7 +47,7 @@ def stream_chat(
         )
         return any(marker in err_text for marker in retry_markers)
 
-    def _run_once() -> tuple[str, str, str, Optional[Dict[str, Any]]]:
+    def _run_once() -> tuple[str, str, str, Dict[str, Any], Optional[Dict[str, Any]]]:
         create_kwargs: Dict[str, Any] = {
             "model": model,
             "messages": messages,
@@ -57,11 +58,14 @@ def stream_chat(
         }
         if enable_thinking:
             create_kwargs["extra_body"] = {"enable_thinking": True}
+        if tools:
+            create_kwargs["tools"] = tools
         stream = client.chat.completions.create(**create_kwargs)
 
         content_parts: List[str] = []
         reasoning_content = ""
         aggregated_calls: Dict[str, Dict[str, Any]] = {}
+        index_to_id: Dict[int, str] = {}
         usage: Optional[Dict[str, Any]] = None
 
         for chunk in stream:
@@ -90,7 +94,18 @@ def stream_chat(
                         content_parts.append(str(delta_content))
 
                 for tc in getattr(delta, "tool_calls", []) or []:
-                    tc_id = getattr(tc, "id", None) or f"call_{len(aggregated_calls)}"
+                    raw_id = getattr(tc, "id", None)
+                    idx = getattr(tc, "index", None)
+                    if idx is not None and idx in index_to_id:
+                        tc_id = index_to_id[idx]
+                    elif raw_id:
+                        tc_id = raw_id
+                        if idx is not None:
+                            index_to_id[idx] = tc_id
+                    else:
+                        tc_id = f"call_{idx if idx is not None else len(aggregated_calls)}"
+                        if idx is not None:
+                            index_to_id[idx] = tc_id
                     fn = getattr(tc, "function", None) or {}
                     fn_name = getattr(fn, "name", "") if hasattr(fn, "name") else fn.get("name", "")
                     fn_args = getattr(fn, "arguments", None) if hasattr(fn, "arguments") else fn.get("arguments")
@@ -100,7 +115,7 @@ def stream_chat(
                         {
                             "id": tc_id,
                             "type": "function",
-                            "function": {"name": fn_name, "arguments": ""},
+                            "function": {"name": "", "arguments": ""},
                         },
                     )
                     if fn_name:
@@ -115,7 +130,7 @@ def stream_chat(
 
         final_content = "".join(content_parts).strip()
         full_content = reasoning_content + final_content
-        return full_content, final_content, reasoning_content, usage
+        return full_content, final_content, reasoning_content, aggregated_calls, usage
 
     last_error: Optional[Exception] = None
     total_attempts = max_retries + 1
