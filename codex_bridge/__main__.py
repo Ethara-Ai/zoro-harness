@@ -15,6 +15,18 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Verify credentials, then exit.",
     )
+    p.add_argument(
+        "--no-warmup",
+        action="store_true",
+        help="Skip startup batch refresh of near-expiry OAuth tokens.",
+    )
+    p.add_argument(
+        "--warmup-headroom-s",
+        type=int,
+        default=600,
+        help="Refresh tokens with less than this many seconds of life remaining "
+             "(default: 600 = 10 min).",
+    )
     args = p.parse_args(argv)
 
     logging.basicConfig(
@@ -22,8 +34,14 @@ def main(argv: list[str] | None = None) -> int:
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
 
-    from codex_bridge.credentials import CredentialsError, resolve_provider
+    from codex_bridge.credentials import (
+        CredentialsError,
+        http_backend_status,
+        resolve_provider,
+    )
     from codex_bridge.server import build_app
+
+    print(f"[bridge] HTTP backend for OAuth refresh: {http_backend_status()}")
 
     provider = resolve_provider()
     try:
@@ -36,6 +54,31 @@ def main(argv: list[str] | None = None) -> int:
     plan = provider.plan_type() or "?"
     account = provider.account_id() or "?"
     print(f"[bridge] credentials OK (token prefix: {tp}... plan={plan} account={account})")
+
+    if not args.no_warmup:
+        print(f"[bridge] warmup: refreshing tokens with < {args.warmup_headroom_s}s remaining...")
+        results = provider.warmup_refresh(fresh_headroom_s=args.warmup_headroom_s)
+        live = broken = dead = 0
+        for r in results:
+            print(f"[bridge]   {r.label}: {r.state:<10s} {r.detail}")
+            if r.state in ("FRESH", "REFRESHED"):
+                live += 1
+            elif r.state == "DEAD_OAUTH":
+                dead += 1
+            else:
+                broken += 1
+        print(
+            f"[bridge] warmup summary: {live} live, "
+            f"{broken} broken (transient, will retry on-demand), "
+            f"{dead} dead (need re-capture)"
+        )
+        if live == 0 and results:
+            print(
+                "[bridge] WARNING: 0 live tokens; requests will fail until at least "
+                "one heals or is re-captured via `codex login`",
+                file=sys.stderr,
+            )
+
     if args.check:
         return 0
 

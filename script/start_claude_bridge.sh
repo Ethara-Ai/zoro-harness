@@ -21,7 +21,7 @@ if [[ ! -x "$PY" ]]; then
 fi
 
 HOST="${ZORO_CC_BRIDGE_HOST:-127.0.0.1}"
-PORT="${ZORO_CC_BRIDGE_PORT:-8399}"
+PORT="${ZORO_CC_BRIDGE_PORT:-8738}"
 PID_FILE="${REPO_ROOT}/.claude_bridge.pid"
 MONITOR_PID_FILE="${REPO_ROOT}/.claude_bridge_monitor.pid"
 LOG_FILE="${ZORO_CC_BRIDGE_LOG:-${REPO_ROOT}/logs/claude_bridge.log}"

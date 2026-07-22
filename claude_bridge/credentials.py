@@ -10,23 +10,123 @@ import threading
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
+from typing import Literal, Optional
+
+BatchRefreshState = Literal["FRESH", "REFRESHED", "DEAD_OAUTH", "BROKEN"]
 
 import httpx
 
 _LOG = logging.getLogger(__name__)
 
+try:
+    from curl_cffi import requests as _cf_requests
+    _CURL_CFFI_AVAILABLE = True
+except Exception as _cffi_import_err:
+    _cf_requests = None
+    _CURL_CFFI_AVAILABLE = False
+    _LOG.debug("curl_cffi unavailable, falling back to httpx: %s", _cffi_import_err)
+
 CLAUDE_CODE_CLIENT_ID = "9d1c250a-e61b-44d9-88ed-5944d1962f5e"
-REFRESH_ENDPOINT = "https://console.anthropic.com/v1/oauth/token"
+REFRESH_ENDPOINT = "https://api.anthropic.com/v1/oauth/token"
 REFRESH_LEEWAY_SECONDS = 60
+
+
+def _oauth_endpoint() -> str:
+    return os.environ.get("ZORO_CC_OAUTH_ENDPOINT", "").strip() or REFRESH_ENDPOINT
+
+_DEFAULT_IMPERSONATE = "chrome"
+_DEFAULT_CLAUDE_UA = "claude-cli/2.0.170 (external, cli)"
+_DEFAULT_CLAUDE_BETA = "oauth-2025-04-20,claude-code-20250219"
+
+_PERMANENT_REFRESH_CODES = frozenset({
+    "invalid_grant",
+    "invalid_request",
+    "invalid_client",
+    "unauthorized_client",
+    "unsupported_grant_type",
+})
 
 _KEYCHAIN_SERVICE = "Claude Code-credentials"
 _CACHE_DIR = Path.home() / ".cache" / "zoro-harness"
 _CACHE_PATH = _CACHE_DIR / "claude_creds.json"
 
 
+def http_backend_status() -> str:
+    if _CURL_CFFI_AVAILABLE:
+        impersonate = (
+            os.environ.get("ZORO_CC_IMPERSONATE", "").strip() or _DEFAULT_IMPERSONATE
+        )
+        return f"curl_cffi (impersonate={impersonate})"
+    return (
+        "httpx (WARNING: curl_cffi not installed; OAuth refresh has no Chrome "
+        "TLS fingerprint and may be blocked by upstream anti-bot layers; "
+        "`pip install curl_cffi` to fix)"
+    )
+
+
+def _oauth_headers() -> dict[str, str]:
+    ua = os.environ.get("ZORO_CC_UA", "").strip() or _DEFAULT_CLAUDE_UA
+    beta = os.environ.get("ZORO_CC_BETA", "").strip() or _DEFAULT_CLAUDE_BETA
+    return {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "User-Agent": ua,
+        "anthropic-beta": beta,
+    }
+
+
+def _post_oauth_refresh(refresh_token: str, *, timeout: float) -> tuple[int, str]:
+    body = {
+        "grant_type": "refresh_token",
+        "refresh_token": refresh_token,
+        "client_id": CLAUDE_CODE_CLIENT_ID,
+    }
+    headers = _oauth_headers()
+    endpoint = _oauth_endpoint()
+    if _CURL_CFFI_AVAILABLE and _cf_requests is not None:
+        impersonate = (
+            os.environ.get("ZORO_CC_IMPERSONATE", "").strip() or _DEFAULT_IMPERSONATE
+        )
+        try:
+            r = _cf_requests.post(
+                endpoint,
+                json=body,
+                headers=headers,
+                impersonate=impersonate,
+                timeout=timeout,
+            )
+        except Exception as e:
+            raise OSError(f"curl_cffi transport error: {e}") from e
+        return int(r.status_code), (r.text or "")
+    with httpx.Client(timeout=timeout) as client:
+        r = client.post(endpoint, json=body, headers=headers)
+    return int(r.status_code), r.text
+
+
 class CredentialsError(RuntimeError):
     pass
+
+
+class PermanentCredentialsError(CredentialsError):
+    pass
+
+
+def _detect_permanent_refresh_error(status: int, text: str) -> Optional[str]:
+    if status == 401 or status == 403:
+        return f"http_{status}"
+    try:
+        obj = json.loads(text)
+    except (TypeError, ValueError):
+        return None
+    if not isinstance(obj, dict):
+        return None
+    err = obj.get("error")
+    code = err if isinstance(err, str) else None
+    if isinstance(err, dict):
+        code = err.get("code") or err.get("type")
+    if isinstance(code, str) and code in _PERMANENT_REFRESH_CODES:
+        return code
+    return None
 
 
 @dataclass
@@ -153,19 +253,11 @@ def refresh_credentials(
     backoff_base: float = 1.0,
 ) -> OAuthCredentials:
     last_error: Optional[Exception] = None
-    r: Optional[httpx.Response] = None
+    status: int = 0
+    text: str = ""
     for attempt in range(1, max_attempts + 1):
         try:
-            with httpx.Client(timeout=timeout) as client:
-                r = client.post(
-                    REFRESH_ENDPOINT,
-                    json={
-                        "grant_type": "refresh_token",
-                        "refresh_token": creds.refresh_token,
-                        "client_id": CLAUDE_CODE_CLIENT_ID,
-                    },
-                    headers={"content-type": "application/json"},
-                )
+            status, text = _post_oauth_refresh(creds.refresh_token, timeout=timeout)
         except (httpx.HTTPError, OSError) as e:
             last_error = e
             if attempt >= max_attempts:
@@ -175,26 +267,27 @@ def refresh_credentials(
             time.sleep(backoff_base * (2 ** (attempt - 1)))
             continue
 
-        if r.status_code == 200:
+        if status == 200:
             break
-        if 400 <= r.status_code < 500:
+        if 400 <= status < 500 and status != 429:
+            perm_code = _detect_permanent_refresh_error(status, text)
+            if perm_code:
+                raise PermanentCredentialsError(
+                    f"OAuth refresh permanently rejected ({perm_code}): HTTP {status} "
+                    f"{text[:200]}. Re-run `claude login`."
+                )
             raise CredentialsError(
-                f"OAuth refresh failed (non-retryable): HTTP {r.status_code} {r.text[:200]}"
+                f"OAuth refresh failed (non-retryable): HTTP {status} {text[:200]}"
             )
         last_error = CredentialsError(
-            f"OAuth refresh failed: HTTP {r.status_code} {r.text[:200]}"
+            f"OAuth refresh failed: HTTP {status} {text[:200]}"
         )
         if attempt >= max_attempts:
             raise last_error
         time.sleep(backoff_base * (2 ** (attempt - 1)))
-    else:
-        raise CredentialsError(
-            f"OAuth refresh failed after {max_attempts} attempts: {last_error}"
-        )
 
-    assert r is not None
     try:
-        body = r.json()
+        body = json.loads(text)
     except ValueError as e:
         raise CredentialsError(f"OAuth refresh returned non-JSON: {e}") from e
 
@@ -291,6 +384,46 @@ def _warn_refresh_rotation(source: str, wrote_back: bool) -> None:
     )
 
 
+@dataclass
+class BatchRefreshResult:
+    label: str
+    state: BatchRefreshState
+    detail: str
+
+
+def _warmup_provider(
+    provider: "CredentialProvider",
+    label: str,
+    fresh_headroom_s: int,
+) -> BatchRefreshResult:
+    try:
+        provider.preflight()
+    except CredentialsError as e:
+        return BatchRefreshResult(label, "BROKEN", f"load failed: {str(e)[:160]}")
+
+    creds = provider._creds_snapshot()
+    if creds is None:
+        return BatchRefreshResult(label, "BROKEN", "no creds after load")
+
+    now = time.time()
+    if creds.expires_at_ms > (now + fresh_headroom_s) * 1000:
+        ttl_s = max(0, (creds.expires_at_ms - int(now * 1000)) // 1000)
+        return BatchRefreshResult(label, "FRESH", f"TTL {ttl_s}s (~{ttl_s / 3600:.1f}h)")
+
+    try:
+        provider.refresh()
+    except PermanentCredentialsError as e:
+        return BatchRefreshResult(label, "DEAD_OAUTH", str(e)[:160])
+    except CredentialsError as e:
+        return BatchRefreshResult(label, "BROKEN", str(e)[:160])
+
+    new_creds = provider._creds_snapshot()
+    if new_creds is None:
+        return BatchRefreshResult(label, "BROKEN", "refresh returned no creds")
+    ttl_s = max(0, (new_creds.expires_at_ms - int(time.time() * 1000)) // 1000)
+    return BatchRefreshResult(label, "REFRESHED", f"new TTL {ttl_s}s (~{ttl_s / 3600:.1f}h)")
+
+
 class CredentialProvider:
     def __init__(self) -> None:
         self._lock = threading.Lock()
@@ -368,6 +501,18 @@ class CredentialProvider:
     def subscription_type(self) -> Optional[str]:
         with self._lock:
             return self._creds.subscription_type if self._creds else None
+
+    def _creds_snapshot(self) -> Optional[OAuthCredentials]:
+        with self._lock:
+            return self._creds
+
+    def warmup_refresh(
+        self,
+        *,
+        fresh_headroom_s: int = 600,
+        label: str = "default",
+    ) -> list[BatchRefreshResult]:
+        return [_warmup_provider(self, label, fresh_headroom_s)]
 
 
 class _FileCredentialProvider(CredentialProvider):
@@ -488,6 +633,8 @@ class MultiAccountCredentialProvider:
                 eu = st.get("exhausted_until")
                 if isinstance(eu, (int, float)) and eu > now:
                     slot.exhausted_until = max(slot.exhausted_until, float(eu))
+                if st.get("invalid") is True:
+                    slot.invalid = True
             cur = data.get("_cursor")
             if isinstance(cur, int) and 0 <= cur < len(self._slots):
                 self._cursor = cur
@@ -524,6 +671,21 @@ class MultiAccountCredentialProvider:
             raise CredentialsError(
                 "no usable accounts in pool:\n  " + "\n  ".join(errors)
             )
+
+    def warmup_refresh(
+        self,
+        *,
+        fresh_headroom_s: int = 600,
+    ) -> list[BatchRefreshResult]:
+        results: list[BatchRefreshResult] = []
+        for slot in self._slots:
+            result = _warmup_provider(slot.provider, slot.label, fresh_headroom_s)
+            if result.state == "DEAD_OAUTH":
+                with self._lock:
+                    slot.invalid = True
+                    self._persist_state_locked()
+            results.append(result)
+        return results
 
     def _select_slot_locked(self) -> tuple[_AccountSlot, int]:
         now = time.time()

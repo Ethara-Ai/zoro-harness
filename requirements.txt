@@ -23,3 +23,6 @@ tqdm>=4.65.0
 fastapi>=0.110
 uvicorn>=0.27
 httpx>=0.27
+# Chrome-fingerprinted HTTP for Anthropic OAuth refresh (bridge auto-falls
+# back to httpx if this fails to install on non-Mac/Linux platforms).
+curl_cffi>=0.7.0

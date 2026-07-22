@@ -60,6 +60,33 @@ Stop it later with:
 
 There is no `restart` subcommand — `stop` then `start`.
 
+### Startup warmup
+
+On every startup the bridge inspects each cred file and proactively refreshes
+any token with less than 10 min of life remaining. This avoids the first user
+request paying the refresh latency AND surfaces dead credentials immediately.
+Each account is labeled one of:
+
+| State        | Meaning                                                              |
+|--------------|----------------------------------------------------------------------|
+| `FRESH`      | Token still valid; no refresh call made.                             |
+| `REFRESHED`  | Token was stale; new token fetched and written back to disk.         |
+| `BROKEN`     | Transient failure (network / 429). Will retry on the next request.   |
+| `DEAD_OAUTH` | Refresh token permanently rejected (4xx non-429). Needs `claude login`. |
+
+The summary line at the end shows counts, e.g.
+`warmup summary: 2 live, 0 broken (transient, will retry on-demand), 0 dead (need re-capture)`.
+
+To skip warmup (faster startup, but no upfront health signal):
+```
+python -m claude_bridge --no-warmup
+```
+
+To change the "refresh-if-under-N-seconds" window:
+```
+python -m claude_bridge --warmup-headroom-s 1800    # refresh anything with < 30 min left
+```
+
 ### Health check
 
 ```
@@ -96,6 +123,24 @@ export ZORO_CC_BRIDGE_PORT=8888
 ```
 If you change this, `run_env.py`'s auto-routing still assumes `8738`, so
 you'll also need to pass `--base_url http://127.0.0.1:8888/v1` explicitly.
+
+### OAuth refresh HTTP behaviour
+
+The bridge uses [`curl_cffi`](https://pypi.org/project/curl-cffi/) to send
+OAuth refresh requests with a real Chrome TLS fingerprint, so Anthropic's
+edge cannot fingerprint-block the request. `curl_cffi` is listed in
+`requirements.txt` and installs on Mac/Linux via pip wheel; if it fails to
+install the bridge automatically falls back to `httpx` and warns at startup
+(look for the `HTTP backend for OAuth refresh:` line).
+
+Overrides (rarely needed):
+
+| Env var                    | Default                                       | Purpose                                              |
+|----------------------------|-----------------------------------------------|------------------------------------------------------|
+| `ZORO_CC_IMPERSONATE`      | `chrome124`                                   | Which browser fingerprint `curl_cffi` mimics. Bump when a newer Chrome is required. |
+| `ZORO_CC_UA`               | `claude-cli/2.0.170 (external, cli)`          | User-Agent sent with the refresh request.            |
+| `ZORO_CC_BETA`             | `oauth-2025-04-20,claude-code-20250219`       | `anthropic-beta` header. Matches the current `claude` CLI. |
+| `ZORO_CC_OAUTH_ENDPOINT`   | `https://api.anthropic.com/v1/oauth/token`    | OAuth token endpoint. Override only if Anthropic moves it again. |
 
 ---
 
@@ -142,6 +187,9 @@ The table below is for bridge-runtime issues.
 | `all N accounts exhausted` | Every Claude account is rate-limited | Wait, or drop another `creds/cc/creds*.json` in and restart the bridge |
 | `Address already in use` on start | Something else already holds port `8738` (maybe an old bridge) | `./script/start_claude_bridge.sh stop`, then `start` |
 | `ModuleNotFoundError` on start | venv isn't active | `source .venv/bin/activate` |
+| `HTTP backend: httpx (WARNING: curl_cffi not installed...)` | `curl_cffi` couldn't install on this platform | `pip install curl_cffi` (bridge still works via httpx fallback but is more likely to be fingerprint-blocked) |
+| `warmup summary: ... N dead` on start | N refresh tokens permanently rejected (401/403 from OAuth) | Re-run `claude login` for those accounts, then `security find-generic-password -s "Claude Code-credentials" -w > creds/cc/credsN.json` |
+| Warmup returns HTTP 404 `not_found_error` | Anthropic moved the OAuth token endpoint again | `export ZORO_CC_OAUTH_ENDPOINT="https://new-endpoint/v1/oauth/token"` and restart |
 | Bridge dies silently | Check `logs/claude_bridge.log`; the monitor should relaunch it | Look at monitor log too: `logs/claude_bridge_monitor.log` |
 
 ---

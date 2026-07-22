@@ -18,6 +18,7 @@ from claude_bridge.credentials import (
     CredentialProvider,
     CredentialsError,
     MultiAccountCredentialProvider,
+    PermanentCredentialsError,
 )
 from claude_bridge.errors import (
     Classification,
@@ -476,11 +477,10 @@ async def _apply_classification(
     provider: ProviderLike,
     cls: Classification,
 ) -> None:
+    # `auth` intentionally not handled: only a failed OAuth refresh proves the token is dead.
     if isinstance(provider, MultiAccountCredentialProvider):
         if cls.kind == "cap":
             provider.mark_exhausted(cls.retry_after_s or 300.0)
-        elif cls.kind == "auth":
-            provider.mark_invalid()
     if cls.kind == "cap":
         provider.last_cap_reset_at = cls.reset_at_unix or (
             time.time() + (cls.retry_after_s or 300.0)
@@ -665,12 +665,14 @@ async def _handle_nonstream(
             auth_retried = True
             tried_tokens.add(access_token)
             try:
+                await asyncio.to_thread(provider.refresh)
+            except PermanentCredentialsError as e:
                 if isinstance(provider, MultiAccountCredentialProvider):
-                    pass
-                else:
-                    await asyncio.to_thread(provider.refresh)
-            except CredentialsError as e:
+                    provider.mark_invalid()
+                    continue
                 return _openai_error_response(401, str(e), "authentication_error")
+            except CredentialsError as e:
+                return _openai_error_response(503, str(e), "api_error")
             continue
 
         if cls.kind == "cap" and isinstance(provider, MultiAccountCredentialProvider):
@@ -781,10 +783,14 @@ async def _handle_streaming(
                     auth_retried = True
                     tried_tokens.add(access_token)
                     try:
-                        if not isinstance(provider, MultiAccountCredentialProvider):
-                            await asyncio.to_thread(provider.refresh)
-                    except CredentialsError as e:
+                        await asyncio.to_thread(provider.refresh)
+                    except PermanentCredentialsError as e:
+                        if isinstance(provider, MultiAccountCredentialProvider):
+                            provider.mark_invalid()
+                            continue
                         return _openai_error_response(401, str(e), "authentication_error")
+                    except CredentialsError as e:
+                        return _openai_error_response(503, str(e), "api_error")
                     continue
                 if head_cls.kind == "cap" and isinstance(provider, MultiAccountCredentialProvider):
                     tried_tokens.add(access_token)
@@ -854,10 +860,14 @@ async def _handle_streaming(
             auth_retried = True
             tried_tokens.add(access_token)
             try:
-                if not isinstance(provider, MultiAccountCredentialProvider):
-                    await asyncio.to_thread(provider.refresh)
-            except CredentialsError as e:
+                await asyncio.to_thread(provider.refresh)
+            except PermanentCredentialsError as e:
+                if isinstance(provider, MultiAccountCredentialProvider):
+                    provider.mark_invalid()
+                    continue
                 return _openai_error_response(401, str(e), "authentication_error")
+            except CredentialsError as e:
+                return _openai_error_response(503, str(e), "api_error")
             continue
 
         if cls.kind == "cap" and isinstance(provider, MultiAccountCredentialProvider):
