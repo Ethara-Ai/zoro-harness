@@ -1,0 +1,60 @@
+# LLM council panel — SHARED across the whole RetailBench suite (one panel, not per-task).
+# Executed by our own driver (zoro.harness.llm_council.run_council), which POSTs to the local
+# OpenAI-compatible bridges (Claude Code bridge + Codex bridge) — NOT vendor APIs and NOT
+# Harbor's generic llm-judge grader.
+#
+# PANEL SELECTION RULES:
+#   - Judges are drawn only from what the two bridges actually route: `claude-*` (Claude Code
+#     bridge) and `gpt-5*`/`codex*` (Codex bridge). gpt-4o / gemini-* do NOT route to any bridge.
+#   - BANNED (self-grading / under baselining): claude-opus-4-8, gpt-4.6, and gpt-5.6-* (the
+#     latter appears among the *generated* trajectories in QC, so exclude it defensively).
+#   - Two-family limitation (Claude + GPT only): a 3-judge panel CANNOT be family-neutral, so it
+#     mildly favors one contestant's family. Measure per-model skew (Gate 6) before using scores
+#     for head-to-head opus-vs-gpt ranking; the clean fix is adding a neutral third family later.
+
+panel:
+  temperature: 0.0            # deterministic grading; keep reasoning/thinking OFF so temp is honored
+  confidence_floor: 0.5       # a judge verdict with confidence < 0.5 is overridden to null
+  aggregation: majority       # majority of non-null votes; tie -> 0 (conservative); all-null -> null
+  max_workers: 6              # modest flat pool (rubric x judge); bridges share a subscription pool
+  connect_timeout_sec: 10
+  read_timeout_sec: 180       # LLM completions are slow (bridge read timeout is 180s)
+  max_retries: 2              # CLIENT-side; the bridge already retries 429/5xx internally
+  retry_backoff_sec: 3
+
+  judges:
+    # Model ids are PINNED to the dated versions the bridge aliases resolve to (a bare
+    # "claude-sonnet-4-5" is passed verbatim to Anthropic and may 400). Startup validation
+    # (§ driver) pings each id before grading and fails loudly on an unresolvable model.
+    - id: claude-sonnet-4-5   # strong Claude anchor (opus excluded); Claude Code bridge
+      bridge: claude
+      model: claude-sonnet-4-5-20250929     # bridge alias "sonnet"
+    - id: gpt-5.5             # strong GPT anchor (distinct from under-test gpt-4.6 and gpt-5.6); Codex bridge
+      bridge: codex
+      model: gpt-5.5
+    - id: claude-haiku-4-5    # fast, independent third viewpoint / tiebreaker; Claude Code bridge
+      bridge: claude
+      model: claude-haiku-4-5-20251001      # bridge alias "haiku"; thinking is dropped on haiku
+  # NOTE: 2 of 3 judges (sonnet + haiku) hit the SAME Claude bridge/subscription -> that bridge
+  # takes ~2x load. Apply per-bridge concurrency sub-limits (see driver) so it isn't the bottleneck.
+
+# Bridge endpoints (base_url is env-overridable; ports are the bridge __main__ defaults —
+# confirm against the actually-running bridge, which prints ZORO_LLM_BASE_URL on start).
+bridges:
+  claude:
+    default_base_url: http://127.0.0.1:8738/v1
+    base_url_env: ZORO_CC_BRIDGE_BASE_URL
+    secret_env:  ZORO_CC_BRIDGE_SECRET      # sent as x-zoro-bridge-secret / Authorization: Bearer
+    healthz: http://127.0.0.1:8738/healthz
+  codex:
+    default_base_url: http://127.0.0.1:8398/v1
+    base_url_env: ZORO_CX_BRIDGE_BASE_URL
+    secret_env:  ZORO_CX_BRIDGE_SECRET
+    healthz: http://127.0.0.1:8398/healthz
+
+banned: [claude-opus-4-8, gpt-4.6, gpt-5.6]   # under test / self-grading — never judges
+
+verdict_contract:
+  # Judges answer ONLY "is the criterion pattern present?" — never good/bad; polarity is applied
+  # downstream by aggregate.py. No JSON mode on the bridges -> prompt for JSON and parse defensively.
+  shape: '{"verdict": 1|0|null, "confidence": 0.0-1.0, "evidence": "<short citation>"}'
