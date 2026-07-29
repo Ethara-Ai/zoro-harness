@@ -345,7 +345,7 @@ def main() -> int:
 
     conftest_path = tests_dir / "conftest.py"
     if not conftest_path.exists():
-        conftest_path.write_text("from rubric_eval.conftest import *  # noqa: F401,F403\n")
+        conftest_path.write_text("from llm_council.pytest_bridge import *  # noqa: F401,F403\n")
         print(f"[generate_tests] wrote {conftest_path}", file=sys.stderr)
     else:
         print(f"[generate_tests] conftest.py already exists at {conftest_path}, leaving in place", file=sys.stderr)

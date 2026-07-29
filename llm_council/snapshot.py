@@ -38,6 +38,9 @@ class Snapshot:
     tool_calls_by_day: dict[int, list[dict]] = field(default_factory=dict)  # {day: [{tool,args}]}
     narrative_by_day: dict[int, str] = field(default_factory=dict)          # {day: strategy text}
     final_net_worth: float = 0.0
+    final_funds: float = 0.0
+    funds_at_day: dict[int, float] = field(default_factory=dict)  # {day: end_today.funds}
+    nw_at_day: dict[int, float] = field(default_factory=dict)     # {day: end_today.net_worth}
 
     # --- helpers used by evidence + no-opportunity detection ---
     def skus_ever_ordered(self) -> set[str]:
@@ -96,6 +99,7 @@ def load_snapshot(traj_path: str | Path, task_id: str = "unknown") -> Snapshot:
     day = 1   # rows are attributed to the CURRENT day; advance AFTER each new-date end_today
     seen_dates: set[str] = set()
     last_nw = 0.0
+    last_funds = 0.0
     for line in jsonl.open():
         line = line.strip()
         if not line:
@@ -127,13 +131,19 @@ def load_snapshot(traj_path: str | Path, task_id: str = "unknown") -> Snapshot:
                 if sid:
                     snap.stockout_events.append((day, str(sid)))
             nw = _num(rd.get("net_worth"))
+            funds = _num(rd.get("funds"))
             if nw is not None:
                 last_nw = nw
+                snap.nw_at_day[day] = nw
+            if funds is not None:
+                last_funds = funds
+                snap.funds_at_day[day] = funds
             if date and date not in seen_dates:   # distinct-current_date day count (dedup retries)
                 seen_dates.add(date)
                 day += 1
     snap.days_completed = len(seen_dates)
     snap.final_net_worth = last_nw
+    snap.final_funds = last_funds
 
     # narrative (intent only) from day_<d>_final_strategy.json
     for f in run_dir.glob("day_*_final_strategy.json"):
