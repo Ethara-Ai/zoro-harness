@@ -29,6 +29,7 @@ from generator.validators import (
     load_known_ids,
     validate_dataset,
 )
+from generator.harbor_writer import write_harbor_task
 from tools.assert_categories import assert_all_categories
 
 # ---------------------------------------------------------------------------
@@ -295,6 +296,8 @@ def generate(
     rng_seed: int,
     paper_data_dir: Path,
     mode: str = "spread",
+    output_format: str = "flat",
+    with_oracle: bool = False,
 ) -> list[dict]:
     """
     Generate n unique tasks for the given archetype, writing one {task_id}.json per task.
@@ -310,6 +313,9 @@ def generate(
         f.stem for f in out.glob("*.json")
         if f.name != "manifest.json" and not f.name.endswith(".verification.json")
     )
+
+    if output_format == "harbor" and out.exists():
+        known_ids |= {d.name for d in out.iterdir() if d.is_dir()}
 
     # In grid mode, precompute the deterministic cell list (raises if the table is exhausted).
     grid_cells: list[dict] = _grid_cells(archetype, n) if mode == "grid" else []
@@ -372,10 +378,17 @@ def generate(
                 f"archetype={archetype}, task_id={task_id}"
             )
 
-        # Flat schema: file IS env_config (m1151/m1182)
-
-        out_path = out / f"{task_id}.json"
-        out_path.write_text(json.dumps(env_config, indent=2))
+        if output_format == "harbor":
+            write_harbor_task(
+                task_id=task_id,
+                archetype=archetype,
+                env_config=env_config,
+                out_root=out,
+                run_oracle=with_oracle,
+            )
+        else:
+            out_path = out / f"{task_id}.json"
+            out_path.write_text(json.dumps(env_config, indent=2))
         known_ids.add(task_id)
         manifest_entries.append({"task_id": task_id, "archetype": archetype})
         generated += 1
@@ -400,7 +413,7 @@ def main() -> None:
     ap.add_argument("--n", type=int, default=10_000,
                     help="Total tasks to generate (split per ARCHETYPE_ALLOCATION when "
                          "--archetype all in spread mode; equal split in grid mode)")
-    ap.add_argument("--out", default="zoro/harness/dataset/",
+    ap.add_argument("--out", default="dataset/",
                     help="Output directory for {task_id}.json files")
     ap.add_argument("--seed", type=int, default=0,
                     help="RNG seed for the generator (not task global_random_seed)")
@@ -409,6 +422,14 @@ def main() -> None:
     ap.add_argument("--mode", choices=["spread", "grid"], default="spread",
                     help="spread = random sampler (10k path, default); "
                          "grid = deterministic enumeration of the economic-tier x |c| tables")
+    ap.add_argument("--format", choices=["flat", "harbor"], default="flat",
+                    help="flat = one {task_id}.json per task (backward compat, default); "
+                         "harbor = harbor-format task directory (task.toml + environment/ + "
+                         "solution/ + tests/)")
+    ap.add_argument("--with-oracle", action="store_true",
+                    help="Only meaningful with --format harbor: invoke tools/run_oracle.py "
+                         "after scaffolding each task to populate solution/{tool_calls.jsonl,"
+                         "golden.json,metadata.json}")
     args = ap.parse_args()
 
     # Load-assert: all 20 canonical categories must load under BOTH data modes before
@@ -444,7 +465,7 @@ def main() -> None:
             allocation[names[-1]] = remaining  # absorb rounding remainder
 
         for offset, (arch, count) in enumerate(allocation.items()):
-            print(f"\nGenerating {count} tasks for {arch} (mode={args.mode}) ...")
+            print(f"\nGenerating {count} tasks for {arch} (mode={args.mode}, format={args.format}) ...")
             entries = generate(
                 archetype=arch,
                 n=count,
@@ -452,10 +473,12 @@ def main() -> None:
                 rng_seed=args.seed + offset,   # distinct seed per archetype run
                 paper_data_dir=paper_data_dir,
                 mode=args.mode,
+                output_format=args.format,
+                with_oracle=args.with_oracle,
             )
             all_manifest.extend(entries)
     else:
-        print(f"\nGenerating {args.n} tasks for {args.archetype} (mode={args.mode}) ...")
+        print(f"\nGenerating {args.n} tasks for {args.archetype} (mode={args.mode}, format={args.format}) ...")
         entries = generate(
             archetype=args.archetype,
             n=args.n,
@@ -463,6 +486,8 @@ def main() -> None:
             rng_seed=args.seed,
             paper_data_dir=paper_data_dir,
             mode=args.mode,
+            output_format=args.format,
+            with_oracle=args.with_oracle,
         )
         all_manifest.extend(entries)
 
