@@ -57,7 +57,7 @@ DEFAULT_MODEL = "sonnet"
 DEFAULT_OUTPUT_NAME = "TRUTH.md"
 DEFAULT_MAX_TOKENS = 8000
 DEFAULT_TEMPERATURE = 0.2
-TRUTHMD_PLAN_PATH = Path(__file__).parent / "truthmd-plan.md"
+TRUTHMD_PLAN_PATH = Path(__file__).resolve().parent.parent / "truth" / "truthmd-plan.md"
 
 
 def die(msg: str) -> None:
