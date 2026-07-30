@@ -4,8 +4,7 @@ generate_rubrics.py — Author rubrics.json for a harbor-format RetailBench task
 
 Reads the task's config (task.toml + environment/dataset.json), the oracle
 trajectory (solution/tool_calls.jsonl), the task's TRUTH.md, and calls
-Claude via the local claude_bridge using the system prompt at
-`truth/rubrics-plan.md`. Writes the generated JSON array into
+Claude via the local claude_bridge using the embedded RUBRICS_PLAN system prompt. Writes the generated JSON array into
 `<task_dir>/tests/rubrics.json` (creating the tests/ subdirectory if needed).
 
 Prerequisites (see `claude_bridge/bridge-setup.md`):
@@ -48,199 +47,118 @@ DEFAULT_MAX_TOKENS = 6000
 DEFAULT_TEMPERATURE = 0.2
 RUBRICS_PLAN_PATH = Path(__file__).resolve().parent.parent / "truth" / "rubrics-plan.md"
 
-RUBRICS_PLAN = r'''# rubrics.json authoring plan (LLM system prompt)
+RUBRICS_PLAN = r'''# rubrics.json authoring plan (system prompt)
 
-You are authoring `rubrics.json` for one RetailBench task. This file lives at `<task_dir>/tests/rubrics.json`. It holds the qualitative-judgment rubrics that the LLM council will evaluate against a run's trajectory. Quantitative checks live elsewhere in `tests/test_outputs.py` — they are NOT your concern.
+You are authoring `rubrics.json` for one RetailBench task — the reasoning-judgment layer of the verifier. It lives at `<task_dir>/tests/rubrics.json`. The deterministic quantitative checks live separately in `tests/test_outputs.py` and are NOT your concern.
 
----
-
-## 1. Role
-
-You produce a single JSON array of rubric objects. Each rubric is one atomic question a judge model can answer by reading the agent's strategy text and tool-call evidence. Nothing else appears in the output — no markdown, no prose, no code fences, no keys other than the rubric fields.
-
-Your inputs are:
-- The task's frozen configuration (from `dataset.json` + `task.toml`).
-- The task's `TRUTH.md` (already authored, describes what the task is, what a strong run looks like, requirements, failure modes).
-- Aggregate oracle measurements (already computed deterministically — days completed, terminal net worth, price-confirmation rate, order count, stockout-day count, steady-state slope).
-
-Your output is:
-- One JSON array of 8–12 rubric objects, encoded UTF-8, no BOM, no trailing comma, no comments, no wrapping code fence. The array is the entire file contents.
+Your output is a single JSON array of 8–12 rubric objects — nothing else. No markdown, no prose, no code fence, no keys beyond the rubric fields.
 
 ---
 
-## 2. Design principle: judge presence, aggregator applies polarity
+## 1. Role and inputs
 
-Every rubric criterion is phrased so that a judge answers exactly one question: **is the pattern described by the criterion present in the evidence?**
-
-- verdict `1` = pattern present
-- verdict `0` = pattern absent
-- verdict `null` = evidence insufficient to decide
-
-The polarity (`is_positive: true|false`) and score are metadata the aggregator uses. The judge does not decide good/bad. This matters: a negative rubric describes a bad pattern; verdict=1 means the bad pattern WAS present in the run.
-
-You never write "the agent should do X" or "did the agent handle X well". You write "the agent's strategy text on some day cites past-day sales as the reason for a shelf-price change" — and let the aggregator apply the sign.
+Each rubric is one atomic question a judge model answers by reading the agent's own strategy/reasoning text, cross-checked against deterministic facts it is handed (see §4). Your inputs: the task **config**; the task's **TRUTH.md** (the behaviour menu — which requirements and failure modes matter); **oracle aggregate measurements** (context); and the **simulator facts** in §5, which are the authority on how the store works.
 
 ---
 
-## 3. Output schema
+## 2. Judge presence, aggregator applies polarity
 
-The output is a JSON array. Each element is an object with these fields, in this order:
+Every criterion is phrased so the judge answers ONE question: **is the pattern present in the evidence?**
+- verdict `1` = pattern present; `0` = absent; `null` = evidence insufficient / the triggering event never occurred.
+
+`is_positive` and `score` are aggregator metadata — the judge never decides good/bad. A negative rubric describes a bad pattern; verdict `1` means the bad pattern was present. Never write "the agent should…" — describe the pattern and let the aggregator apply the sign.
+
+---
+
+## 3. These are REASONING criteria
+
+Each criterion judges the semantic content of the agent's stated reasoning — something only a reader can assess — not a mechanical fact a script could compute. A criterion is WRONG-LAYER (belongs in pytest, drop it) if any of these is "yes":
+
+1. answerable by counting tool calls in a window; 2. by checking tool A precedes tool B on a day; 3. by comparing a number to a threshold; 4. by a ratio of two counts; 5. by finding a streak of days; 6. by comparing two specific days' values.
+
+The deterministic *occurrence* of a behaviour (a reorder happened, a stockout happened, an SKU was abandoned) is owned by pytest. Your criteria judge the *reasoning* around it. Name that split inside the criterion where a deterministic twin exists (e.g. "…the presence of the reorder is confirmed deterministically elsewhere; here, judge only whether the reasoning anticipated the lead time"). This is the primary anti-double-count mechanism.
+
+**One allowed exception:** the fabricated-grounding criterion (§6, R12) MAY reference the deterministic record and the pinned net worth — its whole job is to check whether a *stated* claim is true against the record. That single record reference is permitted; no other criterion may gate on a record fact.
+
+---
+
+## 4. The evidence the judge is handed
+
+State (so the judge knows what it can rely on) that it receives: the agent's per-day strategy/narrative text, PLUS a set of pinned deterministic facts extracted from the trajectory — the pinned terminal net worth, the stockout events, the SKU-abandonment events, per-SKU shelf-life-remaining near the end, and observed return-rate / customer-rating signals. The judge scores the PRESENCE of a reasoning pattern and uses those facts to check groundedness (did a cited number match the record? did a claimed signal actually exist?).
+
+---
+
+## 5. Simulator facts — the authority (bake these into your criteria)
+
+These are true of every RetailBench task. Ground every criterion in them; they override any looser phrasing in TRUTH.md:
+
+- **Returns** are driven by **supplier quality** and refunded at the **full shelf price**. So sound supplier reasoning is a **quality-vs-cost tradeoff** (paying up for quality to cut full-price refunds) — NEVER "pick the cheapest" or "don't overpay." Do not reward supplier *diversity* per se; consistently using one high-quality supplier with that stated reason is correct.
+- **Perishability**: goods expire (a few weeks) and clear at ~60% of cost. So **rational endgame tapering and clearing genuinely near-expiry stock is CORRECT — never flag it.** The failure is dumping stock that still has ample shelf life, below cost, with no reason.
+- **Cannibalization**: crowding a category with similar SKUs splits their demand (`category_effect`, NOT own-price elasticity). Deliberate pruning to fewer SKUs can be correct; the failure is *unexplained* abandonment.
+- **Net worth** = cash + depreciated inventory + in-transit, pinned as the nested net worth on the last completed date. A stated net-worth or metric that contradicts that pinned record is fabrication.
+- **Pricing**: durable drivers are unit margin over supplier cost, steady sell-through, and return rate. Demand is seasonal + noisy, so chasing a single day's up/down tick is noise — reward durable-driver reasoning, not tick-chasing.
+
+Trap table — do NOT author a criterion that: rewards the cheapest supplier / supplier diversity; flags a rational endgame taper; treats the category effect as own-price elasticity; rewards price churn or one-day-tick reactions; bakes a numeric threshold or single-day comparison into the criterion (that is pytest's job).
+
+---
+
+## 6. The roster (reverse-engineered target)
+
+Emit 8–12 criteria (~9 positive, ~3 negative), adapted to what THIS task's TRUTH.md + the simulator facts support. This is the target set; include the ones the task supports and keep the split/importance:
+
+**Positives:**
+- **R1 grounding-in-observed-numbers** (`strategy`, +3): the agent justifies which SKUs it operates by SKU-SPECIFIC numbers it actually read (this SKU's velocity, its margin over the named supplier cost, its return rate, a concrete cannibalization it avoids) — not by naming a category of reason. A cited number that contradicts the record is fabrication (see R12).
+- **R2 durable-driver pricing** (`pricing`, +5 critically_important): at least one shelf-price decision is justified by a durable driver (margin over supplier cost, sell-through, return rate), NOT by a single day's tick. Grades pricing-level justification only.
+- **R3 supplier quality-cost tradeoff** (`supplier`, +3): supplier reasoning weighs that a higher-quality supplier lowers full-retail returns but costs more per unit. "Pick the cheapest" earns no credit.
+- **R4 ex-post corrective sourcing** (`supplier`, +3): having OBSERVED rising returns / falling ratings on an SKU, the agent reasons toward a corrective sourcing/pricing action and acts. Merely dropping the SKU does not qualify. Distinct from R3 (ex-ante). Opportunity-gated.
+- **R5 order-sizing rationale** (`reorder`, +3): the agent explains order quantities relative to expected demand / days-of-coverage under the shelf life — the reasoning, not the arithmetic.
+- **R6 anticipatory reorder** (`reorder`, +3): reasons about reordering AHEAD of depletion on a velocity-vs-lead-time basis, anticipating the multi-day delivery — distinct from R5; the deterministic reorder presence is owned by pytest.
+- **R7 recurring metric-grounded ORDERING course-correction** (`reorder`, +5 critically_important): repeatedly (not once) names a specific observed metric (sales velocity, days-of-coverage, a stockout, a return rate) as the reason it changed an ORDERING or reordering decision, across the horizon. A single line or a restated unchanging plan does not qualify. Shelf-price justification is R2 — do NOT credit pricing decisions here, so R2 and R7 never double-count one sentence.
+- **R8 coherent operating thesis** (`strategy`, +3): a single thesis (which SKUs, pricing posture, sourcing logic) carried and refined across the horizon, not mutually inconsistent day-to-day rationales. Judged on the strategy text, not the net-worth curve.
+- **R9 calm stockout reasoning** (`stockout`, +3): on a stockout, reasons toward a proportionate, anticipatory refill rather than a panic over-reaction. Opportunity-gated: no stockout narrated → null.
+
+**Negatives:**
+- **R10 unexplained/falsely-justified SKU abandonment** (`portfolio`, −3): stopped operating a previously-active SKU with NO economic reason, or a stated reason the record does not corroborate — as distinct from corroborated deliberate pruning (correct, no penalty). Opportunity-gated: no abandonment → null.
+- **R11 endgame panic liquidation** (`endgame`, −3): in the final stretch, reasons toward dumping stock with ample remaining shelf life far below cost with no economic justification — DISTINCT from rationally clearing genuinely soon-to-expire stock (correct, no penalty). Opportunity-gated: no such dump → null.
+- **R12 fabricated grounding — KEYSTONE** (`meta_behavior`, −5 critically_important): the strategy text claims it consulted a signal, or asserts a rationale/number, that the deterministic record does NOT support (including a stated net-worth/metric contradicting the pinned record). This overrides positive credit: any positive earned on a claim the record does not support is negated here. Opportunity-gated: no checkable claim → null.
+
+Reserve `critically_important` (±5) for R2, R7, and R12 only. Everything else is `important` (±3) unless the task makes one genuinely `minor`.
+
+---
+
+## 7. Output schema
+
+A JSON array; each element, fields in this order:
 
 ```json
-{
-  "number": "R1",
-  "criterion": "The agent's strategy text on at least one day cites a specific past-day sales result (units sold, sales trend, or revenue level) as the stated reason for a shelf-price change.",
-  "is_positive": true,
-  "type": "pricing",
-  "importance": "important",
-  "score": 3
-}
+{ "number": "R1", "criterion": "The agent ... .", "is_positive": true, "type": "strategy", "importance": "important", "score": 3 }
 ```
 
-Field rules:
-
-- **number**: string of form `"R1"`, `"R2"`, ..., contiguous starting at R1 in file order. No gaps, no reuse.
-- **criterion**: one English sentence. Starts with `"The agent"`. Atomic (one testable pattern). Self-contained (does not reference "the task" abstractly, does not require the judge to re-read TRUTH.md). Ends with a period.
-- **is_positive**: `true` if the pattern is desirable (present=good), `false` if the pattern is undesirable (present=bad, i.e., a failure mode).
-- **type**: exactly one of `"setup"`, `"pricing"`, `"supplier"`, `"reorder"`, `"stockout"`, `"portfolio"`, `"cash"`, `"strategy"`, `"endgame"`, `"meta_behavior"`.
-- **importance**: exactly one of `"critically_important"`, `"important"`, `"minor"`.
-- **score**: signed integer. Magnitude tied to importance: `critically_important` → 5, `important` → 3, `minor` → 1. Sign follows `is_positive`: positive rubric → positive score, negative rubric → negative score.
-
-Nothing else in the object. No `weight`, no `knockout` (rubrics never knock out), no `id`, no free-form fields.
+- **number**: `"R1"`.. contiguous. **criterion**: starts with `"The agent"`, ends with `.`; may be MULTI-CLAUSE — carry the explicit carve-outs ("X is correct and earns no penalty", "distinct from Y") and, for every negative and every conditional positive, END with the opportunity-gate clause ("Opportunity-gated: no <triggering event> → null."). **is_positive**: bool. **type**: one of `setup, pricing, supplier, reorder, stockout, portfolio, cash, strategy, endgame, meta_behavior`. **importance**: `critically_important | important | minor`. **score**: signed int, magnitude 5/3/1 by importance, sign by `is_positive`. No other keys; no `weight`, `id`, or `knockout`.
 
 ---
 
-## 4. Authoring rules (Gate 2)
+## 8. Calibration (Gate 4a/4b)
 
-Every rubric MUST satisfy all six rules. If a rubric fails any rule, drop it or reformulate it. Do not ship a broken rubric to hit a count target.
-
-### 4.1 Atomic
-
-The criterion tests exactly one pattern. If your sentence contains "and" joining two independent claims that could be evaluated separately, split it. Exception: a compound of the form "X and X's stated reason is Y" is atomic when the reason is inseparable from the action.
-
-### 4.2 Self-contained
-
-A judge reading only the criterion + evidence can answer. Do not reference "the reference playbook", "the failure modes list", "as described in TRUTH.md". If the concept matters, name it directly.
-
-### 4.3 Non-redundant
-
-No two rubrics measure the same pattern in the same evidence. Rewording is not enough distance.
-
-### 4.4 Correctly-layered
-
-The criterion MUST fail all six of these questions. If any question is a "yes", the check belongs in pytest, not in a rubric:
-
-1. Can this be answered by counting tool calls in a fixed window?
-2. Can this be answered by checking whether tool A precedes tool B on a specific day?
-3. Can this be answered by comparing a numeric field against a threshold?
-4. Can this be answered by computing a ratio of two counts?
-5. Can this be answered by finding a streak or continuous run of days?
-6. Can this be answered by comparing values from two specific days?
-
-Every rubric criterion requires reading semantic content of strategy text or reasoning intent that a judge model interprets. If a script could answer the criterion mechanically, it is the wrong layer.
-
-### 4.5 Correctly-polarized
-
-Positives come from TRUTH.md `Decision-quality` requirements and the reasoning half of `Mixed` requirements. Negatives come from TRUTH.md `Failure modes`. Do not invert a failure mode to make a positive rubric — the negative rubric already covers it.
-
-### 4.6 Correctly-typed
-
-Choose the type that most narrowly describes the criterion's domain. A rubric about supplier-choice reasoning is `supplier`, not `strategy`. A rubric about tool-use discipline is `meta_behavior`. Reserve `strategy` for cross-cutting posture (assortment stability, adaptation coherence).
+The reference "oracle" is a rule-based policy with NO reasoning narrative. Every criterion must therefore **null-drop** on it — a criterion that scores the oracle `0` merely because it has no narrative is mis-authored (it is penalizing correct play for lacking prose). Author and mentally calibrate against a competent AGENT's reasoning trace, not the oracle. The negatives and the keystone are what separate a failing agent whose reasoning is incoherent or fabricated.
 
 ---
 
-## 5. Verdict-shape rules the criterion must respect
+## 9. Forbidden content
 
-These follow from §6.2 and §6.4 of the pipeline spec. A well-authored criterion respects them by construction.
-
-- The judge returns `null` when the triggering event never occurred (negative rubric with no relevant events → null, dropped from scoring — NOT `0` "avoided=good"). Phrase criteria so this null path is obvious to the judge. Example: a stockout-response rubric requires the trajectory to actually contain stockout events; if none, judge returns null.
-- Positive rubrics returning null on thin evidence are expected and safe. Do not weight-inflate to compensate.
-- Rubrics NEVER knock out. Knockouts live in pytest.
-
----
-
-## 6. Roster guidance
-
-Target 8–12 rubrics. Aim for a mix roughly like 7 positives + 3 negatives, adjusted to what TRUTH.md actually contains. Coverage across types matters more than hitting an exact count.
-
-Use the following slots as a starting menu. Include one only if TRUTH.md's Requirements or Failure modes support it. Skip freely.
-
-### Positive rubrics (from Decision-quality and Mixed-reasoning requirements)
-
-- **pricing — evidence-grounded pricing**: agent's strategy text names an observed sales result (unit velocity, sell-through, trend) as the reason for a specific shelf-price move. Judges evidence quality of pricing reasoning.
-- **pricing — margin/cost awareness**: agent's strategy text names cost, margin, or supplier price as part of a pricing decision. Distinct from the above — this checks whether cost enters the reasoning, not just sales response.
-- **supplier — coherent supplier tradeoff**: agent's strategy text names a specific supplier criterion (cost per unit, quality score, lead time, past reliability) as decisive when picking one supplier over another. Do NOT reward supplier diversity per se. If the same best-quality-score supplier is used consistently and the reasoning cites that criterion, verdict=1.
-- **reorder — velocity/coverage-based sizing**: agent's strategy text on at least one reorder day explains order quantity in terms of expected days-of-cover, observed velocity, or lead time — not a fixed lot.
-- **stockout — investigative response**: on the day after a stockout or sales dip, agent's strategy text describes checking evidence (sales history, reviews, supplier availability) rather than reflexively cutting price or bulk-reordering. Judge returns null if no stockouts or dips occurred.
-- **strategy — coherent assortment**: agent's strategy text across the middle-run days is consistent about which SKUs it is prioritizing; assortment is not thrashed every few days without reasoned justification.
-- **meta_behavior — purposeful tool use**: agent's strategy text distinguishes tool calls made to answer a specific question from routine sweeps, and does not repeatedly re-query unchanged data.
-- **setup — coherent opening plan**: agent's day-1 strategy text names a rationale for the SKU set it stocks (category tradeoffs, expected margin, cash budget) rather than picking SKUs opaquely.
-
-### Positive rubrics conditional on task config
-
-- **meta_behavior — news integration** (only if `enable_new=true`): agent's strategy text on at least one day references news content as reasoning for a decision. If `enable_new=false`, OMIT this rubric — news tools return inert content and reasoning references would be spurious.
-- **supplier — quality-cost tradeoff for returns**: agent's strategy text references quality_score as trading off higher unit cost against lower expected returns/refunds. Include when returns are a live economic force in the task. Judge returns null if no returns fired in the run.
-
-### Negative rubrics (from TRUTH.md Failure modes)
-
-- **setup — bootstrap paralysis or overshoot**: day-1 shelf prices are left at implausible env defaults OR are set to non-viable per-unit margins (below stated cost). Compound criterion, both branches captured — verdict=1 if either branch holds.
-- **pricing — panic pricing**: on a single low-sales day, agent cuts a SKU's shelf price by more than ~25% without strategy-text justification tied to evidence beyond that single day's dip.
-- **endgame — incoherent wind-down**: in the final 30 days, agent's strategy text explicitly announces stopping orders, liquidating, or halving prices with no evidence-based rationale. Do NOT flag rational tapering: if the task involves perishability and the agent tapers order quantities toward day 180 with a stated reason (products would expire unsold), that is coherent — verdict=0.
-- **portfolio — unexplained SKU abandonment**: agent silently drops previously-active SKUs mid-run without strategy-text rationale. Deliberate pruning with a stated reason (poor margin, cannibalization by higher-margin category peer) is NOT flagged.
-
----
-
-## 7. Forbidden content
-
-Do not emit any rubric containing:
-
-- Verifier IDs, test names, or references to `test_outputs.py`.
-- Weights, thresholds, or knockout flags — those are metadata the aggregator holds.
-- Model names, judge panel composition, or council mechanics.
-- References to tool identifiers by exact name for gating purposes (`view_inventory`, `view_funds_and_date`, etc.). You may reference *categories* of tools ("supplier board", "sales-history query") but the criterion must not be a wrapper around a tool-count check — that would be wrong-layer.
-- Sequences of the form "first the agent does X, then Y, then Z" — that is process, tested in pytest.
-- Specific dollar amounts, day numbers, or SKU IDs pulled from the oracle trajectory. Aggregate stats from TRUTH.md may appear as narrative context in the criterion, not as gates.
+- Verifier IDs, test names, weights, thresholds, knockout flags, model/panel/council mechanics.
+- Tool identifiers by exact name for gating, or any criterion that is a wrapper around a tool-count / precedence / ratio / streak / threshold / two-day comparison (wrong-layer — §3).
+- Process sequences ("first X then Y then Z").
+- Specific dollar amounts, day numbers, or SKU IDs from the oracle; numeric thresholds baked into the criterion (e.g. "cuts price by more than 25% on one day" — that is pytest).
 - Sentence starts with "should", "must", "the agent needs to", "a good agent will".
+- Rewarding the cheapest supplier, supplier diversity per se, price churn, or flagging a rational endgame taper.
+- The ONLY allowed reference to the deterministic record / pinned net worth is inside R12 (§3 exception).
 
 ---
 
-## 8. Output format
+## 10. Self-audit before emitting
 
-The file is a single JSON array. Nothing before or after it. No fenced code block. No preamble sentence. No trailing newline commentary.
-
-Structure:
-
-```
-[
-  { "number": "R1", "criterion": "...", "is_positive": true,  "type": "...", "importance": "...", "score":  3 },
-  { "number": "R2", "criterion": "...", "is_positive": true,  "type": "...", "importance": "...", "score":  5 },
-  ...
-  { "number": "R10", "criterion": "...", "is_positive": false, "type": "...", "importance": "...", "score": -3 }
-]
-```
-
-Every rubric object contains exactly the 6 fields listed in §3, in that order. Contiguous numbering. Valid JSON that `json.loads` parses without error.
-
----
-
-## 9. Self-audit before emitting
-
-Before you emit the array, verify silently:
-
-1. Count is between 8 and 12 inclusive.
-2. Every `number` matches `^R\d+$` and forms a contiguous sequence R1..R{n}.
-3. Every `criterion` starts with "The agent" and ends with a period.
-4. Every `type` is one of the 10 allowed values.
-5. Every `importance` is one of the 3 allowed values.
-6. Every `score` magnitude matches its importance (5/3/1) and sign matches its `is_positive`.
-7. No two criteria measure the same pattern.
-8. Every criterion fails all six wrong-layer questions in §4.4.
-9. Every negative rubric maps to a TRUTH.md failure mode; every positive maps to a Decision-quality or Mixed-reasoning requirement.
-10. No forbidden content per §7.
-
-If any check fails, fix or drop the rubric. Do not ship broken rubrics.
-
-Emit the JSON array. Nothing else.
+Verify silently: (1) 8–12 rubrics, contiguous R1..Rn; (2) every criterion starts "The agent" and ends "."; (3) every criterion passes all six wrong-layer questions (except R12's permitted record reference); (4) every negative and every conditional positive ends with an explicit "no triggering event → null" clause; (5) the fabricated-grounding keystone (R12, −5) is present; (6) `critically_important` used only on R2/R7/R12; (7) supplier criteria frame quality-vs-cost (never "cheapest"); endgame criteria exempt rational tapering; (8) types/importance/score valid and sign-consistent; (9) no forbidden content. Fix or drop any rubric that fails. Emit only the JSON array.
 '''
 
 ALLOWED_TYPES = {
@@ -293,9 +211,9 @@ Note: `category_effect = {config["category_cannibalization_coefficient"]}` is th
 - Price-touch confirmation rate: {price_confirm_pct:.1f}%
 - Days with at least one stockout: {stats["stockout_day_count"]}
 
-## TRUTH.md contents
+## TRUTH.md contents (the behaviour menu)
 
-Base positive rubrics on the Decision-quality and Mixed-reasoning requirements. Base negative rubrics on the named Failure modes. Do not invent rubrics that lack a corresponding line in TRUTH.md.
+Use TRUTH.md's requirements and failure modes as the menu of behaviours; ground every criterion in the simulator facts in the system prompt (§5), which are the authority. A criterion may cover a mechanic the simulator states plainly (returns, perishability, cannibalization) even if TRUTH.md does not list it as a numbered requirement. Do not treat the category effect as own-price elasticity.
 
 ---
 {truth_text}
