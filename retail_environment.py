@@ -32,6 +32,10 @@ timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 # ValueError(f"No rating found for SKU {sku.sku_id}")
 #  raise ValueError("limit must be positive")
 
+_PORTABLE_RUN_DIR = "<run_dir>"
+_PORTABLE_ORDER_DIR = "<run_dir>/order_records"
+
+
 class RetailEnvironment:
     """
     零售环境入口。
@@ -1047,12 +1051,21 @@ class RetailEnvironment:
 
         return self._wrap_tool_result(payload, "\n".join(lines))
 
-    def view_sku_prices(self, sku_ids: List[str]) -> Dict[str, Any]:
-        if sku_ids is not None:
-            self._validate_sku_list(sku_ids, allow_empty=True)
-        target_ids = self._filter_allowed_skus(sku_ids)
-        if sku_ids is not None and not target_ids:
-            raise ValueError("Unable to find legal sku")
+    def view_sku_prices(self, sku_ids: Optional[List[str]] = None) -> Dict[str, Any]:
+        # Omitting sku_ids -- or passing [] -- means "price the whole catalogue".
+        # This tool was the only one calling _validate_sku_list(allow_empty=True):
+        # it accepted [] at validation and then rejected it with an opaque
+        # "Unable to find legal sku".  Models read that as a lookup failure rather
+        # than a malformed argument and repeated the identical call every day
+        # without ever correcting it.  _filter_allowed_skus(None) returns [], so
+        # the catalogue has to be expanded explicitly here.
+        if not sku_ids:
+            target_ids = list(self.skus_id_map.keys())
+        else:
+            self._validate_sku_list(sku_ids, allow_empty=False)
+            target_ids = self._filter_allowed_skus(sku_ids)
+            if not target_ids:
+                raise ValueError("Unable to find legal sku")
 
         prices = {}
         for sku_id in target_ids:
@@ -1357,12 +1370,22 @@ class RetailEnvironment:
         """
         checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
         
+        # 保存配置以便恢复。Absolute host paths are replaced with portable
+        # markers: they leak the operator's home directory into a corpus that
+        # gets handed to third parties, and they are worthless on any other
+        # machine anyway.  load_from_checkpoint re-derives them from the
+        # checkpoint's own location, which makes checkpoints portable as a
+        # side effect.
+        portable_config = dict(self.config)
+        portable_config["log_dir"] = _PORTABLE_RUN_DIR
+        portable_config["order_record_dir"] = _PORTABLE_ORDER_DIR
+
         # 初始化 checkpoint 数据
         checkpoint_data = {
             "funds": self.funds,
             "current_date": self.current_date.isoformat(),
             "sku_prices": {sku_id: sku.price for sku_id, sku in self.skus_id_map.items()},
-            "config": self.config,  # 保存配置以便恢复
+            "config": portable_config,
         }
         
         # 调用各个 manager 的 save_checkpoint 方法
@@ -1398,7 +1421,20 @@ class RetailEnvironment:
         with checkpoint_path.open("r", encoding="utf-8") as f:
             checkpoint_data = json.load(f)
         
-        config = checkpoint_data["config"]
+        config = dict(checkpoint_data["config"])
+        # Resolve the portable markers written by save_checkpoint back to real
+        # directories, derived from where this checkpoint actually lives
+        # (<run_dir>/checkpoints/<file>.json).  Older checkpoints carry absolute
+        # paths from the machine that produced them; those are honoured only if
+        # they still exist, otherwise they are re-derived the same way.
+        run_dir = checkpoint_path.parent.parent
+        log_dir = config.get("log_dir")
+        if log_dir == _PORTABLE_RUN_DIR or not log_dir or not Path(log_dir).is_dir():
+            config["log_dir"] = str(run_dir)
+        order_dir = config.get("order_record_dir")
+        if order_dir == _PORTABLE_ORDER_DIR or not order_dir or not Path(order_dir).parent.is_dir():
+            config["order_record_dir"] = str(run_dir / "order_records")
+
         env = cls(config)
         
         # 恢复基本状态

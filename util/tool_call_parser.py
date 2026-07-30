@@ -86,11 +86,25 @@ def _parse_xml_tool_calls(text: str) -> List[Dict[str, Any]]:
     for json_str in _TOOL_CALL_XML_PATTERN.findall(text):
         try:
             parsed = json.loads(json_str)
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as exc:
+            # Never drop a call the model plainly intended to make without a
+            # trace: silently discarding these makes the transcript claim a tool
+            # was called while the structured record shows nothing.
+            import logging
+            logging.getLogger(__name__).warning(
+                "_parse_xml_tool_calls: malformed tool_call JSON dropped (%s). raw=%r",
+                exc, json_str[:400],
+            )
             continue
         normalized = _normalize_tool_call(parsed)
         if normalized is not None:
             parsed_calls.append(normalized)
+        else:
+            import logging
+            logging.getLogger(__name__).warning(
+                "_parse_xml_tool_calls: tool_call JSON did not match the expected "
+                "shape and was dropped. raw=%r", json_str[:400],
+            )
     return parsed_calls
 
 

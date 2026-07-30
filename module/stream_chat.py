@@ -1,8 +1,13 @@
+import json
 import random
 import time
 from typing import Any, Dict, List, Optional
 
 from openai import OpenAI
+
+
+class IncompleteToolCallError(RuntimeError):
+    """A streamed tool call arrived with arguments that do not parse as JSON."""
 
 
 def stream_chat(
@@ -27,6 +32,10 @@ def stream_chat(
         raise ValueError("max_retries must be >= 0")
 
     def _is_retryable_error(exc: Exception) -> bool:
+        if isinstance(exc, IncompleteToolCallError):
+            # A torn stream is exactly the kind of transient failure a retry fixes.
+            return True
+
         status_code = getattr(exc, "status_code", None)
         if isinstance(status_code, int):
             if status_code in {408, 409, 429} or status_code >= 500:
@@ -67,6 +76,7 @@ def stream_chat(
         aggregated_calls: Dict[str, Dict[str, Any]] = {}
         index_to_id: Dict[int, str] = {}
         usage: Optional[Dict[str, Any]] = None
+        finish_reason: Optional[str] = None
 
         for chunk in stream:
             usage_obj = getattr(chunk, "usage", None)
@@ -78,6 +88,10 @@ def stream_chat(
                 }
 
             for choice in getattr(chunk, "choices", []) or []:
+                chunk_finish = getattr(choice, "finish_reason", None)
+                if chunk_finish:
+                    finish_reason = chunk_finish
+
                 delta = getattr(choice, "delta", None)
                 if delta is None:
                     continue
@@ -130,6 +144,27 @@ def stream_chat(
 
         final_content = "".join(content_parts).strip()
         full_content = reasoning_content + final_content
+
+        # A streamed arguments string is built by concatenation, so a cut or
+        # truncated stream yields JSON that stops mid-object.  Persisting that
+        # produces a tool call nothing downstream can read, so treat it as a
+        # retryable failure rather than writing damaged output.
+        for tc_id, entry in aggregated_calls.items():
+            raw_args = entry.get("function", {}).get("arguments")
+            if not isinstance(raw_args, str) or not raw_args.strip():
+                continue
+            try:
+                json.loads(raw_args)
+            except (json.JSONDecodeError, ValueError) as exc:
+                raise IncompleteToolCallError(
+                    "tool call %s (%s) has unparseable arguments after streaming "
+                    "(finish_reason=%r): %s" % (
+                        tc_id, entry.get("function", {}).get("name"), finish_reason, exc,
+                    )
+                )
+
+        if usage is not None:
+            usage["finish_reason"] = finish_reason
         return full_content, final_content, reasoning_content, aggregated_calls, usage
 
     last_error: Optional[Exception] = None

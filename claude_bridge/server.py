@@ -50,6 +50,67 @@ NO_THINKING_MODELS = {
 DEFAULT_MAX_TOKENS = 8192
 DEFAULT_THINKING_BUDGET = 8192
 
+# Models on the adaptive-thinking API.  On these, `thinking.budget_tokens` is
+# removed (400 on 4.7+) and the only on-mode is {"type": "adaptive"}.  Critically,
+# `thinking.display` defaults to "omitted" on 4.7 and later -- a silent change from
+# 4.6, where it was "summarized".  With "omitted" the response still carries
+# thinking blocks, but their text is empty and only a signature_delta arrives, so
+# reasoning_content comes back empty no matter how correct the rest of the plumbing
+# is.  Ask for "summarized" explicitly to get readable reasoning back.
+_ADAPTIVE_THINKING_PREFIXES = (
+    "claude-opus-4-6", "claude-opus-4-7", "claude-opus-4-8", "claude-opus-5",
+    "claude-sonnet-4-6", "claude-sonnet-5",
+    "claude-fable-5", "claude-mythos-5",
+)
+
+# Models where budget_tokens is fully removed and sending it is a 400.
+_NO_BUDGET_TOKENS_PREFIXES = (
+    "claude-opus-4-7", "claude-opus-4-8", "claude-opus-5",
+    "claude-sonnet-5", "claude-fable-5", "claude-mythos-5",
+)
+
+_VALID_EFFORTS = {"low", "medium", "high", "xhigh", "max"}
+_VALID_THINKING_DISPLAYS = {"omitted", "summarized"}
+
+
+def _supports_adaptive_thinking(model: str) -> bool:
+    m = (model or "").lower()
+    return any(m.startswith(p) for p in _ADAPTIVE_THINKING_PREFIXES)
+
+
+def _rejects_budget_tokens(model: str) -> bool:
+    m = (model or "").lower()
+    return any(m.startswith(p) for p in _NO_BUDGET_TOKENS_PREFIXES)
+
+
+def _default_thinking_display() -> str:
+    v = (os.environ.get("ZORO_CC_THINKING_DISPLAY") or "summarized").strip().lower()
+    return v if v in _VALID_THINKING_DISPLAYS else "summarized"
+
+
+DEFAULT_EFFORT = "max"
+
+
+def _default_effort() -> str | None:
+    """Effort level to request, or None to omit the field.
+
+    Defaults to `max` in code rather than relying on an exported env var: the
+    launcher scripts and the auto-restart monitor start the bridge in a fresh
+    environment, so an env-only setting is silently lost on every restart and the
+    run quietly falls back to the API default. Set ZORO_CC_EFFORT to override, or
+    to "off"/"none" to omit effort entirely.
+    """
+    raw = os.environ.get("ZORO_CC_EFFORT")
+    if raw is None:
+        return DEFAULT_EFFORT
+    v = raw.strip().lower()
+    if v in ("", "off", "none"):
+        return None
+    if v not in _VALID_EFFORTS:
+        _LOG.warning("invalid ZORO_CC_EFFORT %r; ignoring", raw)
+        return None
+    return v
+
 MODEL_ALIASES = {
     "sonnet": "claude-sonnet-4-5-20250929",
     "opus":   "claude-opus-4-8",
@@ -91,6 +152,24 @@ def _timeout(streaming: bool = False) -> httpx.Timeout:
     total = _env_float("ZORO_BRIDGE_REQUEST_TIMEOUT", 600.0)
     read = _env_float("ZORO_BRIDGE_READ_TIMEOUT", 180.0)
     return httpx.Timeout(total, connect=connect, read=read)
+
+
+def _client_option(body: dict[str, Any], key: str) -> Any:
+    """Read a non-standard client option from an OpenAI-shaped request body.
+
+    The OpenAI SDK *flattens* ``extra_body={...}`` into the top level of the JSON
+    request -- there is no ``extra_body`` key on the wire.  Reading only
+    ``body["extra_body"][key]`` therefore never matched, which is why every run in
+    the corpus has empty reasoning_content: the enable_thinking gate never opened,
+    so extended thinking was never requested from upstream at all.  Check the top
+    level first, keeping the nested form for callers that post raw JSON.
+    """
+    if key in body:
+        return body.get(key)
+    extra = body.get("extra_body")
+    if isinstance(extra, dict):
+        return extra.get(key)
+    return None
 
 
 def _map_model(name: str) -> str:
@@ -350,20 +429,47 @@ def translate_openai_to_anthropic(body: dict[str, Any]) -> dict[str, Any]:
     if body.get("stream"):
         ant["stream"] = True
 
-    extra = body.get("extra_body") or {}
-    if isinstance(extra, dict) and extra.get("enable_thinking"):
+    if _client_option(body, "enable_thinking"):
         if model in NO_THINKING_MODELS:
             _LOG.warning("enable_thinking requested for %s which does not support thinking; dropping", model)
+        elif _supports_adaptive_thinking(model):
+            # Adaptive-thinking API (Opus 4.6+ / Sonnet 4.6+).  budget_tokens is
+            # deprecated here and a hard 400 on 4.7+, so never send it.  `display`
+            # must be requested explicitly: it defaults to "omitted" on 4.7+, which
+            # returns thinking blocks whose text is empty.
+            display = _client_option(body, "thinking_display") or _default_thinking_display()
+            if display not in _VALID_THINKING_DISPLAYS:
+                _LOG.warning("invalid thinking_display %r; using summarized", display)
+                display = "summarized"
+            ant["thinking"] = {"type": "adaptive", "display": display}
+        elif _rejects_budget_tokens(model):
+            _LOG.warning(
+                "model %s rejects budget_tokens and is not in the adaptive list; "
+                "sending adaptive thinking without a budget", model,
+            )
+            ant["thinking"] = {"type": "adaptive", "display": _default_thinking_display()}
         else:
-            budget = int(extra.get("thinking_budget") or DEFAULT_THINKING_BUDGET)
+            # Legacy extended-thinking API (Sonnet 4.5, Opus 4.1, and earlier).
+            budget = int(_client_option(body, "thinking_budget") or DEFAULT_THINKING_BUDGET)
             # Anthropic requires budget_tokens strictly less than max_tokens.
             if budget >= max_tokens:
                 budget = max(1024, max_tokens - 1)
                 _LOG.warning(
                     "thinking_budget >= max_tokens (%d >= %d); clamped to %d",
-                    int(extra.get("thinking_budget") or DEFAULT_THINKING_BUDGET), max_tokens, budget,
+                    int(_client_option(body, "thinking_budget") or DEFAULT_THINKING_BUDGET), max_tokens, budget,
                 )
             ant["thinking"] = {"type": "enabled", "budget_tokens": budget}
+
+    # Effort (GA on 4.6+, no beta header): controls thinking depth and overall
+    # token spend.  Nested under output_config, not top-level.
+    effort = _client_option(body, "reasoning_effort") or _default_effort()
+    if effort and _supports_adaptive_thinking(model):
+        effort = str(effort).strip().lower()
+        if effort in _VALID_EFFORTS:
+            oc = ant.get("output_config")
+            ant["output_config"] = {**oc, "effort": effort} if isinstance(oc, dict) else {"effort": effort}
+        else:
+            _LOG.warning("invalid reasoning_effort %r; ignoring", effort)
 
     # Anthropic rejects temperature+top_p together, and with extended thinking it
     # requires temperature=1 and forbids top_p. So: with thinking on, drop both

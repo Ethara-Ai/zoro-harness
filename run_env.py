@@ -14,6 +14,7 @@ import re
 import os
 import logging
 from pathlib import Path
+from collections import Counter
 from typing import Any, Dict, List, Optional
 from datetime import datetime
 
@@ -119,10 +120,9 @@ The available function signatures are provided within <tools></tools> XML tags:
 {tool_definitions}
 </tools>
 
-For each function call, return a JSON object with function name and arguments inside <tool_call></tool_call> XML tags:
-<tool_call>
-{{"name": <function-name>, "arguments": <args-json-object>}}
-</tool_call>
+Call these functions using the native tool-calling interface. Do not write tool
+calls as text, and never write a tool result yourself -- results are supplied
+back to you by the environment.
 
 # Important Analysis Tools
 
@@ -192,10 +192,9 @@ The available function signatures are provided within <tools></tools> XML tags:
 {tool_definitions}
 </tools>
 
-For each function call, return a JSON object with function name and arguments inside <tool_call></tool_call> XML tags:
-<tool_call>
-{{"name": <function-name>, "arguments": <args-json-object>}}
-</tool_call>
+Call these functions using the native tool-calling interface. Do not write tool
+calls as text, and never write a tool result yourself -- results are supplied
+back to you by the environment.
 
 # Ending the Day
 
@@ -318,6 +317,246 @@ def log_message(records: List[Dict[str, Any]], payload: Dict[str, Any]) -> None:
     """Append a timestamped record to the in-memory run log."""
     record = {"ts": datetime.utcnow().isoformat() + "Z", **payload}
     records.append(record)
+
+
+def scrub_host_paths(value: Any) -> Any:
+    """Replace absolute host paths with portable placeholders, recursively.
+
+    Run artifacts are handed to third parties, so they must not carry the
+    operator's home directory: it is personal data and it discloses which
+    machines produced the corpus.
+    """
+    if isinstance(value, dict):
+        return {k: scrub_host_paths(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [scrub_host_paths(v) for v in value]
+    if isinstance(value, str) and value:
+        scrubbed = re.sub(r"(/Users|/home)/[^/\s\"']+", r"\1/<user>", value)
+        scrubbed = re.sub(r"[A-Za-z]:\\\\Users\\\\[^\\\\\s\"']+", r"C:\\\\Users\\\\<user>", scrubbed)
+        return scrubbed
+    return value
+
+
+def detect_repetition(
+    text: str,
+    min_line_repeats: int = 5,
+    ngram: int = 8,
+    max_ngram_ratio: float = 0.10,
+) -> Optional[str]:
+    """Flag degenerate output: a line looped many times, or heavy n-gram reuse.
+
+    Returns a short human-readable reason, or None when the text looks healthy.
+    """
+    if not text or len(text) < 200:
+        return None
+
+    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
+    if lines:
+        counts = Counter(lines)
+        line, n = counts.most_common(1)[0]
+        if n >= min_line_repeats:
+            return "line repeated %d times: %r" % (n, line[:80])
+
+    tokens = text.split()
+    if len(tokens) >= ngram * 4:
+        grams = [" ".join(tokens[i:i + ngram]) for i in range(len(tokens) - ngram + 1)]
+        if grams:
+            counts = Counter(grams)
+            repeated = sum(c - 1 for c in counts.values() if c > 1)
+            ratio = repeated / float(len(grams))
+            if ratio > max_ngram_ratio:
+                return "%.1f%% of %d-grams are repeats" % (ratio * 100.0, ngram)
+    return None
+
+
+# Measured against live gpt-5.6 runs on this corpus: large requests (40k+ tokens)
+# came in at 2.23-2.52 chars/token, because the payload is markdown tables of
+# SKU ids and prices -- digits and punctuation tokenise far worse than prose.
+# A generic "4 chars per token" rule of thumb is ~60% optimistic here and let
+# requests reach 82k against a 50k ceiling.  Stay at or below the worst observed.
+CHARS_PER_TOKEN = 1.7          # conservative default until the run measures its own
+MIN_CHARS_PER_TOKEN = 1.5      # clamp band for the measured ratio
+MAX_CHARS_PER_TOKEN = 4.0
+TOOL_RESULT_FLOOR_CHARS = 4000  # keep this much of any truncated tool result
+
+
+def _msg_chars(m: Dict[str, Any]) -> int:
+    n = len(str(m.get("content") or ""))
+    for tc in m.get("tool_calls") or []:
+        fn = tc.get("function") or {}
+        n += len(str(fn.get("name") or "")) + len(str(fn.get("arguments") or ""))
+    return n
+
+
+def fit_history(
+    messages: List[Dict[str, Any]],
+    overhead_chars: int,
+    max_input_tokens: int,
+    measured_ratio: Optional[float] = None,
+) -> List[Dict[str, Any]]:
+    """Shrink `messages` so the whole request plausibly fits the token budget.
+
+    This replaces the reactive trim.  The old design keyed off the *previous*
+    turn's measured input_tokens, so a turn that appended a 50k-char tool result
+    sailed through under the old count and only tripped the check one turn later
+    -- by which point the oversized result sat inside the protected recent window
+    and dropping whole exchanges could not help.  Observed live: prompt tokens
+    ran 12k -> 49k -> 79k -> 82k against a 50k ceiling.
+
+    So: estimate from the messages actually about to be sent (plus the system and
+    task-prompt overhead), drop the oldest complete exchanges first, and if the
+    recent window alone still busts the budget, truncate the largest tool results
+    in place -- oldest first, newest preserved -- rather than giving up.
+    """
+    if not messages:
+        return messages
+
+    # Prefer the ratio measured from this run's own traffic; models differ a lot
+    # (gpt-5.6 came in at 2.39-2.53 chars/token on large requests, Claude Opus 4.8
+    # at 1.72-1.82), so a single hardcoded constant over-trims one and overshoots
+    # the other.  Clamp to a sane band so one anomalous turn can't wreck the budget.
+    ratio = CHARS_PER_TOKEN
+    if measured_ratio and measured_ratio > 0:
+        ratio = min(max(measured_ratio, MIN_CHARS_PER_TOKEN), MAX_CHARS_PER_TOKEN)
+
+    budget_chars = max_input_tokens * ratio - overhead_chars
+    if budget_chars <= 0:
+        budget_chars = max_input_tokens * ratio * 0.5
+
+    def total() -> int:
+        return sum(_msg_chars(m) for m in messages)
+
+    if total() <= budget_chars:
+        return messages
+
+    # 1. Drop the oldest complete exchanges (cut only at an assistant turn, so a
+    #    tool result is never orphaned from the call it answers).
+    MIN_KEPT_EXCHANGES = 2
+    cuts = [i for i, m in enumerate(messages) if m.get("role") == "assistant" and i > 0]
+    if len(cuts) > MIN_KEPT_EXCHANGES:
+        cuts = cuts[:-MIN_KEPT_EXCHANGES]
+    else:
+        cuts = []
+    # Pick the cut point without mutating: `cuts` indexes the original list, so
+    # slicing mid-loop would invalidate every remaining index.
+    if cuts:
+        chosen = cuts[-1]  # fall back to the deepest allowed cut
+        for cut_at in cuts:
+            if sum(_msg_chars(m) for m in messages[cut_at:]) <= budget_chars:
+                chosen = cut_at
+                break
+        messages = messages[chosen:]
+
+    while messages and messages[0].get("role") == "tool":
+        messages = messages[1:]
+
+    if total() <= budget_chars:
+        return messages
+
+    # 2. Still over: shrink tool payloads in place, biggest and oldest first.
+    #    A truncated observation the model can still reason about beats a request
+    #    the provider rejects, or silent 60%-over-budget overshoot.
+    idxs = sorted(
+        (i for i, m in enumerate(messages) if m.get("role") == "tool"),
+        key=lambda i: (-_msg_chars(messages[i]), i),
+    )
+    for i in idxs:
+        if total() <= budget_chars:
+            break
+        content = str(messages[i].get("content") or "")
+        if len(content) <= TOOL_RESULT_FLOOR_CHARS:
+            continue
+        suffix = "\n...[truncated to fit the context budget]"
+        # The marker itself costs characters; charge it to the budget or the
+        # result lands marginally over the ceiling it was meant to respect.
+        excess = int(total() - budget_chars) + len(suffix)
+        keep = max(TOOL_RESULT_FLOOR_CHARS, len(content) - excess)
+        if keep >= len(content):
+            continue
+        messages[i] = dict(messages[i], content=content[:keep] + suffix)
+    return messages
+
+
+def trim_history(
+    messages: List[Dict[str, Any]],
+    input_tokens: int,
+    max_input_tokens: int,
+) -> List[Dict[str, Any]]:
+    """Drop the oldest exchanges until the history plausibly fits the budget.
+
+    The previous version sliced once to the third assistant message and stopped,
+    so a single pass that was still over budget simply stayed over budget -- runs
+    were observed 54% past the limit.  It also did nothing at all when fewer than
+    two assistant turns existed, and slicing to a bare assistant message could
+    strip the tool results answering an earlier call, leaving orphaned tool_call
+    ids in the request.
+
+    Budget accounting is by *payload size*, not message count.  Counting messages
+    is actively wrong here: a single tool result carrying the full 96-SKU table
+    dwarfs a dozen "Continue operations" turns, so a count-proportional estimate
+    reports a large reduction while dropping almost no tokens.  We measure each
+    message's serialized length, convert the known input_tokens into a
+    chars-per-token rate for this specific request, and drop whole leading
+    exchanges until the remaining payload fits.
+
+    MIN_KEPT_EXCHANGES of the most recent history is always preserved: handing
+    the model a nearly empty context loses the day's state, which is worse than
+    a request that is somewhat over budget.
+    """
+    if input_tokens <= max_input_tokens or not messages:
+        return messages
+
+    MIN_KEPT_EXCHANGES = 2
+
+    def _size(m: Dict[str, Any]) -> int:
+        n = len(str(m.get("content") or ""))
+        for tc in m.get("tool_calls") or []:
+            fn = tc.get("function") or {}
+            n += len(str(fn.get("name") or "")) + len(str(fn.get("arguments") or ""))
+        return n
+
+    sizes = [_size(m) for m in messages]
+    total_chars = sum(sizes)
+    if total_chars <= 0:
+        return messages
+    # Calibrate against this request's own measured token count.
+    chars_per_token = total_chars / float(input_tokens)
+    budget_chars = max_input_tokens * chars_per_token
+
+    # Valid cut points: an assistant turn (its tool results follow it, so cutting
+    # here never orphans one).  Keep the last MIN_KEPT_EXCHANGES of them.
+    cuts = [i for i, m in enumerate(messages) if m.get("role") == "assistant" and i > 0]
+    if len(cuts) > MIN_KEPT_EXCHANGES:
+        cuts = cuts[:-MIN_KEPT_EXCHANGES]
+    else:
+        cuts = []
+
+    kept_from = 0
+    for cut_at in cuts:
+        if sum(sizes[cut_at:]) <= budget_chars:
+            kept_from = cut_at
+            break
+        kept_from = cut_at  # still over budget; keep cutting
+
+    trimmed = messages[kept_from:]
+    # Never hand back a history that opens on an orphaned tool result.
+    while trimmed and trimmed[0].get("role") == "tool":
+        trimmed = trimmed[1:]
+    return trimmed if trimmed else messages[-2:]
+
+
+def append_user_message(messages: List[Dict[str, Any]], content: str) -> None:
+    """Append a user turn, merging into the previous one if it is also a user turn.
+
+    Two consecutive user messages are rejected by most training pipelines, and
+    they arise naturally here whenever several turns in a row produce no usable
+    tool call.  Merging keeps the transcript alternating.
+    """
+    if messages and messages[-1].get("role") == "user":
+        prev = messages[-1].get("content") or ""
+        messages[-1]["content"] = (prev + "\n" + content).strip() if prev else content
+        return
+    messages.append({"role": "user", "content": content})
 
 
 def write_log_json_array(log_path: Path, records: List[Dict[str, Any]]) -> None:
@@ -828,6 +1067,7 @@ def run_strategy_execute_loop(
         log_message(run_log, {**strategy_user_msg, "day": day, "phase": "strategy"})
 
         strategy_messages = []
+        strategy_ratio: Optional[float] = None
 
         # 策略阶段循环
         while not strategy_phase_complete and strategy_turns < max_strategy_turns_per_day:
@@ -835,16 +1075,15 @@ def run_strategy_execute_loop(
             global_turn += 1
             
             try:
-                if input_tokens > max_input_tokens:
-                    assistant_idxs = [i for i, m in enumerate(strategy_messages) if m.get("role") == "assistant"]
-                    if len(assistant_idxs) >= 3:
-                        strategy_messages = strategy_messages[assistant_idxs[2]:]
-                        assert strategy_messages[0]['role'] == 'assistant'
-                    elif len(assistant_idxs) >= 2:
-                        strategy_messages = strategy_messages[assistant_idxs[1]:]
-                        assert strategy_messages[0]['role'] == 'assistant'
+                strategy_messages = fit_history(
+                    strategy_messages,
+                    _msg_chars(strategy_system_msg) + _msg_chars(strategy_user_msg),
+                    max_input_tokens,
+                    measured_ratio=strategy_ratio,
+                )
                 
                 request_messages = [strategy_system_msg] + [strategy_user_msg] + strategy_messages
+                _req_chars = sum(_msg_chars(m) for m in request_messages)
                 
                 try:
                     full_content, final_content, reasoning_content, aggregated_calls, usage = stream_chat(
@@ -860,7 +1099,7 @@ def run_strategy_execute_loop(
                     print(f"[严重错误] {err_msg}")
                     log_message(run_log, {"role": "error", "day": day, "phase": "strategy", "turn": strategy_turns, "message": err_msg, "error_type": type(stream_exc).__name__})
                     write_log_json_array(log_path, run_log)
-                    strategy_messages.append({"role": "user", "content": f"System error: {err_msg}. Continue."})
+                    append_user_message(strategy_messages, f"System error: {err_msg}. Continue.")
                     continue
 
                 # 解析工具调用
@@ -909,6 +1148,9 @@ def run_strategy_execute_loop(
 
                 log_message(run_log, {"role": "usage", "day": day, "phase": "strategy", "turn": strategy_turns, "prompt_tokens": usage.get("prompt_tokens") if usage else None, "completion_tokens": usage.get("completion_tokens") if usage else None, "total_tokens": usage.get("total_tokens") if usage else None})
                 input_tokens = usage.get("prompt_tokens") if usage else input_tokens
+                # Calibrate chars-per-token from this run's own traffic (see fit_history).
+                if usage and usage.get("prompt_tokens") and _req_chars:
+                    strategy_ratio = _req_chars / float(usage["prompt_tokens"])
                 # 累计 token 统计（总累计和当天累计）
                 if usage:
                     prompt_tokens = usage.get("prompt_tokens", 0)
@@ -922,6 +1164,10 @@ def run_strategy_execute_loop(
                     day_tokens += tokens
                 print(f"[Day {day} Strategy Turn {strategy_turns}] tokens: prompt={usage.get('prompt_tokens') if usage else None}, completion={usage.get('completion_tokens') if usage else None}")
                 log_message(run_log, {"role": "assistant", "day": day, "phase": "strategy", "turn": strategy_turns, "content": full_content, "full_content": full_content, "final_content": final_content, "reasoning": reasoning_content, "tool_calls": tool_calls_list})
+                _rep = detect_repetition(full_content)
+                if _rep:
+                    print(f"[重复输出] Day {day} strategy turn {strategy_turns}: {_rep}")
+                    log_message(run_log, {"role": "system", "day": day, "phase": "strategy", "turn": strategy_turns, "message": f"degenerate output detected: {_rep}", "repetition": _rep})
 
                 if parse_method_tag == "native" and native_tool_calls:
                     strategy_messages.append({
@@ -1018,12 +1264,12 @@ def run_strategy_execute_loop(
                         strategy_messages.extend(tool_result_messages)
                         log_message(run_log, {"role": "user", "day": day, "phase": "strategy", "turn": strategy_turns, "content": safe_dump(tool_result_messages), "parse_method": parse_method_tag})
                     elif user_message:
-                        strategy_messages.append({"role": "user", "content": user_message})
+                        append_user_message(strategy_messages, user_message)
                         log_message(run_log, {"role": "user", "day": day, "phase": "strategy", "turn": strategy_turns, "content": user_message, "parse_method": parse_method_tag})
                     else:
-                        strategy_messages.append({"role": "user", "content": "No valid tool call detected. Continue analysis."})
+                        append_user_message(strategy_messages, "No valid tool call detected. Continue analysis.")
                 else:
-                    strategy_messages.append({"role": "user", "content": "No valid tool call detected. Continue analysis."})
+                    append_user_message(strategy_messages, "No valid tool call detected. Continue analysis.")
 
                 write_log_json_array(log_path, run_log)
 
@@ -1080,6 +1326,7 @@ def run_strategy_execute_loop(
 
         # 执行阶段独立的 messages 列表
         execution_messages = []
+        execution_ratio: Optional[float] = None
 
         # 执行阶段循环
         while not execution_phase_complete and execution_turns < max_execution_turns_per_day:
@@ -1087,16 +1334,15 @@ def run_strategy_execute_loop(
             global_turn += 1
             
             try:
-                if input_tokens > max_input_tokens:
-                    assistant_idxs = [i for i, m in enumerate(execution_messages) if m.get("role") == "assistant"]
-                    if len(assistant_idxs) >= 3:
-                        execution_messages = execution_messages[assistant_idxs[2]:]
-                        assert execution_messages[0]['role'] == 'assistant'
-                    elif len(assistant_idxs) >= 2:
-                        execution_messages = execution_messages[assistant_idxs[1]:]
-                        assert execution_messages[0]['role'] == 'assistant'
+                execution_messages = fit_history(
+                    execution_messages,
+                    _msg_chars(execution_system_msg) + _msg_chars(execution_user_msg),
+                    max_input_tokens,
+                    measured_ratio=execution_ratio,
+                )
                 
                 request_messages = [execution_system_msg] + [execution_user_msg] + execution_messages
+                _req_chars = sum(_msg_chars(m) for m in request_messages)
                 
                 try:
                     full_content, final_content, reasoning_content, aggregated_calls, usage = stream_chat(
@@ -1111,7 +1357,7 @@ def run_strategy_execute_loop(
                     print(f"[严重错误] {err_msg}")
                     log_message(run_log, {"role": "error", "day": day, "phase": "execution", "turn": execution_turns, "message": err_msg, "error_type": type(stream_exc).__name__})
                     write_log_json_array(log_path, run_log)
-                    execution_messages.append({"role": "user", "content": f"System error: {err_msg}. Continue."})
+                    append_user_message(execution_messages, f"System error: {err_msg}. Continue.")
                     continue
 
                 parse_method_tag = "none"
@@ -1159,6 +1405,9 @@ def run_strategy_execute_loop(
 
                 log_message(run_log, {"role": "usage", "day": day, "phase": "execution", "turn": execution_turns, "prompt_tokens": usage.get("prompt_tokens") if usage else None, "completion_tokens": usage.get("completion_tokens") if usage else None, "total_tokens": usage.get("total_tokens") if usage else None})
                 input_tokens = usage.get("prompt_tokens") if usage else input_tokens
+                # Calibrate chars-per-token from this run's own traffic (see fit_history).
+                if usage and usage.get("prompt_tokens") and _req_chars:
+                    execution_ratio = _req_chars / float(usage["prompt_tokens"])
                 # 累计 token 统计（总累计和当天累计）
                 if usage:
                     prompt_tokens = usage.get("prompt_tokens", 0)
@@ -1172,6 +1421,10 @@ def run_strategy_execute_loop(
                     day_tokens += tokens
                 print(f"[Day {day} Execution Turn {execution_turns}] tokens: prompt={usage.get('prompt_tokens') if usage else None}, completion={usage.get('completion_tokens') if usage else None}")
                 log_message(run_log, {"role": "assistant", "day": day, "phase": "execution", "turn": execution_turns, "content": full_content, "full_content": full_content, "final_content": final_content, "reasoning": reasoning_content, "tool_calls": tool_calls_list})
+                _rep = detect_repetition(full_content)
+                if _rep:
+                    print(f"[重复输出] Day {day} execution turn {execution_turns}: {_rep}")
+                    log_message(run_log, {"role": "system", "day": day, "phase": "execution", "turn": execution_turns, "message": f"degenerate output detected: {_rep}", "repetition": _rep})
 
                 if parse_method_tag == "native" and native_tool_calls:
                     execution_messages.append({
@@ -1273,18 +1526,21 @@ def run_strategy_execute_loop(
                     if parse_method_tag == "native":
                         execution_messages.extend(tool_result_messages)
                         if not execution_phase_complete:
-                            execution_messages.append({"role": "user", "content": "Continue operations. Call end_today when done."})
+                            append_user_message(execution_messages, "Continue operations. Call end_today when done.")
                         log_message(run_log, {"role": "user", "day": day, "phase": "execution", "turn": execution_turns, "content": safe_dump(tool_result_messages), "parse_method": parse_method_tag})
                     elif user_message:
-                        execution_messages.append({"role": "user", "content": user_message})
+                        # One user turn, not two.  Appending the tool output and the
+                        # nudge separately produced back-to-back user messages, which
+                        # most training pipelines reject outright.
+                        content = user_message
                         if not execution_phase_complete:
-                            note = '[Note: Use <tool_call> tags] ' if parse_method_tag == "json" else ''
-                            execution_messages.append({"role": "user", "content": f"{note}Continue operations. Call end_today when done."})
+                            content += "Continue operations. Call end_today when done."
+                        append_user_message(execution_messages, content)
                         log_message(run_log, {"role": "user", "day": day, "phase": "execution", "turn": execution_turns, "content": user_message, "parse_method": parse_method_tag})
                     else:
-                        execution_messages.append({"role": "user", "content": "No valid tool call detected. Continue or call end_today."})
+                        append_user_message(execution_messages, "No valid tool call detected. Continue or call end_today.")
                 else:
-                    execution_messages.append({"role": "user", "content": "No valid tool call detected. Continue or call end_today."})
+                    append_user_message(execution_messages, "No valid tool call detected. Continue or call end_today.")
 
                 write_log_json_array(log_path, run_log)
                 
@@ -1303,7 +1559,7 @@ def run_strategy_execute_loop(
                 
                 if isinstance(exc, KeyError) and 'arguments' in str(exc):
                     print("[警告] 工具调用格式错误，但尝试继续执行...")
-                    execution_messages.append({"role": "user", "content": f"Previous tool call had format error: {err_msg}. Please retry with correct format."})
+                    append_user_message(execution_messages, f"Previous tool call had format error: {err_msg}. Please retry with correct format.")
                     continue
                 else:
                     print("[停止] 遇到严重错误，停止执行")
@@ -1514,8 +1770,8 @@ def main() -> None:
         config["log_dir"]          = str(agent_dir)        # MUST be set before RetailEnvironment(config)
         config["order_record_dir"] = str(agent_dir / "order_records")
 
-        (agent_dir / "dataset.json").write_text(json.dumps(ds, indent=2))
-        (agent_dir / "config.json").write_text(json.dumps(config, indent=2))
+        (out / "dataset.json").write_text(json.dumps(scrub_host_paths(ds), indent=2))
+        (out / "config.json").write_text(json.dumps(scrub_host_paths(config), indent=2))
 
         args.max_days = args.max_days or 180
         env_log_path = str(agent_dir)
@@ -1566,7 +1822,7 @@ def main() -> None:
         }
         args_file = Path(env_log_path) / "args.json"
         with args_file.open("w", encoding="utf-8") as f:
-            json.dump(args_dict, f, ensure_ascii=False, indent=2, default=str)
+            json.dump(scrub_host_paths(args_dict), f, ensure_ascii=False, indent=2, default=str)
         print(f"[INFO] Saved command line arguments to {args_file}")
     except Exception as exc:  # noqa: BLE001
         print(f"[WARN] Failed to write args to log dir {env_log_path}: {exc}")

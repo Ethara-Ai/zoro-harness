@@ -32,7 +32,12 @@ _LOG = logging.getLogger(__name__)
 UPSTREAM_DEFAULT = "https://chatgpt.com/backend-api/wham"
 RESPONSES_PATH = "/responses"
 
-_VALID_REASONING_EFFORTS = {"low", "medium", "high"}
+# Probed live against the wham /responses backend: xhigh and max are both
+# accepted and produce materially more reasoning than high (294 / 279 chars vs
+# 124 at high, 90 at medium on the same prompt).  The previous {low, medium,
+# high} set silently downgraded anything above `high` to medium, capping the
+# gpt half of the corpus below what the provider actually supports.
+_VALID_REASONING_EFFORTS = {"low", "medium", "high", "xhigh", "max"}
 DEFAULT_MODEL = "gpt-5.6-sol"
 
 CODEX_CLI_ORIGINATOR = "codex_cli_rs"
@@ -101,8 +106,50 @@ def _upstream_base() -> str:
 
 
 def _default_reasoning_effort() -> str:
-    v = (os.environ.get("ZORO_CX_DEFAULT_REASONING_EFFORT") or "medium").strip().lower()
+    v = (os.environ.get("ZORO_CX_DEFAULT_REASONING_EFFORT") or "max").strip().lower()
     return v if v in _VALID_REASONING_EFFORTS else "medium"
+
+
+_VALID_REASONING_SUMMARIES = {"auto", "concise", "detailed"}
+
+
+def _default_reasoning_summary() -> str | None:
+    """Which reasoning summary to ask for, or None to omit the field entirely.
+
+    Requesting a summary is what makes the provider return reasoning text at all;
+    omitting it is why the shipped corpus has empty reasoning_content everywhere.
+    But an unsupported value makes upstream reject *every* request, so this stays
+    a one-variable kill switch: set ZORO_CX_REASONING_SUMMARY="" (or "off"/"none")
+    to fall back to the previous effort-only behaviour without a code change.
+    """
+    raw = os.environ.get("ZORO_CX_REASONING_SUMMARY")
+    if raw is None:
+        return "auto"
+    v = raw.strip().lower()
+    if v in ("", "off", "none", "false", "0"):
+        return None
+    if v not in _VALID_REASONING_SUMMARIES:
+        _LOG.warning("invalid ZORO_CX_REASONING_SUMMARY %r; using auto", raw)
+        return "auto"
+    return v
+
+
+def _client_option(body: dict[str, Any], key: str) -> Any:
+    """Read a non-standard client option from an OpenAI-shaped request body.
+
+    The OpenAI SDK *flattens* ``extra_body={...}`` into the top level of the JSON
+    request -- there is no ``extra_body`` key on the wire.  Reading only
+    ``body["extra_body"][key]`` therefore never matched, which is why every run in
+    the corpus has empty reasoning_content: the enable_thinking gate never opened,
+    so reasoning was never requested from upstream at all.  Check the top level
+    first and keep the nested form as a fallback for callers that post raw JSON.
+    """
+    if key in body:
+        return body.get(key)
+    extra = body.get("extra_body")
+    if isinstance(extra, dict):
+        return extra.get(key)
+    return None
 
 
 def _timeout(streaming: bool = False) -> httpx.Timeout:
@@ -333,26 +380,33 @@ def translate_openai_to_responses(body: dict[str, Any]) -> dict[str, Any]:
     if body.get("stream"):
         out["stream"] = True
 
-    extra = body.get("extra_body") or {}
-    if isinstance(extra, dict):
-        want_reasoning = bool(extra.get("enable_thinking"))
-        effort_override = extra.get("reasoning_effort")
-        if want_reasoning or effort_override:
-            if not _model_supports_reasoning(model):
-                _LOG.warning(
-                    "reasoning requested for %s which does not support it; dropping",
-                    model,
-                )
-            else:
-                effort = (
-                    str(effort_override).strip().lower()
-                    if effort_override
-                    else _default_reasoning_effort()
-                )
-                if effort not in _VALID_REASONING_EFFORTS:
-                    _LOG.warning("invalid reasoning_effort %r; using medium", effort)
-                    effort = "medium"
-                out["reasoning"] = {"effort": effort}
+    want_reasoning = bool(_client_option(body, "enable_thinking"))
+    effort_override = _client_option(body, "reasoning_effort")
+    if want_reasoning or effort_override:
+        if not _model_supports_reasoning(model):
+            _LOG.warning(
+                "reasoning requested for %s which does not support it; dropping",
+                model,
+            )
+        else:
+            effort = (
+                str(effort_override).strip().lower()
+                if effort_override
+                else _default_reasoning_effort()
+            )
+            if effort not in _VALID_REASONING_EFFORTS:
+                _LOG.warning("invalid reasoning_effort %r; using medium", effort)
+                effort = "medium"
+            out["reasoning"] = {"effort": effort}
+            # summary is required for the provider to emit
+            # response.reasoning_summary_text.* events.  Without it the model
+            # still reasons (and we are still billed for it) but nothing comes
+            # back, so reasoning_content stays empty for the whole run.
+            summary = _client_option(body, "reasoning_summary")
+            if summary is None:
+                summary = _default_reasoning_summary()
+            if summary:
+                out["reasoning"]["summary"] = summary
 
     if "reasoning" not in out:
         if body.get("temperature") is not None:
