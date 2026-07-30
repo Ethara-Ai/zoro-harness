@@ -1505,16 +1505,21 @@ def main() -> None:
         else:
             out = _pick_next_run_dir(model_dir)
 
-        config = dict(ds)                            # flat schema — dataset IS the env_config
-        config["log_dir"]          = str(out)        # MUST be set before RetailEnvironment(config)
-        config["order_record_dir"] = str(out / "order_records")
+        agent_dir = out / "agent"
+        verifier_dir = out / "verifier"
+        agent_dir.mkdir(parents=True, exist_ok=True)
+        verifier_dir.mkdir(parents=True, exist_ok=True)
 
-        (out / "dataset.json").write_text(json.dumps(ds, indent=2))
-        (out / "config.json").write_text(json.dumps(config, indent=2))
+        config = dict(ds)                                  # flat schema — dataset IS the env_config
+        config["log_dir"]          = str(agent_dir)        # MUST be set before RetailEnvironment(config)
+        config["order_record_dir"] = str(agent_dir / "order_records")
+
+        (agent_dir / "dataset.json").write_text(json.dumps(ds, indent=2))
+        (agent_dir / "config.json").write_text(json.dumps(config, indent=2))
 
         args.max_days = args.max_days or 180
-        env_log_path = str(out)
-        log_path = out / "run_env.json"
+        env_log_path = str(agent_dir)
+        log_path = agent_dir / "run_env.json"
     else:
         # existing --config_type path — COMPLETELY UNCHANGED
         if args.config_type == "dynamic_hard":
