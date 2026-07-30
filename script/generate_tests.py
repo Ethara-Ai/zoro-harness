@@ -86,7 +86,19 @@ These are true of every RetailBench task. Get them right or your checks will be 
 - **Cannibalization**: crowding a category with similar SKUs splits their demand (this is `category_effect`, NOT price elasticity). Deliberate pruning to fewer SKUs can be correct.
 - **Capacity is soft**: over the ~6000 shelf limit, units queue in a non-selling back room (tie up cash), never rejected — so an on-shelf "<= capacity" check is **vacuous; do not emit it**. Capacity harm shows up as spoilage / locked cash (a diagnostic).
 - **Bankruptcy**: the evaluated run is shut down after cash stays negative for 5 consecutive days. Do NOT emit a "funds >= 0 every day" check (a competent run may dip briefly).
-- **Tools**: the environment exposes a fixed 23-tool registry (list it as a module constant `VALID_TOOLS`, used by the valid-tools process check).
+- **Tools**: the environment exposes a fixed 19-tool registry. Emit this as a module constant `VALID_TOOLS` (used by the valid-tools process check) — copy the names verbatim, do NOT invent or omit any:
+
+  ```python
+  VALID_TOOLS = (
+      "place_order", "modify_sku_price", "end_today",
+      "view_current_orders", "view_sku_sales_history",
+      "view_current_date_supplier_prices", "view_supplier_price_history",
+      "view_inventory", "view_sku_reviews", "view_sku_avg_ratings",
+      "view_return_rates", "view_returns", "view_funds_and_date",
+      "view_sku_prices", "view_today_news", "view_news_detail",
+      "view_news_history", "add_note", "view_notes",
+  )
+  ```
 
 ---
 
@@ -125,6 +137,27 @@ The `thresholds` fixture is the parsed `tests/thresholds.json` (a dict). Read ev
 
 ---
 
+## 5b. Tool argument schemas (the exact keys inside `call.args`)
+
+Every `Call` in `snapshot.tool_calls_by_day[day]` has `.args: dict`. Copy these key names verbatim; do NOT guess or shorten. The check roster reads these keys:
+
+- `place_order`: `supplier_id: str`, `items: list[{sku_id: str, quantity: int}]`
+- `modify_sku_price`: `sku_id: str`, `new_price: float`
+- `view_current_date_supplier_prices`: `sku_ids: list[str]`  (NOT `"sku"`, NOT `"sku_id"` — always the PLURAL LIST key)
+- `view_supplier_price_history`: `sku_ids: list[str]`, `start_date: str`, `end_date: str`
+- `view_sku_sales_history`: `sku_ids: list[str]`, `start_date: str`, `end_date: str`
+- `view_sku_prices`: `sku_ids: list[str]`
+- `view_return_rates` / `view_returns` / `view_sku_reviews`: `sku_ids: list[str]`, `start_date: str`, `end_date: str`
+- `view_sku_avg_ratings`: `sku_ids: list[str]`
+- `view_inventory`, `view_current_orders`, `view_funds_and_date`, `end_today`, `view_notes`, `view_today_news`: no args (empty dict)
+- `add_note`: `content: str`
+- `view_news_detail`: `news_id: str`
+- `view_news_history`: `start_date: str`, `end_date: str`
+
+For coverage checks (`supplier_board_before_order`), extract SKUs from `call.args.get("sku_ids", [])` (always a LIST — union with `str()` normalization) before subset-checking against `order.skus`. Reading the wrong key silently yields an empty set and 0.00% coverage.
+
+---
+
 ## 6. The `@pytest.mark.check` marker
 
 ```python
@@ -146,7 +179,7 @@ def test_supplier_board_before_order(snapshot, thresholds):
 Emit these checks (adapt the specific behaviours to what THIS task's TRUTH.md requires; drop a process check only if TRUTH.md shows the behaviour is genuinely not applicable to the task, and say so in a comment). All numeric thresholds are read from the `thresholds` fixture keys shown.
 
 **Integrity (kind="outcome", weight 0):**
-- `integrity_config_matches_frozen_task` — compare `snapshot.config` scalars (`initial_funds, everyday_rent, inventory_capacity, global_random_seed, enable_review, enable_new`) to `thresholds["config"]`; a required field absent from the loader → `raise RuntimeError`; a value mismatch → `assert`-fail (EXCLUDE). Compare `selected_categories` representation-normalized ('_' vs ' '). Do NOT fingerprint `days_requested` (it is a run-level parameter, not a config field — fingerprinting it would exclude every run).
+- `integrity_config_matches_frozen_task` — compare `snapshot.config` scalars (`initial_funds, everyday_rent, inventory_capacity, global_random_seed, enable_review, enable_new`) to `thresholds["config"]`; a required field absent from the loader → `raise RuntimeError`; a value mismatch → `assert`-fail (EXCLUDE). For categories: `snapshot.config.selected_categories` is a LIST; the frozen list to compare against lives at `thresholds["config"]["selected_categories_list"]` (NOT `thresholds["config"]["selected_categories"]`, which is an int count and MUST NOT be iterated). Compare representation-normalized ('_' vs ' '). Do NOT fingerprint `days_requested` (it is a run-level parameter, not a config field — fingerprinting it would exclude every run).
 - `integrity_readable_complete` — the trajectory parsed and the pinned terminal net worth is a finite real number, else `raise RuntimeError`. This is a file-completeness gate, NOT a survival gate: a legitimately bankrupt-early run is a money loser, not an exclude.
 
 **Money outcome (kind="outcome", weight 0):**
@@ -453,13 +486,6 @@ def main() -> int:
     tests_dir.mkdir(parents=True, exist_ok=True)
     output_path.write_text(content if content.endswith("\n") else content + "\n")
     print(f"[generate_tests] wrote {output_path} ({len(content.splitlines())} lines)", file=sys.stderr)
-
-    conftest_path = tests_dir / "conftest.py"
-    if not conftest_path.exists():
-        conftest_path.write_text("from evaluation.conftest import *  # noqa: F401,F403\n")
-        print(f"[generate_tests] wrote {conftest_path}", file=sys.stderr)
-    else:
-        print(f"[generate_tests] conftest.py already exists at {conftest_path}, leaving in place", file=sys.stderr)
 
     return 0
 
