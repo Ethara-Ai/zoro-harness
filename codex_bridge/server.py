@@ -549,6 +549,7 @@ async def _translate_stream(
     *,
     prebuffered: bytes = b"",
     provider: ProviderLike | None = None,
+    token: str | None = None,
 ) -> AsyncIterator[bytes]:
     chunk_id = f"chatcmpl-{uuid.uuid4().hex}"
     created = int(time.time())
@@ -586,7 +587,7 @@ async def _translate_stream(
                 cls.kind, cls.error_type, cls.message,
             )
             if provider is not None:
-                await _apply_classification(provider, cls)
+                await _apply_classification(provider, cls, token)
             payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
             payload["choices"] = [{
                 "index": 0,
@@ -737,7 +738,7 @@ async def _translate_stream(
             msg = (err or {}).get("message") if isinstance(err, dict) else None
             cls = Classification("transient", 502, None, None, err_type, msg or "response failed", None)
             if provider is not None:
-                await _apply_classification(provider, cls)
+                await _apply_classification(provider, cls, token)
             payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
             payload["choices"] = [{
                 "index": 0,
@@ -777,7 +778,7 @@ async def _translate_stream(
                     "in-stream rate_limit_status: type=%s retry_after=%.0fs",
                     rl_cls.error_type, rl_cls.retry_after_s or 0.0,
                 )
-                await _apply_classification(provider, rl_cls)
+                await _apply_classification(provider, rl_cls, token)
 
             payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
             payload["choices"] = [{"index": 0, "delta": {}, "finish_reason": finish_reason}]
@@ -795,7 +796,7 @@ async def _translate_stream(
     )
     if provider is not None and not saw_completed:
         cls = Classification("transient", 502, 60.0, time.time() + 60.0, None, "stream truncated", None)
-        await _apply_classification(provider, cls)
+        await _apply_classification(provider, cls, token)
     if not sent_role:
         payload = _openai_chunk_skeleton(chunk_id, created, requested_model)
         payload["choices"] = [{"index": 0, "delta": {"role": "assistant"}, "finish_reason": None}]
@@ -811,14 +812,22 @@ async def _get_token(provider: ProviderLike) -> str:
     return await asyncio.to_thread(provider.get_access_token)
 
 
+async def _refresh_token(provider: ProviderLike, token: str | None = None) -> str:
+    """Refresh the account that issued *token* (pooled) or the only one there is."""
+    if isinstance(provider, MultiAccountCredentialProvider):
+        return await asyncio.to_thread(provider.refresh, token)
+    return await asyncio.to_thread(provider.refresh)
+
+
 async def _apply_classification(
     provider: ProviderLike,
     cls: Classification,
+    token: str | None = None,
 ) -> None:
     # `auth` intentionally not handled: only a failed OAuth refresh proves the token is dead.
     if isinstance(provider, MultiAccountCredentialProvider):
         if cls.kind == "cap":
-            provider.mark_exhausted(cls.retry_after_s or 300.0)
+            provider.mark_exhausted(cls.retry_after_s or 300.0, token)
     if cls.kind == "cap":
         provider.last_cap_reset_at = cls.reset_at_unix or (
             time.time() + (cls.retry_after_s or 300.0)
@@ -1055,16 +1064,16 @@ async def _handle_nonstream(
             return JSONResponse(_responses_to_openai_nonstream(final_response, requested_model))
 
         assert cls is not None
-        await _apply_classification(provider, cls)
+        await _apply_classification(provider, cls, access_token)
 
         if cls.kind == "auth" and not auth_retried:
             auth_retried = True
             tried_tokens.add(access_token)
             try:
-                await asyncio.to_thread(provider.refresh)
+                await _refresh_token(provider, access_token)
             except PermanentCredentialsError as e:
                 if isinstance(provider, MultiAccountCredentialProvider):
-                    provider.mark_invalid()
+                    provider.mark_invalid(access_token)
                     continue
                 return _openai_error_response(401, str(e), "authentication_error")
             except CredentialsError as e:
@@ -1182,7 +1191,7 @@ async def _handle_streaming(
 
             if head_state == "error" and head_cls is not None:
                 await stream_cm.__aexit__(None, None, None)
-                await _apply_classification(provider, head_cls)
+                await _apply_classification(provider, head_cls, access_token)
                 _LOG.info(
                     "pre-commit stream error: kind=%s type=%s msg=%s",
                     head_cls.kind, head_cls.error_type, head_cls.message,
@@ -1191,10 +1200,10 @@ async def _handle_streaming(
                     auth_retried = True
                     tried_tokens.add(access_token)
                     try:
-                        await asyncio.to_thread(provider.refresh)
+                        await _refresh_token(provider, access_token)
                     except PermanentCredentialsError as e:
                         if isinstance(provider, MultiAccountCredentialProvider):
-                            provider.mark_invalid()
+                            provider.mark_invalid(access_token)
                             continue
                         return _openai_error_response(401, str(e), "authentication_error")
                     except CredentialsError as e:
@@ -1219,7 +1228,7 @@ async def _handle_streaming(
                 await stream_cm.__aexit__(None, None, None)
                 _LOG.warning("upstream closed before response.created; treating as transient")
                 if isinstance(provider, MultiAccountCredentialProvider):
-                    provider.mark_exhausted(60.0)
+                    provider.mark_exhausted(60.0, access_token)
                     tried_tokens.add(access_token)
                 if buffer_retries < max_stream_retries and attempt < max_retries:
                     attempt += 1
@@ -1231,12 +1240,14 @@ async def _handle_streaming(
             provider.last_cap_reset_at = None
             committed_provider = provider
             committed_bytes = head_bytes
+            committed_token = access_token
 
             async def event_stream() -> AsyncIterator[bytes]:
                 try:
                     async for chunk in _translate_stream(
                         byte_iter, requested_model,
                         prebuffered=committed_bytes, provider=committed_provider,
+                        token=committed_token,
                     ):
                         yield chunk
                 finally:
@@ -1258,7 +1269,7 @@ async def _handle_streaming(
             await stream_cm.__aexit__(None, None, None)
 
         cls = classify_openai_error(upstream.status_code, body_bytes, upstream.headers)
-        await _apply_classification(provider, cls)
+        await _apply_classification(provider, cls, access_token)
         _LOG.info(
             "upstream stream error: status=%d kind=%s retry_after=%s",
             upstream.status_code, cls.kind, cls.retry_after_s,
@@ -1268,10 +1279,10 @@ async def _handle_streaming(
             auth_retried = True
             tried_tokens.add(access_token)
             try:
-                await asyncio.to_thread(provider.refresh)
+                await _refresh_token(provider, access_token)
             except PermanentCredentialsError as e:
                 if isinstance(provider, MultiAccountCredentialProvider):
-                    provider.mark_invalid()
+                    provider.mark_invalid(access_token)
                     continue
                 return _openai_error_response(401, str(e), "authentication_error")
             except CredentialsError as e:

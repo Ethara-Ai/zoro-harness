@@ -702,6 +702,11 @@ class MultiAccountCredentialProvider:
         self._lock = threading.Lock()
         self._last_used_index = 0
         self._cursor = 0
+        #: token -> slot index.  Cap/invalid feedback arrives *after* the
+        #: upstream call returns, by which point concurrent requests have moved
+        #: ``_last_used_index`` on; attributing by the token that was actually
+        #: rejected is the only way to bench the right account.
+        self._token_index: dict[str, int] = {}
         self.last_cap_reset_at: Optional[float] = None
         if state_path is None:
             env_path = os.environ.get("ZORO_CX_POOL_STATE_PATH")
@@ -801,6 +806,36 @@ class MultiAccountCredentialProvider:
             f"all {n} accounts exhausted; soonest reset in {delta:.0f}s"
         )
 
+    #: Upper bound on :attr:`_token_index` before it is rebuilt from the
+    #: tokens currently held by the slots.  Tokens only churn on OAuth
+    #: refresh, so this is generous.
+    _MAX_TOKEN_INDEX = 256
+
+    def _remember_token_locked(self, token: Optional[str], idx: int) -> None:
+        """Record which slot issued *token*.  Call with the lock held."""
+        if not token:
+            return
+        if len(self._token_index) >= self._MAX_TOKEN_INDEX:
+            self._token_index = {
+                s.last_token: i
+                for i, s in enumerate(self._slots)
+                if s.last_token
+            }
+        self._token_index[token] = idx
+
+    def _index_for_token_locked(self, token: Optional[str]) -> int:
+        """Slot that issued *token*, falling back to the last one selected.
+
+        The fallback only matters for a token this pool never handed out (or
+        one evicted by the rebuild above); it restores the previous, racy
+        behaviour rather than dropping the signal entirely.
+        """
+        if token:
+            idx = self._token_index.get(token)
+            if idx is not None and 0 <= idx < len(self._slots):
+                return idx
+        return self._last_used_index
+
     def get_access_token(self) -> str:
         for _ in range(len(self._slots)):
             with self._lock:
@@ -810,18 +845,17 @@ class MultiAccountCredentialProvider:
                 token = slot.provider.get_access_token()
                 with self._lock:
                     slot.last_token = token
+                    self._remember_token_locked(token, idx)
                 return token
             except CredentialsError:
                 with self._lock:
                     slot.invalid = True
         raise CredentialsError("no usable credentials: all account slots failed")
 
-    def refresh(self) -> str:
+    def refresh(self, token: Optional[str] = None) -> str:
         with self._lock:
-            if 0 <= self._last_used_index < len(self._slots):
-                slot = self._slots[self._last_used_index]
-            else:
-                slot = self._slots[0]
+            idx = self._index_for_token_locked(token)
+            slot = self._slots[idx] if 0 <= idx < len(self._slots) else self._slots[0]
         return slot.provider.refresh()
 
     def force_reload(self) -> None:
@@ -829,18 +863,20 @@ class MultiAccountCredentialProvider:
             for slot in self._slots:
                 slot.provider.force_reload()
 
-    def mark_exhausted(self, retry_after_s: float) -> None:
+    def mark_exhausted(self, retry_after_s: float, token: Optional[str] = None) -> None:
         until = time.time() + max(0.0, retry_after_s)
         with self._lock:
-            if 0 <= self._last_used_index < len(self._slots):
-                slot = self._slots[self._last_used_index]
+            idx = self._index_for_token_locked(token)
+            if 0 <= idx < len(self._slots):
+                slot = self._slots[idx]
                 slot.exhausted_until = max(slot.exhausted_until, until)
                 self._persist_state_locked()
 
-    def mark_invalid(self) -> None:
+    def mark_invalid(self, token: Optional[str] = None) -> None:
         with self._lock:
-            if 0 <= self._last_used_index < len(self._slots):
-                slot = self._slots[self._last_used_index]
+            idx = self._index_for_token_locked(token)
+            if 0 <= idx < len(self._slots):
+                slot = self._slots[idx]
                 slot.invalid = True
                 self._persist_state_locked()
 

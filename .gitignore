@@ -117,3 +117,6 @@ creds/**/*.json
 
 # Generated task datasets (reproducible via generator/generate_datasets.py --mode hardest)
 dataset/
+runs/
+trajectories/
+*.pid
