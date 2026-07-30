@@ -67,7 +67,7 @@ world_config    = "environment/dataset.json"
 submission      = "tool_calls.jsonl"
 
 [environment]
-# Graded on-host by zoro/eval/run_eval.py; Harbor's container engine is not used, so there is
+# Graded on-host by evaluation/run_eval.py; Harbor's container engine is not used, so there is
 # no Dockerfile and docker_image is intentionally omitted (defaults to None). allow_internet
 # documents that the LLM council reaches judge vendors.
 allow_internet = {allow_internet}
@@ -110,7 +110,7 @@ SOLVE_SH_TEMPLATE = """#!/usr/bin/env bash
 # The committed artifacts (tool_calls.jsonl, golden.json, metadata.json) in this directory
 # were produced by exactly this command; solve.sh is the reproducible recipe + Harbor's
 # oracle-agent sanity check. Threshold calibration additionally sweeps the policy knobs
-# (sample_size x bulk_qty_multiplier) at the SAME seed — see zoro/eval/thresholds.py.
+# (sample_size x bulk_qty_multiplier) at the SAME seed — see evaluation/thresholds.py.
 set -euo pipefail
 HARNESS=${{RETAILBENCH_HARNESS:-/opt/retailbench}}   # path to the harness install
 TASK_DIR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -127,7 +127,7 @@ python "$HARNESS/tools/run_oracle.py" \\
 
 TEST_SH_TEMPLATE = """#!/usr/bin/env bash
 # Harbor verifier entry point. Orchestrates the three verifier artifacts and writes the
-# Harbor reward contract. Verifier LOGIC lives in the shared zoro/eval library; this file
+# Harbor reward contract. Verifier LOGIC lives in the shared evaluation library; this file
 # is the thin, task-local composition point.
 set -uo pipefail
 
@@ -138,7 +138,7 @@ SUB="${{SUBMISSION:?set SUBMISSION to the agent run dir or its tool_calls.jsonl}
 OUT="${{VERIFIER_OUT:-$TASK_DIR/verifier}}"
 mkdir -p "$OUT"
 
-# ARTIFACT 1 — deterministic outcome + process pytest (imports zoro.eval fixtures).
+# ARTIFACT 1 — deterministic outcome + process pytest (imports evaluation fixtures).
 # Test failures are DATA, not errors -> never abort the verifier on non-zero pytest exit.
 pytest "$TESTS/test_outputs.py" -q \\
     --task-id {task_id} \\
@@ -149,9 +149,9 @@ pytest "$TESTS/test_outputs.py" -q \\
 
 # ARTIFACT 2 — non-deterministic LLM council (our own driver). Reads task-specific rubrics
 # from rubrics.json; the judge PANEL is the suite-wide shared config bundled with the package
-# (zoro/eval/council/judges.yaml) — not duplicated per task.
+# (evaluation/council/judges.yaml) — not duplicated per task.
 if [ "${{NO_COUNCIL:-0}}" != "1" ]; then
-  python -m zoro.eval.council.run_council \\
+  python -m evaluation.council.run_council \\
       --rubrics "$TESTS/rubrics.json" \\
       --truth   "$TASK_DIR/TRUTH.md" \\
       --traj-path "$SUB" \\
@@ -160,7 +160,7 @@ if [ "${{NO_COUNCIL:-0}}" != "1" ]; then
 fi
 
 # ARTIFACT 3 — aggregate to the Harbor reward contract (reward.json + scalar reward.txt).
-python -m zoro.eval.aggregate \\
+python -m evaluation.aggregate \\
     --test-results    "$OUT/test_results.json" \\
     --council-results "$OUT/council_results.json" \\
     --weights "$TESTS/thresholds.json" \\
