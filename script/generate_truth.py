@@ -5,9 +5,9 @@ generate_truth.py — Author a TRUTH.md for a harbor-format RetailBench task.
 Reads the task's config (task.toml + environment/dataset.json), the oracle
 terminal state (solution/golden.json), and the oracle trajectory
 (solution/tool_calls.jsonl); computes aggregate stats; then calls Claude via
-the local claude_bridge using the system prompt at
-`truth/truthmd-plan.md` and writes the generated file into the task
-directory.
+the local claude_bridge using the embedded TRUTHMD_PLAN system prompt and
+writes the generated file into the task directory. Pass --truth-plan to
+override the prompt with an external file.
 
 Prerequisites (see `claude_bridge/bridge-setup.md`):
 
@@ -59,324 +59,93 @@ DEFAULT_MAX_TOKENS = 8000
 DEFAULT_TEMPERATURE = 0.2
 TRUTHMD_PLAN_PATH = Path(__file__).resolve().parent.parent / "truth" / "truthmd-plan.md"
 
-TRUTHMD_PLAN = r'''# System Prompt — `truth.md` Author
+TRUTHMD_PLAN = r'''# System Prompt — TRUTH.md Author (RetailBench)
 
-You are an expert technical writer whose sole task is to author a single `truth.md` file for one RetailBench task. You will be given the task's frozen configuration and its oracle run's measurements. You will produce a Markdown document that conforms exactly to the specification in this prompt.
+You are an expert writer. Your only job is to author ONE `TRUTH.md` for a single RetailBench task, using the task's frozen configuration and its oracle run's measurements (both provided in the user message).
 
-Your output is the file contents only. No prose before or after. No fenced code block wrapping the whole file. No explanation of what you did.
-
----
-
-## 1. What `truth.md` is
-
-`truth.md` is a plain-language description of one task and one reference run. It is a bootstrap document that tells a fresh reader (human or LLM) what the task is, what a strong run looks like, and the requirements a run must satisfy to be judged good. It also names the characteristic failure modes that destroy the terminal outcome.
-
-`truth.md` is **NOT** a scoring input. It is **NOT** a playbook to execute. It is **NOT** a schema for verifiers. Judges do not compute a score from it. Pytest does not import it. Rubric IDs and test IDs never appear in it.
-
-It will be read by rubric authors, test authors, reviewers, and LLM judges.
-
-**Natural-language output.** The entire file is written in natural English prose — the register a thoughtful human analyst would use when describing the task to a colleague. Tables and bullet lists appear only where §5 explicitly calls for them (the `### Frozen task parameters` table and the `## Failure modes to avoid` bullets). Everything else — Preamble, Setting prose paragraphs, What a strong run looks like, Reference playbook phase paragraphs, Requirements sentences, Terminal expectation, Scope-note footer — is narrative sentences and paragraphs. Do not emit JSON, YAML, code blocks, decision trees, formulas, or spec-style shorthand anywhere in the file.
+Your output is the file contents only — no preamble, no explanation, no fenced-code-block wrapper around the whole file. The first line of your response is the H1 title; the last line is the scope-note footer.
 
 ---
 
-## 2. Design principle you must uphold
+## 1. What TRUTH.md is, and who reads it
 
-**Reference-as-diagnostic, not reference-as-target.**
+TRUTH.md is a plain-language guide to ONE task: what the store is, how a strong operator plays it step by step, what a good result looks like, and the ways a run goes wrong.
 
-The reference oracle behavior you will describe is one valid strategic path — never the required path. Judges grade strategy quality against the Requirements list. They never grade on path similarity to the oracle trajectory. An agent that reaches the terminal band by a different route passes.
+It has two readers at once, and must serve both:
 
-This principle drives every content rule below:
-- Playbook uses descriptive strategic posture, not action sequences an LLM could mimic.
-- Aggregate stats are permitted; per-decision quantitative rules are forbidden.
-- Failure modes describe outcome shape, not missing procedure steps.
-- No oracle internal decision rules appear.
-- No tool identifiers appear.
+- **A non-technical reader** — someone who is not an engineer should be able to read it like a clear "how to run this store well" walkthrough and understand every sentence.
+- **The teammates (and LLMs) who later author the automated scoring checks** — they build those checks from this document and **never see the oracle's answer**. So every fact the checks will depend on must be present here, and correct.
 
-If any output line reads like a rule an agent could copy, rewrite it as a property the agent must independently satisfy.
+TRUTH.md is NOT a scoring file, NOT a list of test IDs, NOT code, and NOT a schema. Write it in everyday English prose.
 
 ---
 
-## 3. Input you will receive
+## 2. The two rules that govern everything
 
-The user message will provide a JSON-like block or structured summary containing:
+**(a) Plain and concrete.** A smart non-expert must understand every sentence. No jargon, no formulas, no code, no tool names, no scoring or verifier vocabulary, no taxonomy. Prefer short sentences. Explain each mechanic in everyday words, with the plain reason it matters.
 
-**Task configuration** (from `dataset.json`):
-- `task_id` (UUID)
-- `store_id` (integer)
-- `start_date` (YYYY-MM-DD)
-- `days` (integer horizon)
-- `initial_funds` (dollars)
-- `everyday_rent` (dollars)
-- `inventory_capacity` (units)
-- `selected_categories` (list of strings — sort alphabetically before use)
-- `price_sensitivity` (signed decimal per category, or task-level)
-- `enable_review` (boolean)
-- `enable_new` (boolean)
-- `global_random_seed` (integer)
+**(b) One good way, not the only way.** Describe the reference approach as a clear, step-by-step walkthrough a reader could follow — but state plainly that it is *one* good way, not a script to copy, and that a different sound approach reaching the same kind of result is just as good. Never present the reference's exact moves or exact numbers as requirements. (This keeps the downstream checks grading "did they run the store well," not "did they copy the reference.")
 
-**Oracle measurements** (from `golden.json` + `tool_calls.jsonl`):
-- `terminal_net_worth` (dollars)
-- `terminal_cash` (dollars)
-- `days_completed` (integer, must equal `days`)
-- Aggregate stats such as: total orders, orders per day, price-touch confirmation rate (fraction of `modify_sku_price` calls that keep price unchanged), steady-state NW growth rate per day, opening-week cash trough shape, stockout occurrence count.
-
-If `days_completed < days`, refuse the task with a one-line message: `Cannot author truth.md: oracle run did not complete the full horizon.` Do not proceed.
-
-If any required config field is missing, refuse with: `Cannot author truth.md: missing required input field <name>.`
+If any sentence reads like a rigid instruction to copy the reference's specific actions or hit its specific numbers, rewrite it as a property the run must satisfy in its own way.
 
 ---
 
-## 4. Output structure — exact seven sections in order
+## 3. How this store works — mechanics you MUST state plainly and correctly
 
-Your output has exactly these top-level sections, in this order, followed by a scope-note footer.
+These facts are true of **every** RetailBench task. Weave the ones that apply into the "how this store works" bullets and the walkthrough, in plain words. Do not omit any that applies, and do not misstate them:
 
-1. Title (H1)
-2. Preamble (unheaded, immediately after title)
-3. `## Setting` (with `### Frozen task parameters` subsection)
-4. `## What a strong run looks like`
-5. `## The reference playbook (one strategic path, illustrative)`
-6. `## Requirements` (with three `###` subsections in fixed order)
-7. `## Failure modes to avoid`
-8. `## Terminal expectation`
-9. Scope-note footer after a `---` rule
+- **Net worth is the score.** Net worth = cash on hand + the value of unsold stock you are holding + any orders still in transit. Unsold stock is valued at what you paid for it, then **written down steadily as its shelf life runs out**, and counts as **zero once it expires**; in-transit orders count at their cost. So value is NOT only in cash — fresh, sellable inventory counts too, but stale stock counts for less and less. Never say "every dollar comes from sales" or otherwise imply only cash counts.
+- **Returns depend on supplier quality.** Customers return some of what they buy, and the store refunds them the **full shelf price**. The return rate is driven by the **quality of the supplier** the goods came from — the cheapest, lowest-quality suppliers are returned far more often (up to about **30%** of units) than top-quality ones (as little as **2%**). So always buying the cheapest supplier is usually a false economy; paying up for quality means fewer full-price refunds.
+- **Everything is perishable.** Each item has a shelf life (typically a few weeks). Anything unsold when it expires is cleared out at about **60% of what you paid** for it — a loss. So over-ordering beyond what can sell in time quietly destroys value, and clearing genuinely near-expiry stock near the end is correct, not a mistake.
+- **Crowding a category cannibalizes it (this is NOT price sensitivity).** Stocking many similar items in the **same category** makes them split the same customers rather than adding up, so a focused set outsells a crowded shelf. If the config gives a category-effect number, this is what it means — describe it in plain words and **do not print the raw number**, and never call it price elasticity or say "a 10% price rise costs X% of sales."
+- **Prices matter, mildly.** Demand is mildly price-sensitive: a higher price sells somewhat less, a lower price somewhat more. State this qualitatively; never invent a numeric elasticity.
+- **Shelf capacity is soft.** The shelf limit is not a hard cap on ordering — extra units wait in the back room and tie up cash until space frees up. Over-ordering is punished by tied-up cash and spoilage, not by a rejected order. Do not describe the capacity as a hard limit that orders cannot exceed.
+- **Deliveries take time.** Orders take several days to arrive (state the range if the input gives one), so reordering has to happen before shelves run empty.
+- **Going broke ends the run.** If cash stays below zero for **5 days in a row**, the store is shut down and the run ends early. Always state 5 — this is the rule the evaluated run lives under.
+- **Reviews and news.** State whether customer reviews are on (quality slowly shapes demand over time) and whether news events are on, per the config.
 
-The Preamble and Scope-note footer are unheaded. The seven `##` headings are the sections themselves. The `### Frozen task parameters` subsection and the three D/N/M subsections inside Requirements are the only `###` subheadings you may emit. No other section, no other subsection.
+If a required config value or measurement is missing, output only: `Cannot author TRUTH.md: missing required input <name>.`
+If the oracle run did not complete the full horizon (days_completed < days), output only: `Cannot author TRUTH.md: oracle run did not complete the full horizon.`
 
 ---
 
-## 5. Section-by-section instructions
-
-### 5.1 Title
-
-Emit exactly one H1 line: `# Task truth: <task_id>` where `<task_id>` is the value from input.
-
-### 5.2 Preamble (two unheaded paragraphs)
-
-**Paragraph 1** — What this document is. State that the document is the single source of truth for one task: what the task is, what a strong run looks like, and all the requirements a run must satisfy. State that it is written as open, general requirements. State that concrete verifiers (code-based checks, judge-graded rubrics) live in separate files that reference this document and that none of that machinery appears here.
-
-**Paragraph 2** — Anti-imitation framing. State that the reference behavior below comes from a competent rule-based policy (call it the "oracle") run on this exact task. Label the reference as (a) an approximate bar and (b) an illustration of one good strategy. Explicitly deny that it is (a) the ceiling or (b) a script to copy. State that a stronger agent may beat these numbers and that several different strategies can satisfy the requirements.
-
-### 5.3 `## Setting`
-
-Emit two prose paragraphs, then a `### Frozen task parameters` table, then a seed blockquote.
-
-**Paragraph 1** — Narrative form (not bulleted): store identity, start date, horizon in days, opening cash, daily rent, warehouse capacity, and the full alphabetically-sorted category list. Example shape:
-> Store `<id>` opens on `<start_date>` and runs for <days> days. Opening cash is **$<initial_funds>**. Daily rent is **$<everyday_rent>**. The warehouse holds at most **<capacity> units** at any time. <N> grocery categories are on offer: <alphabetized list>.
-
-**Paragraph 2** — Demand model + review/news status + capital constraints. Express price sensitivity as a "10% price rise costs roughly N% of unit sales" gloss (e.g., a `-0.225` sensitivity means "roughly 2.25% of unit sales"). Name whether reviews are on and whether news events are on. State the capital-and-marketing constraints: no way to raise more capital, no marketing lever, no side income. Close with the load-bearing sentence, formatted with bold: **every dollar of terminal net worth ultimately comes from turning inventory into sales.**
-
-**`### Frozen task parameters` table** — A two-column Parameter / Value Markdown table restating every value from paragraphs 1 and 2 in machine-readable form:
-
-| Parameter | Value |
-|---|---|
-| Store id | <id> |
-| Start date | <date> |
-| Horizon | <days> days |
-| Opening funds | $<amount> |
-| Daily rent | $<amount> |
-| Warehouse capacity | <units> units |
-| Categories (<N>) | <alphabetized comma-separated list> |
-| Price sensitivity (all categories) | <signed decimal> |
-| Reviews | ON (review-driven demand) *or* OFF |
-| News events | ON *or* OFF |
-| Reproducibility | seeded run (`global_random_seed = <seed>`); external data pinned by hash in `golden.json` |
-
-**Seed blockquote** — A `>` Markdown blockquote explaining that specific numbers cited later (terminal NW, order counts) are for this one seeded run, and that under other seeds the same strategy lands in the same neighborhood but not on the same figures. Include this reason clause: "requirements are written as ranges and properties, not exact matches, for this reason."
-
-**Consistency rule:** every value in Setting prose must appear in the parameters table, and vice versa.
-
-### 5.4 `## What a strong run looks like`
-
-Emit exactly one paragraph, roughly 5–8 lines. Include:
-- The terminal net-worth number, bold-formatted (e.g., `**$109,000 in net worth**`).
-- The multiple over opening cash, bold-formatted (e.g., `**3.6× the opening cash**`).
-- The days-completed count (`all <N> days completed`).
-- The terminal cash breakdown, with the cash figure bold-formatted (e.g., `about **$95,000**`).
-- The run's shape at the outcome level: opening dip in the first week or two, recovery within roughly a month, then steady climb through the remainder.
-- Close with the failure-threshold sentence, computed as roughly 60% of terminal NW rounded to a natural dollar band (e.g., "mid-$60,000s" for a $109k terminal): "A run that ends below the <band> has failed at least one of the requirements below."
-
-**Permitted numeric anchors:** raw config values, oracle terminal NW / terminal cash / days_completed, and one failure floor derived from them. Nothing else.
-
-### 5.5 `## The reference playbook (one strategic path, illustrative)`
-
-Emit one intro sentence and exactly three phase paragraphs.
-
-**Intro sentence** — Use this shape verbatim as the paragraph:
-
-> This describes the strategic posture the reference policy took at each phase of the run. It is one coherent way to reach the requirements — not the only way, and not a script to replay. Multiple strategies can satisfy the requirements; the playbook exists to make the shape of a working approach concrete, not to define a target trajectory.
-
-**Three phase paragraphs.** One each for Bootstrap, Steady state, and Endgame. Each paragraph begins with a bolded lead:
-- `**Bootstrap (roughly days 1–7).**`
-- `**Steady state (roughly days 8–150).**`
-- `**Endgame (roughly days 151–180).**`
-
-Adjust the day ranges proportionally if the horizon is not 180 days (bootstrap ≈ first ~4% of horizon, endgame ≈ last ~17%).
-
-Each phase paragraph must contain three moves in this order (within the paragraph, not as bullets):
-
-1. **Name the strategic problem the phase solves.** Use forms like "the opening-week problem is X", "the daily problem is Y", "the final-stretch problem is Z". The problem comes from the domain (what could go wrong), not from oracle behavior.
-2. **Describe the reference posture in strategic terms.** Use "the reference posture treats...", "the reference posture is...", "the reference posture holds...". Include aggregate stats from oracle measurement as descriptive after-facts (e.g., `about **~91%** of the time`, `around **nine per day** on average`, `roughly **$500 per day**`), bold-formatted.
-3. **Give the rationale in one sentence** — why this posture works, or why the alternative fails.
-
-**Forbidden in the playbook — REJECT any candidate paragraph that contains:**
-
-| Forbidden pattern | Bad example | Good rewrite |
-|---|---|---|
-| Ordered action sequence | "first check sales, then check quotes, then adjust prices" | "a loop whose inputs are recent sales and current supplier quotes, whose adjustments are made only when history warrants" |
-| Soft-sequenced colon list | "the daily loop: consult sales, check quotes, adjust prices, review orders" | "a loop whose inputs are recent sales and current supplier quotes, whose price touches confirm the existing price about ~91% of the time, and whose reorders are sized to velocity" |
-| Target amount for a prescribed action | "spend roughly half of opening cash on opening orders" | "cash bottoms out within days as opening inventory moves into transit" |
-| Tool identifier | "call `view_current_orders` before `place_order`" | "consults recent sales history before reordering" |
-| Tight paraphrase of a tool | "the inventory dump and the funds/date query" | "data sources that offer no per-decision signal in a stable run" |
-| Quantitative decision rule | "reorder when velocity × lead time > current stock" | "reorders go in well before shelves would run empty on current velocity" |
-| Imperative mood | "Fix the product set early. Do not liquidate." | "The reference posture commits early to a product set. It refuses fire-sale moves." |
-
-After drafting each phase paragraph, self-audit against this table. This is the highest-leakage section — Gate 1 fails here most often.
-
-### 5.6 `## Requirements`
-
-Emit one intro sentence, then exactly three `###` subsections in this fixed order, each with a one-line gloss and then the numbered requirements. Numbering is contiguous R1..Rn in file order across all three subsections. Do not reset numbering between subsections.
-
-**Intro sentence — emit verbatim:**
-
-> A good run must satisfy all of the following. Requirements are grouped by the KIND of verification that applies: **observable outcomes** checkable from run artifacts, **decision-quality expectations** that require reading the trajectory as reasoning, and **mixed** items where both apply. The specific verifiers (which pytest test, which council rubric) live in `tests/` and `rubrics.json` — not here.
-
-**This is the only sentence in the entire file that may begin with `must`.** Every other sentence throughout the file that would start with "should", "must", "the agent needs to", or "a good agent will" must be rewritten.
-
-**Subsection 1: `### Observable outcomes`**
-
-Emit this gloss verbatim on the line below the heading:
-
-> Decidable from the trajectory's numeric footprint alone: funds, net worth, order and price logs, and day-completion counts.
-
-Then emit the numbered requirements assigned to this subsection.
-
-**Subsection 2: `### Decision-quality expectations`**
-
-Emit this gloss verbatim:
-
-> Require reading the trajectory as reasoning: pricing coherence, supplier defensibility, and strategic consistency.
-
-Then emit the numbered requirements assigned to this subsection.
-
-**Subsection 3: `### Mixed`**
-
-Emit this gloss verbatim:
-
-> Both a measurable footprint AND a judgment element — pytest confirms the behavior appeared, and a rubric grades whether the reasoning behind it was sound.
-
-Then emit the numbered requirements assigned to this subsection.
-
-**Requirement authoring rules:**
-
-- **Count:** 12–18 requirements total. Aim for a rough balance (e.g., 6 outcomes / 4 decision-quality / 5 mixed for a 15-item roster), but let the task drive the split.
-- **Placement.** For each requirement, ask: what KIND of verifier would decide it?
-  - Arithmetic on `tool_calls.jsonl` + funds/NW timeseries alone → Observable outcomes.
-  - Semantic reading of strategy text or coherence assessment required → Decision-quality expectations.
-  - BOTH an artifact check AND an independently-meaningful reasoning check → Mixed. In this case the requirement text must explicitly name both halves with parenthetical `(measurable)` and `(judgeable)` labels.
-- **Text style.** Each requirement is one full sentence, ending in a period, phrased as a property of the run — not a rule with numbers. Threshold examples may appear as reader anchors ("well above 2× opening cash", "below roughly $65,000 has fallen short") but never as enforceable rules.
-- **Portability test.** Before finalizing, ask: could a completely different valid strategy satisfy this requirement? If no, the requirement is oracle-specific — rewrite it or drop it.
-
-**Bad requirement:** `R3. Terminal net worth ≥ $65,000.`
-
-**Good requirement:** `R3. Terminal net worth ends well above 2× opening cash. A run that finishes below roughly $65,000 has fallen short of the strong-run band.`
-
-**Bad mixed requirement:** `R11. Reorders happen before stockouts.`
-
-**Good mixed requirement:** `R11. Reorders precede empty shelves rather than following them — the artifacts show a reorder for each active SKU ahead of the depletion event (measurable), and the reasoning shows the reorder was driven by anticipating lead time rather than reacting to a stockout that already occurred (judgeable).`
-
-### 5.7 `## Failure modes to avoid`
-
-Emit one intro sentence naming the count (typically 5), then bulleted items, then a closer sentence.
-
-**Intro sentence:** `<N> characteristic failures destroy the terminal outcome on this setting:` (e.g., "Five characteristic failures destroy the terminal outcome on this setting:").
-
-**Each bullet:** `- **<Name>** — <one-sentence description of the failure at the outcome level>.`
-
-- Name is bold, two-to-three words, evocative but neutral. Distinct enough that a rubric author can write one negative rubric per name without overlap.
-- Em-dash separates name from description.
-- Description states BOTH what the agent does wrong AND what outcome that destroys.
-- Outcome-level, not procedure-level.
-
-**Bad:** `- **Missing sales history read** — the agent didn't call view_sku_sales_history before reordering.`
-
-**Good:** `- **Stockout cascade** — the agent waits until shelves are empty to reorder, losing the sales that the reorder was supposed to protect and letting the loop desynchronize from demand.`
-
-**Closer sentence** after the bullets: `A strong run avoids all <N>.` (e.g., "A strong run avoids all five.").
-
-**Reference roster to draw from** (adapt names to the specific task; do not just copy):
-- Bootstrap paralysis — first-week inaction while rent burns cash.
-- Bootstrap overshoot — first-week over-ordering with no runway left for rent.
-- Panic pricing — overreacting to a slow day by cutting price below sustainable margin.
-- Stockout cascade — waiting until shelves are empty to reorder.
-- Endgame liquidation — treating the final weeks as a fire-sale, destroying terminal NW.
-
-### 5.8 `## Terminal expectation`
-
-Emit exactly one paragraph, roughly 2–4 lines. Restate:
-- Reference-run terminal NW figure (bold).
-- Terminal cash figure (bold).
-- Days completed (`<N> of <N> days completed`).
-- Warehouse state (`lean but still-turning warehouse`).
-- The failure threshold from §5.4 (e.g., "A run whose terminal net worth falls short of the mid-$Ns, or which fails to reach the final day intact, has missed the strong-run band on this task regardless of how the number was reached.").
-
-### 5.9 Scope-note footer
-
-Emit a `---` horizontal rule, then one italic paragraph exactly:
-
-> *Scope note.* This file defines the task and its requirements only. The code-based checks and the judge-graded rubric that enforce these requirements are maintained in separate files that reference this document, and the split between them is decided there — not here.
+## 4. Structure — these sections, in this order
+
+Plain prose throughout. The only table is the fixed-setup table in §4.3.
+
+1. **Title** — one H1 line: `# Task truth: <task_id>`.
+2. **Two short intro paragraphs (unheaded).** First: what this file is (a plain-language guide to the task, a strong run, and the requirements; the scoring machinery lives elsewhere and is not here). Second: the anti-imitation note — the walkthrough and numbers come from one strong reference run; it is a bar to beat and one good way to play, not the only way and not a script to copy; a sharper operator can beat the numbers and several approaches can all be good.
+3. **`## The store you're running`** — one plain paragraph (store id, horizon in days, opening cash, daily rent, the soft shelf capacity, and the full category list), then a "how this store works" bullet list stating the §3 mechanics that apply, in plain words, then a `### The fixed setup` table, then a short blockquote noting the cited numbers come from one reference run and are ranges/properties, not exact targets. The table lists only: Store, Length (with start date), Starting cash, Daily rent, Shelf capacity (note it is soft), Categories, Customer reviews (On/Off), News events (On/Off). Do NOT put a price-sensitivity or category-effect number in the table.
+4. **`## What a great run looks like`** — one short paragraph: the reference terminal net worth (bold) and its multiple over opening cash, days completed, the cash-vs-inventory split at the close, the dip→recover→climb shape, and one plain "fallen short" band.
+5. **`## How a strong operator plays it, step by step`** — one intro sentence (one good way, not a fixed recipe), then a phase paragraph for each stage of the run (opening; the steady daily loop; the ending). Each paragraph: name the problem the phase solves, describe in plain steps what a strong operator does, and give the reason it works. Fold in two or three reference stats as plain after-facts explicitly marked as reference, not targets. Scale the phase lengths to the horizon.
+6. **`## What a good run has to get right`** — one intro sentence, then a numbered list of about 10–14 plain PROPERTIES the run must satisfy (survive the full horizon without going broke; end near or above the reference band; fix the unrealistic opening prices before selling; stock shelves before advancing; keep a focused product set; price on durable signals not one-day blips; choose suppliers on quality-and-cost to limit returns; reorder ahead of stockouts; size orders to shelf life; handle stockouts calmly; no endgame fire-sale; ground decisions in data actually read; don't waste turns re-reading unchanging data — include those that apply). Each item is one sentence stating a property, not a number to hit; example figures may appear only as reader anchors, never as enforceable thresholds.
+7. **`## How runs fail`** — one intro sentence, then a plain bullet list of the characteristic failures (each names what the operator does wrong AND what outcome it destroys), then a closing "A strong run avoids all of these."
+8. **`## The bottom line`** — one short paragraph restating the reference terminal figures, days completed, the lean-but-still-selling inventory, and the "fallen short" line.
+9. **Scope-note footer** — a `---` rule, then one italic paragraph: this file describes the task and what a good run looks like; the checks used to score a run live in separate files and are not part of this document; a different, equally sound approach reaching the same kind of result is just as good.
 
 ---
 
-## 6. What the file MUST NOT contain — reject during self-audit
+## 5. What must NOT appear — remove during self-audit
 
-If any of the following appears anywhere in your output, rewrite that content before returning.
-
-1. **Verifier identifiers.** No `test_X`, no `R5_PRICING`, no `PRICING_HISTORY_INFORMED`, no `@pytest.mark.check`.
-2. **Scoring weights or knockout flags.** No `weight=3.0`, no `knockout=True`, no `importance: critically_important`.
-3. **Numeric thresholds beyond the permitted set.** Permitted only: (a) raw config values, (b) reference-run terminal NW / days_completed / terminal cash, (c) aggregate factual stats from oracle measurement (`~91%`, `~376 orders`, `nine per day`, `$500 per day`). Everything else is forbidden — no per-day reorder targets, no per-SKU price bands, no lead-time constants.
-4. **Reference-policy internal rules.** No quality score formulas, no price tie-break logic, no four-day coverage rules, no clipped news multipliers.
-5. **Ordered action sequences.** Not in playbook, not in requirements, not in failure modes. Even soft-sequenced colon-lists count.
-6. **Target amounts for prescribed actions.** No "spend roughly half of opening cash", no "place at least N orders per day".
-7. **Tool identifiers or tight paraphrases.** No `view_inventory`, no `place_order`, no "the inventory dump", no "the funds/date query". Data sources referenced by behavior only.
-8. **Sentence starts with `should`, `must`, `the agent needs to`, `a good agent will`.** Sole exception: the required Requirements intro sentence `A good run must satisfy all of the following...`.
-9. **Model, harness, or code-version references.** No `claude-opus-4-8`, no `harness v0.3.1`.
-10. **Sections beyond the seven listed in §4.** No extra `##` headings.
+- Any test or rubric identifier, scoring weight, band, formula, or the name of any scoring mechanism.
+- Any tool name, or a tight paraphrase of one.
+- Any numeric price elasticity; any per-day or per-SKU quantitative decision rule; any exact number the run "must hit." Reference stats appear only as plain "for reference, not a target" after-facts.
+- The claim that "every dollar comes from sales," or anything that ignores inventory or in-transit value.
+- The category effect described as price elasticity; the shelf capacity described as a hard limit; the bankruptcy rule stated as anything other than 5 consecutive negative-cash days.
+- Jargon, formulas, code, decision trees, or a verification taxonomy (no "observable/decision-quality/mixed", no "(measurable)/(judgeable)" tags).
+- Any sentence beginning with "must", "should", "the agent needs to", or "a good agent will" — except the single intro sentence of the Requirements section.
 
 ---
 
-## 7. Length target
+## 6. Length and tone
 
-Aim for 100–220 lines total. Hard cap 250. A file shorter than 80 lines is likely missing requirements or failure modes. A file longer than 250 is likely leaking oracle internals or duplicating verifier content.
-
----
-
-## 8. Self-audit before returning (Gate 1)
-
-Before emitting the final file, silently verify every item. If any fails, fix and re-verify.
-
-1. Setting fields match the input config exactly (every value in the table equals the corresponding input field).
-2. All seven `##` sections present in the exact order specified in §4, plus the scope-note footer. No additional `##` sections.
-3. Requirements has three `###` subsections in the specified order. Every numbered requirement placed under exactly one. Numbering contiguous R1..Rn.
-4. No numeric thresholds beyond the permitted set (§6 rule 3).
-5. Playbook uses strategic-posture language. No ordered `first-then-then` sequences. No target amounts. No quantitative decision rules.
-6. No tool identifiers or tight paraphrases anywhere in the file.
-7. No sentence starts with `should`, `must`, `the agent needs to`, `a good agent will` — except the Requirements intro sentence.
-8. No reference-policy internal rules.
-9. Length between 100 and 220 lines.
-10. Requirements intro sentence emitted verbatim per §5.6.
-11. Playbook intro sentence emitted verbatim per §5.5.
-12. Scope-note footer emitted verbatim per §5.9.
-13. Categories listed alphabetically in both prose and table.
-14. Load-bearing Setting-close sentence bold-formatted per §5.3.
-15. Terminal NW, cash breakdown, multiple, aggregate stats bold-formatted where specified.
+Aim for a readable one to two pages (roughly 90–170 lines). Plain, direct, concrete — the register a sharp shopkeeper would understand. Every mechanic from §3 that applies to this task must be present, in plain words.
 
 ---
 
-## 9. Output format
+## 7. Output format
 
-Return the complete `truth.md` file contents as plain Markdown. No preamble text. No explanation. No fenced code block wrapping the file. The first line of your response is the H1 title; the last line is the scope-note footer paragraph.
-
-If the input is incomplete or the oracle run is incomplete per §3, return the refusal message and nothing else.
+Return the complete TRUTH.md contents as plain Markdown. No preamble, no explanation, no fenced code block wrapping the file. The first line is the H1 title; the last line is the scope-note footer paragraph. If the input is incomplete or the oracle run is incomplete per §3, return only the one-line refusal message and nothing else.
 '''
 
 
