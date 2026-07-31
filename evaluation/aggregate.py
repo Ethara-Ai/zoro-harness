@@ -21,9 +21,9 @@ Signals:
                       loss-band floor 0.0 in any mean.
 
 Bands (Q = 0.7*P + 0.3*R, or Q = P when R is None):
-  EXCLUDE                                  -> no score
-  made money (horizon_pinned_nw > funds)   -> 0.55 + 0.40*O + 0.05*Q       [0.55 - 1.00]
-  lost money                               -> 0.40*clip(horizon_pinned_nw/funds,0,1) + 0.05*Q  [0.00 - 0.45]
+  EXCLUDE                                          -> no score
+  made money (horizon_pinned_net_worth > funds)    -> 0.55 + 0.40*O + 0.05*Q       [0.55 - 1.00]
+  lost money                                       -> 0.40*clip(horizon_pinned_net_worth/funds,0,1) + 0.05*Q  [0.00 - 0.45]
 """
 from __future__ import annotations
 
@@ -60,6 +60,28 @@ def _money_props(tests: list) -> dict:
     return (m or {}).get("properties", {}) or {}
 
 
+# Aliases exist because test_outputs.py is LLM-authored per task and the generator prompt
+# never pinned the exact key strings; the first entry is canonical (used for write-back).
+HORIZON_NW_KEYS = (
+    "horizon_pinned_net_worth",
+    "horizon_pinned_nw",
+    "final_net_worth_horizon_pinned",
+)
+PINNED_NW_KEYS = (
+    "pinned_net_worth",
+    "final_net_worth_pinned",
+    "final_net_worth",  # generators that reuse snapshot.final_net_worth as the pinned outcome
+    "terminal_net_worth",
+)
+
+
+def _first_present(props: dict, keys: tuple[str, ...]):
+    for k in keys:
+        if k in props:
+            return props[k]
+    return None
+
+
 def _rubric_R(council: dict | None) -> tuple[float | None, str]:
     if not council or council.get("council_status") != "ok":
         return None, "council_unavailable"
@@ -90,8 +112,8 @@ def aggregate(test_results: dict, council_results: dict | None, thresholds: dict
 
     props = _money_props(tests)
     O = props.get("money_outcome_O")
-    horizon_nw = props.get("horizon_pinned_net_worth")
-    pinned_nw = props.get("pinned_net_worth")
+    horizon_nw = _first_present(props, HORIZON_NW_KEYS)
+    pinned_nw = _first_present(props, PINNED_NW_KEYS)
 
     excluded, exclude_reason = _integrity_excluded(tests)
     P = _process_fraction(tests)
