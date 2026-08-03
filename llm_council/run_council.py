@@ -43,14 +43,18 @@ except Exception:  # pragma: no cover
 _HERE = Path(__file__).resolve().parent
 DEFAULT_PANEL = _HERE / "judges.yaml"
 
-# reasoning-model prefixes that REJECT the `temperature` param (Codex bridge server.py:52,
-# verified live: gpt-5.5 + temperature => HTTP 400). No temperature is sent to these.
-_REASONING_PREFIXES = ("gpt-5", "gpt-6", "o1", "o3", "o4", "codex")
+# Model prefixes that REJECT the `temperature` param. Codex reasoning models (gpt-5+/o-series/
+# codex) 400 on temperature; Anthropic deprecated it on claude-sonnet-5 and claude-opus-4-8.
+# Haiku-4-5 still accepts temperature and is intentionally excluded.
+_NO_TEMPERATURE_PREFIXES = (
+    "gpt-5", "gpt-6", "o1", "o3", "o4", "codex",
+    "claude-sonnet-5", "claude-opus-4-8",
+)
 
 
 def _is_reasoning_model(model: str) -> bool:
     m = (model or "").lower()
-    return any(m.startswith(p) for p in _REASONING_PREFIXES)
+    return any(m.startswith(p) for p in _NO_TEMPERATURE_PREFIXES)
 
 
 # ------------------------------------------------------------------ parsing (D5)
@@ -104,14 +108,39 @@ def load_panel(path: Path = DEFAULT_PANEL) -> dict:
     if yaml is None:
         raise RuntimeError("pyyaml is required to read judges.yaml")
     cfg = yaml.safe_load(path.read_text())
-    for req in ("panel", "bridges"):
+    for req in ("panel", "bridges", "judge_pool", "panels"):
         if req not in cfg:
             raise ValueError(f"judges.yaml missing '{req}'")
+    if "default" not in cfg["panels"]:
+        raise ValueError("judges.yaml 'panels' must define a 'default' entry")
     return cfg
 
 
+def resolve_panel(cfg: dict, trajectory_model: Optional[str]) -> tuple[list[dict], str]:
+    """Return (judges, panel_key) for a trajectory. Unmapped trajectory -> panels['default'].
+    Rejects banned models and any judge that would self-grade (model == trajectory_model)."""
+    panels = cfg["panels"]
+    pool = cfg["judge_pool"]
+    banned = set(cfg.get("banned") or [])
+    key: str = trajectory_model if (trajectory_model is not None and trajectory_model in panels) else "default"
+    judges: list[dict] = []
+    for jid in panels[key]:
+        if jid not in pool:
+            raise ValueError(f"panel '{key}' references undefined judge_pool id '{jid}'")
+        entry = pool[jid]
+        model = entry["model"]
+        if model in banned:
+            raise ValueError(f"panel '{key}' judge '{jid}' uses banned model '{model}'")
+        if trajectory_model and model == trajectory_model:
+            raise ValueError(
+                f"panel '{key}' judge '{jid}' would self-grade "
+                f"(model={model!r} == trajectory_model)")
+        judges.append({"id": jid, **entry})
+    return judges, key
+
+
 def _bridge_base(b: dict) -> str:
-    return os.environ.get(b.get("base_url_env", ""), b["default_base_url"])
+    return os.environ.get(b.get("base_url_env", ""), b["default_base_url"]) or b["default_base_url"]
 
 
 # ------------------------------------------------------------------ per-bridge concurrency (D7)
@@ -210,7 +239,7 @@ def call_one(number: str, judge: dict, prompt: str, panel: dict, bridges: dict,
                     "number": number, "model": judge["id"],
                     "verdict": coerce_verdict(obj.get("verdict")),
                     "confidence": float(obj.get("confidence", 0.0)),
-                    "evidence": str(obj.get("evidence", ""))[:500],
+                    "evidence": str(obj.get("evidence", ""))[:1500],
                     "error": None,
                 }
                 if cache is not None:
@@ -231,13 +260,21 @@ def call_one(number: str, judge: dict, prompt: str, panel: dict, bridges: dict,
 
 # ------------------------------------------------------------------ preflight (D3/D4)
 
-def validate_panel(cfg: dict) -> list[str]:
+def validate_panel(cfg: dict, judges: Optional[list[dict]] = None) -> list[str]:
     """Return a list of problems; empty == healthy. Checks health, secret, and a 1-token
-    ping per judge (confirms the pinned model id resolves)."""
+    ping per judge (confirms the pinned model id resolves). If `judges` is None, pings
+    every judge in cfg['judge_pool']; otherwise scopes bridge/secret/ping checks to only
+    the bridges actually referenced by the passed judges (so an all-Claude panel does
+    not fail because the Codex bridge is down)."""
     if requests is None:
         return ["'requests' package not installed (pip install requests)"]
+    if judges is None:
+        judges = [{"id": jid, **entry} for jid, entry in cfg["judge_pool"].items()]
+    needed_bridges = {j["bridge"] for j in judges}
     problems: list[str] = []
     for name, b in cfg["bridges"].items():
+        if name not in needed_bridges:
+            continue
         if not os.environ.get(b["secret_env"]):
             problems.append(f"{b['secret_env']} not set (bridge '{name}')")
         try:
@@ -249,7 +286,7 @@ def validate_panel(cfg: dict) -> list[str]:
     if problems:
         return problems  # don't ping models if bridges/secrets are already broken
     ping = 'Reply with exactly this JSON and nothing else: {"verdict":1,"confidence":1.0,"evidence":"ping"}'
-    for j in cfg["panel"]["judges"]:
+    for j in judges:
         rec = call_one("ping", j, ping, cfg["panel"], cfg["bridges"])
         if rec["error"] is not None:
             problems.append(f"judge '{j['id']}' ({j['model']}) ping failed: {rec['error']}")
@@ -272,13 +309,14 @@ def aggregate_rubric(subs: list[dict], floor: float) -> Optional[int]:
 def run_council(inputs: dict, cfg: dict, allow_degraded: bool = False,
                 skip_preflight: bool = False, cache_path: Optional[Path] = None) -> dict:
     panel, bridges = cfg["panel"], cfg["bridges"]
-    judges = panel["judges"]
+    trajectory_model = inputs.get("trajectory_model")
+    judges, panel_key = resolve_panel(cfg, trajectory_model)
     floor = panel.get("confidence_floor", 0.5)
     rubrics = inputs["rubrics"]
 
     degraded_reason = None
     if not skip_preflight:
-        problems = validate_panel(cfg)
+        problems = validate_panel(cfg, judges)
         if problems:
             msg = "COUNCIL PREFLIGHT FAILED:\n  - " + "\n  - ".join(problems)
             if not allow_degraded:
@@ -295,7 +333,8 @@ def run_council(inputs: dict, cfg: dict, allow_degraded: bool = False,
         # every rubric unassessable; no judge calls
         for r in rubrics:
             results.append(_result_row(r, [], None, "council_unavailable"))
-        return _finalize(inputs, results, abstain, graded, degraded_reason)
+        return _finalize(inputs, results, abstain, graded, degraded_reason,
+                         trajectory_model, panel_key)
 
     # D1: short-circuit no-opportunity rubrics (no judge call, verdict=null)
     live = [r for r in rubrics if r.get("status") != "no_opportunity"]
@@ -325,7 +364,8 @@ def run_council(inputs: dict, cfg: dict, allow_degraded: bool = False,
 
     if cache is not None:
         cache.flush()
-    return _finalize(inputs, results, abstain, graded, degraded_reason)
+    return _finalize(inputs, results, abstain, graded, degraded_reason,
+                     trajectory_model, panel_key)
 
 
 def _result_row(r: dict, subs: list[dict], verdict: Optional[int], status: str) -> dict:
@@ -342,7 +382,8 @@ def _result_row(r: dict, subs: list[dict], verdict: Optional[int], status: str) 
 
 
 def _finalize(inputs: dict, results: list[dict], abstain: dict, graded: dict,
-              degraded_reason: Optional[str]) -> dict:
+              degraded_reason: Optional[str], trajectory_model: Optional[str],
+              panel_key: str) -> dict:
     abstain_rate = {m: round(abstain[m] / t, 3) if (t := abstain[m] + graded[m]) else None
                     for m in abstain}
     warnings = [f"judge {m} abstained on {r:.0%} of graded rubrics" for m, r in abstain_rate.items()
@@ -351,6 +392,8 @@ def _finalize(inputs: dict, results: list[dict], abstain: dict, graded: dict,
     return {
         "task_id": inputs.get("task_id"),
         "traj_path": inputs.get("traj_path"),
+        "trajectory_model": trajectory_model,
+        "panel_used": panel_key,
         "council_status": "unavailable" if degraded_reason else "ok",
         "degraded_reason": degraded_reason,
         "abstain_rate": abstain_rate,

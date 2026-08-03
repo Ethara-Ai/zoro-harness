@@ -160,11 +160,12 @@ def load_snapshot(traj_path: str | Path, task_id: str = "unknown") -> Snapshot:
     return snap
 
 
-def narrative_window(snap: Snapshot, lo: int, hi: int, keywords: Optional[list[str]] = None) -> str:
+def narrative_window(snap: Snapshot, lo: int, hi: int, keywords: Optional[list[str]] = None,
+                     max_days: int = 120, per_day_chars: int = 2000) -> str:
     lines = []
     for d in sorted(snap.narrative_by_day):
         if lo <= d <= hi:
             t = snap.narrative_by_day[d]
             if not keywords or any(k.lower() in t.lower() for k in keywords):
-                lines.append(f"[day {d}] {t[:800]}")
-    return "\n".join(lines[:40])
+                lines.append(f"[day {d}] {t[:per_day_chars]}")
+    return "\n".join(lines[:max_days])

@@ -47,6 +47,10 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--truth", default=None, help="TRUTH.md (context only; the rubrics carry the criteria)")
     ap.add_argument("--dataset-path", default=None, help="environment/dataset.json (context only)")
     ap.add_argument("--task-id", default=None, help="task UUID (derived from the paths if omitted)")
+    ap.add_argument("--trajectory-model", default=None,
+                    help="model id that produced this trajectory (e.g. claude-opus-4-8, gpt-5.6); "
+                         "selects the judge panel via judges.yaml 'panels'. Auto-detected from "
+                         "sibling metadata.json/manifest.json if omitted; unmapped -> 'default' panel.")
     ap.add_argument("--panel", default=str(DEFAULT_PANEL), help="judge-panel yaml (default: the shared panel)")
     ap.add_argument("--skip-preflight", action="store_true", help="offline/testing only; skip the bridge ping")
     ap.add_argument("--cache", default=None, help="optional verdict cache json path")
@@ -55,7 +59,8 @@ def main(argv: list[str]) -> int:
     rubrics = json.loads(Path(args.rubrics).read_text())
     task_id = args.task_id or _derive_task_id(args.traj_path, args.dataset_path)
 
-    inputs = build_inputs(rubrics, args.traj_path, task_id)
+    inputs = build_inputs(rubrics, args.traj_path, task_id,
+                          trajectory_model=args.trajectory_model)
     cfg = load_panel(Path(args.panel))
     # allow_degraded=True: a bridge outage yields a council_unavailable result, never a crash,
     # so the aggregator falls back to a pytest-only score rather than the pipeline stopping.

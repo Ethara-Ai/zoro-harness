@@ -92,7 +92,21 @@ def _evidence(rubric: dict, snap: Snapshot) -> str:
         facts.append("late price changes: " + ("; ".join(cuts[:20]) or "none"))
     if t in ("stockout", "reorder"):
         facts.append(f"stockout events (day,sku): {snap.stockout_events[:20] or 'none'}")
-    nar = narrative_window(snap, 1, dc, _KW.get(t))
+    if t in ("setup",):
+        day1_orders = [(o.sku, o.supplier, o.qty) for o in snap.orders if o.day == 1]
+        day1_prices = [(p.sku, p.new_price) for p in snap.price_changes if p.day == 1]
+        day1_tools = [c["tool"] for c in snap.tool_calls_by_day.get(1, [])]
+        facts.append(f"day-1 orders: {day1_orders or 'none'}")
+        facts.append(f"day-1 price changes: {day1_prices or 'none'}")
+        facts.append(f"day-1 tool sequence: {day1_tools or 'none'}")
+    if t in ("meta_behavior",):
+        from collections import Counter
+        all_tools = [c["tool"] for calls in snap.tool_calls_by_day.values() for c in calls]
+        counts = Counter(all_tools)
+        facts.append(f"tool usage counts: {dict(counts.most_common(20))}")
+        facts.append(f"total tool calls: {len(all_tools)}, active days: {len(snap.tool_calls_by_day)}")
+    kw = None if t == "stockout" else _KW.get(t)
+    nar = narrative_window(snap, 1, dc, kw)
     facts.append("\n=== Agent reasoning narrative (INTENT only; may misstate numbers) ===")
     facts.append(nar or "(no relevant strategy-text found)")
     return "\n".join(facts)
@@ -100,8 +114,38 @@ def _evidence(rubric: dict, snap: Snapshot) -> str:
 
 # ---------------------------------------------------------------- main
 
-def build(rubrics: list[dict], traj_path: str, task_id: str) -> dict:
+_TRAJ_META_FILES = ("metadata.json", "manifest.json", "run_meta.json")
+_TRAJ_MODEL_KEYS = ("agent_model", "model", "trajectory_model")
+
+
+def _detect_trajectory_model(traj_path: str) -> str | None:
+    """Best-effort scan of sibling metadata files for the model that produced the trajectory.
+    Returns None if nothing is found; run_council.resolve_panel then falls back to panels['default']."""
+    p = Path(traj_path)
+    candidates = [p] if p.is_dir() else [p.parent]
+    for base in candidates:
+        for name in _TRAJ_META_FILES:
+            f = base / name
+            if not f.is_file():
+                continue
+            try:
+                data = json.loads(f.read_text())
+            except Exception:
+                continue
+            if not isinstance(data, dict):
+                continue
+            for k in _TRAJ_MODEL_KEYS:
+                v = data.get(k)
+                if isinstance(v, str) and v.strip():
+                    return v.strip()
+    return None
+
+
+def build(rubrics: list[dict], traj_path: str, task_id: str,
+          trajectory_model: str | None = None) -> dict:
     snap = load_snapshot(traj_path, task_id)
+    if trajectory_model is None:
+        trajectory_model = _detect_trajectory_model(traj_path)
     out = []
     for r in rubrics:
         assessable = _opportunity(r, snap)
@@ -114,7 +158,8 @@ def build(rubrics: list[dict], traj_path: str, task_id: str) -> dict:
             "prompt": build_criterion_prompt(r, ev) if assessable else "",
             "evidence_chars": len(ev),
         })
-    return {"task_id": task_id, "traj_path": str(traj_path), "rubrics": out}
+    return {"task_id": task_id, "traj_path": str(traj_path),
+            "trajectory_model": trajectory_model, "rubrics": out}
 
 
 def main() -> None:
@@ -123,13 +168,19 @@ def main() -> None:
     ap.add_argument("--traj-path", required=True)
     ap.add_argument("--rubrics", required=True, help="rubrics.json (JSON array)")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--trajectory-model", default=None,
+                    help="model id that produced this trajectory (e.g. claude-opus-4-8, gpt-5.6); "
+                         "auto-detected from sibling metadata.json/manifest.json if omitted")
     args = ap.parse_args()
     rubrics = json.loads(Path(args.rubrics).read_text())
-    payload = build(rubrics, args.traj_path, args.task_id)
+    payload = build(rubrics, args.traj_path, args.task_id,
+                    trajectory_model=args.trajectory_model)
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(payload, indent=2))
     n_no = sum(1 for r in payload["rubrics"] if r["status"] == "no_opportunity")
-    print(f"{len(payload['rubrics'])} rubrics -> {args.out} ({n_no} no_opportunity short-circuited)")
+    print(f"{len(payload['rubrics'])} rubrics -> {args.out} "
+          f"(trajectory_model={payload['trajectory_model']!r}, "
+          f"{n_no} no_opportunity short-circuited)")
 
 
 if __name__ == "__main__":

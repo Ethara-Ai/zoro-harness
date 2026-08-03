@@ -38,13 +38,15 @@ The task governs. Grade only whether the specific behavior described in the crit
 
 
 POSITIVE_POLARITY_NOTE = """This is a POSITIVE rubric describing a desired behavior.
-- If the described behavior IS present in the evidence → verdict = 1.
-- If the described behavior is NOT present → verdict = 0."""
+- If the evidence AFFIRMATIVELY shows the described behavior occurred → verdict = 1.
+- If the evidence AFFIRMATIVELY shows the agent did NOT exhibit this behavior across the relevant period → verdict = 0.
+- If the evidence does not cover the relevant period (e.g., the excerpt is missing days you would need to check) → verdict = null. Do NOT default to 0 when the evidence is silent."""
 
 
 NEGATIVE_POLARITY_NOTE = """This is a NEGATIVE rubric describing an unwanted behavior.
-- If the described (unwanted) behavior IS present in the evidence → verdict = 1 (the bad thing happened).
-- If the unwanted behavior is NOT present → verdict = 0 (the agent avoided it)."""
+- If the evidence AFFIRMATIVELY shows the unwanted behavior occurred → verdict = 1 (the bad thing happened).
+- If the evidence AFFIRMATIVELY shows the agent did NOT engage in this behavior across the relevant period → verdict = 0 (the agent avoided it).
+- If the evidence does not cover the relevant period (e.g., the excerpt is missing days you would need to check) → verdict = null. Do NOT default to 0 when the evidence is silent."""
 
 
 def build_criterion_prompt(rubric: dict[str, Any], evidence_excerpt: str) -> str:
